@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Runs Composer and the PHP tooling in a container, so nothing PHP has to be installed on the host.
+#
+#   ./dev composer install      ./dev test [pest args]     ./dev stan      ./dev lint | fix
+#   ./dev generate              regenerate src/ from spec/ and format the result
+#   ./dev spec:sync <backend>   copy openapi/{public,partner}.yaml from a backend checkout into spec/
+#   ./dev fresh                 fail when the generated code differs from what the spec produces (CI)
+#   ./dev php <args>            any php command
+#
+# MYCOMM_PHP_IMAGE picks the image (default composer:2); PHP 8.2 is the oldest supported runtime.
+set -euo pipefail
+cd "$(dirname "$0")"
+
+image="${MYCOMM_PHP_IMAGE:-composer:2}"
+
+run() {
+    docker run --rm -u "$(id -u):$(id -g)" -e COMPOSER_HOME=/tmp/composer -e HOME=/tmp \
+        -v "$PWD":/app -w /app --entrypoint "" "$image" "$@"
+}
+
+cmd="${1:-help}"
+shift || true
+
+case "$cmd" in
+    composer) run composer "$@" ;;
+    php) run php "$@" ;;
+    test) run php vendor/bin/pest "$@" ;;
+    stan) run php vendor/bin/phpstan analyse --memory-limit=1G "$@" ;;
+    lint) run php vendor/bin/pint --test "$@" ;;
+    fix) run php vendor/bin/pint "$@" ;;
+    generate)
+        run php generator/generate.php "$@"
+        run php vendor/bin/pint --quiet src tests/Generated
+        ;;
+    fresh)
+        "$0" generate
+        if [ -n "$(git status --porcelain -- src tests/Generated)" ]; then
+            git status --short -- src tests/Generated
+            echo "Generated code is stale: run ./dev generate and commit the result." >&2
+            exit 1
+        fi
+        ;;
+    spec:sync)
+        backend="${1:?usage: ./dev spec:sync <path to the backend checkout>}"
+        for set in public partner; do
+            cp "$backend/openapi/$set.yaml" "spec/$set.yaml"
+        done
+        git -C "$backend" rev-parse HEAD > spec/SOURCE
+        echo "Copied the specs at backend commit $(cat spec/SOURCE). Now run ./dev generate."
+        ;;
+    check)
+        "$0" lint
+        "$0" stan
+        "$0" test
+        ;;
+    *) sed -n '2,11p' "$0" | sed 's/^# \{0,1\}//' ;;
+esac

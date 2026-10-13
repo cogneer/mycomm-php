@@ -1,0 +1,11 @@
+parameters:
+    level: 8
+    paths:
+        - src
+        - generator/src
+    treatPhpDocTypesAsCertain: false
+    # Models are read from a payload by hydrate(), which their final constructor calls.
+    additionalConstructors:
+        - MyComm\Model::hydrate
+        - MyComm\Webhooks\Event::hydrateData
+        - MyComm\Client::bootResources

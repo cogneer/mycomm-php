@@ -1,0 +1,58 @@
+{
+    "name": "mycomm/mycomm-php",
+    "description": "Official PHP SDK for the MyComm messaging API: messages, contacts, conversations, channels, webhooks and the partner API.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["mycomm", "sms", "messaging", "api", "sdk", "webhooks"],
+    "homepage": "https://mycomm.cogneer.tech/docs",
+    "authors": [
+        {"name": "Cogneer", "homepage": "https://cogneer.tech"}
+    ],
+    "require": {
+        "php": "^8.2",
+        "ext-json": "*",
+        "php-http/discovery": "^1.20",
+        "psr/http-client": "^1.0",
+        "psr/http-client-implementation": "*",
+        "psr/http-factory": "^1.0",
+        "psr/http-factory-implementation": "*",
+        "psr/http-message": "^1.1 || ^2.0"
+    },
+    "require-dev": {
+        "guzzlehttp/guzzle": "^7.9",
+        "laravel/pint": "^1.24",
+        "pestphp/pest": "^3.8 || ^4.0",
+        "phpstan/phpstan": "^2.1",
+        "symfony/yaml": "^7.0 || ^8.0"
+    },
+    "suggest": {
+        "guzzlehttp/guzzle": "Used automatically when installed, with the SDK's timeout applied.",
+        "mycomm/mycomm-laravel": "Service provider, facade and webhook route for Laravel."
+    },
+    "autoload": {
+        "psr-4": {
+            "MyComm\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MyComm\\Generator\\": "generator/src/",
+            "MyComm\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "generate": "@php generator/generate.php",
+        "test": "pest",
+        "stan": "phpstan analyse --memory-limit=1G",
+        "lint": "pint --test",
+        "fix": "pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": false
+        }
+    },
+    "minimum-stability": "stable"
+}

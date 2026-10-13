@@ -72,4 +72,20 @@ MYCOMM_API_KEY=mc_live_... MYCOMM_PARTNER_KEY=mc_partner_... \
 MYCOMM_BASE_URL=https://staging.mycomm.cogneer.tech ./dev php tests/live/smoke.php
 ```
 
+The script needs HTTPS, as the API does. A local `./server` stack of the backend serves plain HTTP and
+answers `400 HTTPS is required` on `/v1`, so to run the script against one, serve the app a second time
+inside its container through a router that marks requests as secure, and run the script in that container:
+
+```php
+<?php // router.php
+$_SERVER['HTTPS'] = 'on';
+return require '/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php';
+```
+
+```bash
+# in the app container, from /var/www/html/public
+PHP_CLI_SERVER_WORKERS=4 php -S 127.0.0.1:8998 /path/to/router.php
+MYCOMM_BASE_URL=http://127.0.0.1:8998 MYCOMM_API_KEY=... php /path/to/sdk/tests/live/smoke.php
+```
+
 Then tag `vX.Y.Z` and push the tag; Packagist picks it up. Bump `MyComm\Version::SDK` in the same commit.

@@ -50,7 +50,8 @@ final class Client
             throw new Exceptions\MyCommException('The MyComm API key is empty.');
         }
 
-        $this->baseUrl = rtrim($baseUrl, '/');
+        // The paths carry /v1 and /partner/v1 themselves; forgive a base URL that already ends in one.
+        $this->baseUrl = (string) preg_replace('#/(partner/)?v1$#', '', rtrim($baseUrl, '/'));
         $this->transport = $httpClient instanceof Transport ? $httpClient : TransportFactory::make($httpClient, $timeout);
         $this->bootResources(new Connection($this->transport, $apiKey, $this->baseUrl, $accountId, $maxRetries));
     }

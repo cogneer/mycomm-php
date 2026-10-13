@@ -115,6 +115,15 @@ it('acts as a managed account on /v1 and as the partner on /partner/v1', functio
         ->and($fake->calls('partner.usage.get')[0]->query)->toBe(['from' => '2026-10-01', 'to' => '2026-10-31']);
 });
 
+it('accepts a base URL with or without the version path', function (string $baseUrl) {
+    $history = [];
+    $client = new Client('mc_live_abc', $baseUrl, guzzle([new GuzzleResponse(200, [], (string) json_encode(Examples::RESPONSES['account.get']['body']))], $history));
+
+    $client->account->get();
+
+    expect((string) $history[0]['request']->getUri())->toBe('https://mycomm.test/v1/account');
+})->with(['https://mycomm.test', 'https://mycomm.test/', 'https://mycomm.test/v1', 'https://mycomm.test/v1/', 'https://mycomm.test/partner/v1']);
+
 it('escapes path arguments', function () {
     $fake = new MyCommFake;
 

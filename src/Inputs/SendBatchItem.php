@@ -6,11 +6,21 @@ declare(strict_types=1);
 
 namespace MyComm\Inputs;
 
+use DateTimeImmutable;
 use DateTimeInterface;
+use Generator;
 use MyComm\Enums;
+use MyComm\Exceptions\ApiException;
+use MyComm\Exceptions\ConnectionException;
+use MyComm\FileUpload;
+use MyComm\Http\Connection;
 use MyComm\Http\Params;
 use MyComm\Input;
+use MyComm\Model;
+use MyComm\Models;
 use MyComm\Omit;
+use MyComm\Page;
+use MyComm\RequestOptions;
 
 /**
  * An item of a batch: the fields of `SendMessageRequest`. Fields the item omits come from `defaults`.

@@ -29,11 +29,14 @@ final class MyCommFake
 
     private readonly Client $client;
 
-    public function __construct(string $apiKey = 'mc_live_fake', ?string $accountId = null)
+    /**
+     * @param  bool  $validate  Whether the client checks arguments before sending, as a real client does. Turn it off to test how your code handles what the server answers to a request the SDK would have refused.
+     */
+    public function __construct(string $apiKey = 'mc_live_fake', ?string $accountId = null, bool $validate = true)
     {
         $this->transport = new FakeTransport;
         // No retries: an error you stub must surface at once, without the client waiting in between.
-        $this->client = new Client($apiKey, httpClient: $this->transport, maxRetries: 0, accountId: $accountId);
+        $this->client = new Client($apiKey, httpClient: $this->transport, maxRetries: 0, accountId: $accountId, validate: $validate);
     }
 
     public function client(): Client

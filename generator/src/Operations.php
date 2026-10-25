@@ -12,9 +12,10 @@ use RuntimeException;
 final class Operations
 {
     /**
-     * @param  array<string, string>  $multipartNames  Operation id => method name of its multipart variant.
+     * @param  array<string, string>  $multipartNames  SDK operation name => method name of its multipart variant.
+     * @param  array<string, string>  $operationNames  The document's operation id => the SDK's name for it (`resource.method`).
      */
-    public function __construct(private readonly Types $types, private readonly array $multipartNames = []) {}
+    public function __construct(private readonly Types $types, private readonly array $multipartNames = [], private readonly array $operationNames = []) {}
 
     /**
      * @return list<array<string, mixed>>
@@ -40,7 +41,11 @@ final class Operations
      */
     private function operation(Spec $spec, string $path, string $method, array $operation, array $item): array
     {
-        $id = (string) ($operation['operationId'] ?? throw new RuntimeException("{$method} {$path} has no operationId."));
+        $documentId = (string) ($operation['operationId'] ?? throw new RuntimeException("{$method} {$path} has no operationId."));
+        // A table is required for the real documents; a spec without one (a test fixture) keeps its ids.
+        $id = $this->operationNames === []
+            ? $documentId
+            : ($this->operationNames[$documentId] ?? throw new RuntimeException("{$method} {$path} ({$documentId}) has no SDK name: add it to 'operations' in generator/config.php."));
         $segments = explode('.', $id);
         $name = (string) array_pop($segments);
         $context = Names::pascal($id);
@@ -49,6 +54,7 @@ final class Operations
 
         $base = [
             'id' => $id,
+            'documentId' => $documentId,
             'resource' => $segments,
             'http' => strtoupper($method),
             'path' => $spec->prefix.$path,
@@ -61,9 +67,12 @@ final class Operations
         ];
 
         $bodies = [];
+        $rules = [];
         foreach ($operation['requestBody']['content'] ?? [] as $contentType => $media) {
             $schema = $media['schema'] ?? [];
             $ref = $spec->refName($schema);
+            $format = str_starts_with((string) $contentType, 'multipart/') ? 'multipart' : 'json';
+            $rules[$format] = $format === 'json' ? $this->types->rules($spec, $schema) : [];
             $bodies[str_starts_with((string) $contentType, 'multipart/') ? 'multipart' : 'json'] = $this->types->fields(
                 $spec,
                 $schema,
@@ -73,7 +82,7 @@ final class Operations
         }
 
         if ($bodies === []) {
-            return [$base + ['name' => $name, 'format' => 'none', 'fields' => []]];
+            return [$base + ['name' => $name, 'format' => 'none', 'fields' => [], 'rules' => []]];
         }
 
         $variants = [];
@@ -83,7 +92,7 @@ final class Operations
                 $variantName = $this->multipartNames[$id]
                     ?? throw new RuntimeException("{$id} takes JSON and multipart bodies: name its multipart method in generator/config.php.");
             }
-            $variants[] = $base + ['name' => $variantName, 'format' => $format, 'fields' => $fields];
+            $variants[] = $base + ['name' => $variantName, 'format' => $format, 'fields' => $fields, 'rules' => $rules[$format] ?? []];
         }
 
         return $variants;
@@ -112,11 +121,21 @@ final class Operations
                 $values = implode(', ', array_map(static fn (mixed $value): string => '`'.$value.'`', array_filter($schema['enum'], is_string(...))));
                 $description = trim(($description ?? '').' One of: '.$values.'.');
                 $type = new TypeInfo('string', 'string');
+            } elseif (($schema['type'] ?? null) === 'array' && ($parameter['explode'] ?? true) === false) {
+                // A comma list (`style: form, explode: false`): pass a list, or the comma-separated text itself.
+                $items = $spec->resolve($schema['items'] ?? []);
+                if (isset($items['enum'])) {
+                    $values = implode(', ', array_map(static fn (mixed $value): string => '`'.$value.'`', array_filter($items['enum'], is_string(...))));
+                    $description = trim(($description ?? '').' Values: '.$values.'.');
+                }
+                $type = new TypeInfo('array|string', 'list<string>|string');
             } else {
                 $type = $this->types->input($spec, $schema, $context.Names::pascal($name), $id.'?'.$name);
             }
 
-            $query[$name] = ['type' => $type, 'required' => (bool) ($parameter['required'] ?? false), 'description' => $description];
+            // A filter's values may grow on the server before this SDK does, so only limits are kept, never its list of values.
+            $constraints = array_diff_key($this->types->constraints($spec, $schema), ['enum' => true]);
+            $query[$name] = ['type' => $type, 'required' => (bool) ($parameter['required'] ?? false), 'description' => $description, 'constraints' => $constraints];
         }
 
         // Filters first, then the paging pair.

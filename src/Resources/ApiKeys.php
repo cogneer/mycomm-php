@@ -6,18 +6,13 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use Generator;
-use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -25,9 +20,7 @@ use MyComm\RequestOptions;
 
 final class ApiKeys
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * List API keys.
@@ -41,6 +34,7 @@ final class ApiKeys
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\ApiKey>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -52,6 +46,24 @@ final class ApiKeys
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'apiKeys.list',
+            [
+                'inbox_id' => $inbox_id,
+                'limit' => $limit,
+            ],
+            [
+                'inbox_id' => [
+                    'uuid' => true,
+                ],
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'apiKeys.list',
             'GET',
@@ -96,16 +108,17 @@ final class ApiKeys
     /**
      * Create an API key.
      *
-     * Requires `keys:write`. Abilities default per 03 section 2.2, must be a subset of the calling key's, and
-     * a restricted key cannot hold the abilities marked with a cross there. A restricted caller can create
-     * keys only inside its own scope. `partner` keys are never created here. The `token` is shown once, in
-     * this response.
+     * Requires `keys:write`. Abilities default to the preset for the key's scope, must be a subset of the
+     * calling key's, and a restricted key cannot hold the abilities marked with a cross there. A restricted
+     * caller can create keys only inside its own scope. `partner` keys are never created here. The `token` is
+     * shown once, in this response.
      *
      * @param  list<string>|Omit|null  $inbox_ids  `null` or omitted for all inboxes.
      * @param  list<string>|Omit|null  $channel_types  `null` or omitted for all channel types, for example `["android_sim"]`.
      * @param  list<string>|Omit|null  $abilities
      * @param  list<string>|Omit|null  $allowed_ips  IPv4/IPv6 addresses or CIDR ranges.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -118,6 +131,39 @@ final class ApiKeys
         DateTimeInterface|string|Omit|null $expires_at = Omit::Value,
         ?RequestOptions $requestOptions = null,
     ): Models\CreatedApiKey {
+        $this->connection->guard(
+            'apiKeys.create',
+            [
+                'name' => $name,
+                'inbox_ids' => $inbox_ids,
+                'channel_types' => $channel_types,
+                'abilities' => $abilities,
+                'allowed_ips' => $allowed_ips,
+            ],
+            [
+                'name' => [
+                    'minLength' => 1,
+                    'maxLength' => 100,
+                ],
+                'inbox_ids' => [
+                    'minItems' => 1,
+                    'maxItems' => 100,
+                    'uuid' => true,
+                ],
+                'channel_types' => [
+                    'minItems' => 1,
+                ],
+                'abilities' => [
+                    'minItems' => 1,
+                ],
+                'allowed_ips' => [
+                    'minItems' => 1,
+                    'maxItems' => 20,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'apiKeys.create',
             'POST',

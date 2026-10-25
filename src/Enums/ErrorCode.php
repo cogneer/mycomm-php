@@ -6,30 +6,17 @@ declare(strict_types=1);
 
 namespace MyComm\Enums;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use Generator;
-use MyComm\Exceptions\ApiException;
-use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
-use MyComm\Http\Connection;
-use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
-use MyComm\Models;
-use MyComm\Omit;
-use MyComm\Page;
-use MyComm\RequestOptions;
-
 /**
- * Stable UPPER_SNAKE_CASE error code. Clients must tolerate unknown codes.
+ * Stable UPPER_SNAKE_CASE error code. Clients must tolerate codes added later. The list is generated from
+ * the error catalogue and holds only the codes this API can return; each is described in the error
+ * reference (`error.doc_url`).
  *
  * The API may add values: one this SDK version does not know arrives as a plain string.
  */
 enum ErrorCode: string
 {
     case MalformedRequest = 'MALFORMED_REQUEST';
+    case InvalidHeader = 'INVALID_HEADER';
     case AccountContextRequired = 'ACCOUNT_CONTEXT_REQUIRED';
     case InvalidCursor = 'INVALID_CURSOR';
     case Unauthenticated = 'UNAUTHENTICATED';
@@ -40,10 +27,7 @@ enum ErrorCode: string
     case AccountSuspended = 'ACCOUNT_SUSPENDED';
     case AccountPendingDeletion = 'ACCOUNT_PENDING_DELETION';
     case PartnerAccessRevoked = 'PARTNER_ACCESS_REVOKED';
-    case PartnerKeyRestricted = 'PARTNER_KEY_RESTRICTED';
-    case AppConnectNotAllowed = 'APP_CONNECT_NOT_ALLOWED';
     case NotFound = 'NOT_FOUND';
-    case DeviceRevoked = 'DEVICE_REVOKED';
     case MethodNotAllowed = 'METHOD_NOT_ALLOWED';
     case IdempotencyKeyReused = 'IDEMPOTENCY_KEY_REUSED';
     case IdempotencyInProgress = 'IDEMPOTENCY_IN_PROGRESS';
@@ -54,9 +38,6 @@ enum ErrorCode: string
     case RetryLimitReached = 'RETRY_LIMIT_REACHED';
     case NameTaken = 'NAME_TAKEN';
     case IdentityTaken = 'IDENTITY_TAKEN';
-    case PartnerHasClients = 'PARTNER_HAS_CLIENTS';
-    case ExternalRefTaken = 'EXTERNAL_REF_TAKEN';
-    case SuspendedBySupport = 'SUSPENDED_BY_SUPPORT';
     case ChannelAddressInUse = 'CHANNEL_ADDRESS_IN_USE';
     case DeviceInUse = 'DEVICE_IN_USE';
     case DeclinedOnDevice = 'DECLINED_ON_DEVICE';
@@ -97,7 +78,6 @@ enum ErrorCode: string
     case ChannelTokenInvalid = 'CHANNEL_TOKEN_INVALID';
     case MediaTypeUnsupported = 'MEDIA_TYPE_UNSUPPORTED';
     case MediaTooLarge = 'MEDIA_TOO_LARGE';
-    case UnsupportedMediaType = 'UNSUPPORTED_MEDIA_TYPE';
     case MediaCountExceeded = 'MEDIA_COUNT_EXCEEDED';
     case MediaNotFound = 'MEDIA_NOT_FOUND';
     case TemplateInvalid = 'TEMPLATE_INVALID';
@@ -112,23 +92,18 @@ enum ErrorCode: string
     case AddressRequired = 'ADDRESS_REQUIRED';
     case CountryNotEnabled = 'COUNTRY_NOT_ENABLED';
     case DeviceSimLimit = 'DEVICE_SIM_LIMIT';
-    case ConfirmationNotFound = 'CONFIRMATION_NOT_FOUND';
-    case ConfirmationExpired = 'CONFIRMATION_EXPIRED';
     case VerificationNotFound = 'VERIFICATION_NOT_FOUND';
     case VerificationExpired = 'VERIFICATION_EXPIRED';
     case VerificationLimitReached = 'VERIFICATION_LIMIT_REACHED';
     case SimNotPresent = 'SIM_NOT_PRESENT';
     case DeviceNotActive = 'DEVICE_NOT_ACTIVE';
     case PairingCodeLimitReached = 'PAIRING_CODE_LIMIT_REACHED';
-    case PairingCodeInvalid = 'PAIRING_CODE_INVALID';
+    case ConnectSessionLimitReached = 'CONNECT_SESSION_LIMIT_REACHED';
     case PairingCodeExpired = 'PAIRING_CODE_EXPIRED';
-    case PairingCodeUsed = 'PAIRING_CODE_USED';
-    case PairingSessionNotFound = 'PAIRING_SESSION_NOT_FOUND';
-    case PairingSessionExpired = 'PAIRING_SESSION_EXPIRED';
     case BatchTooLarge = 'BATCH_TOO_LARGE';
     case AudienceEmpty = 'AUDIENCE_EMPTY';
     case RangeTooLarge = 'RANGE_TOO_LARGE';
-    case UpgradeRequired = 'UPGRADE_REQUIRED';
+    case UnsupportedMediaType = 'UNSUPPORTED_MEDIA_TYPE';
     case RateLimited = 'RATE_LIMITED';
     case InternalError = 'INTERNAL_ERROR';
     case ServiceUnavailable = 'SERVICE_UNAVAILABLE';

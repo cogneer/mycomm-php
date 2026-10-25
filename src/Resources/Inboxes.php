@@ -6,18 +6,12 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Generator;
-use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -25,9 +19,7 @@ use MyComm\RequestOptions;
 
 final class Inboxes
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * List inboxes.
@@ -42,6 +34,7 @@ final class Inboxes
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\Inbox>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -54,6 +47,24 @@ final class Inboxes
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'inboxes.list',
+            [
+                'channel_id' => $channel_id,
+                'limit' => $limit,
+            ],
+            [
+                'channel_id' => [
+                    'uuid' => true,
+                ],
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'inboxes.list',
             'GET',
@@ -104,6 +115,7 @@ final class Inboxes
      * or outside the key's scope; `409 NAME_TAKEN` `{field: "name"}` when the name is used on the channel
      * (case-insensitive).
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -112,6 +124,24 @@ final class Inboxes
         string $name,
         ?RequestOptions $requestOptions = null,
     ): Models\Inbox {
+        $this->connection->guard(
+            'inboxes.create',
+            [
+                'channel_id' => $channel_id,
+                'name' => $name,
+            ],
+            [
+                'channel_id' => [
+                    'uuid' => true,
+                ],
+                'name' => [
+                    'minLength' => 1,
+                    'maxLength' => 120,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'inboxes.create',
             'POST',

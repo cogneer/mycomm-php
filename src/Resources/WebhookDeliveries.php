@@ -6,18 +6,14 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use Generator;
 use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -25,9 +21,7 @@ use MyComm\RequestOptions;
 
 final class WebhookDeliveries
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * List an endpoint's deliveries.
@@ -36,16 +30,18 @@ final class WebhookDeliveries
      * comma-separated for several), `event_type`, `event_id`, `created_after` (inclusive) and `created_before`
      * (exclusive). An endpoint outside the caller's scope answers `404 NOT_FOUND`.
      *
+     * @param  list<string>|string|null  $status  One status or a comma list. Values: `pending`, `failed`, `delivered`, `dead`.
      * @param  ?int  $limit  Page size, 1 to 200.
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\WebhookDelivery>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
     public function list(
         string $id,
-        ?string $status = null,
+        array|string|null $status = null,
         ?string $event_type = null,
         ?string $event_id = null,
         DateTimeInterface|string|null $created_after = null,
@@ -54,6 +50,20 @@ final class WebhookDeliveries
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'webhookDeliveries.list',
+            [
+                'limit' => $limit,
+            ],
+            [
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'webhookDeliveries.list',
             'GET',
@@ -78,6 +88,7 @@ final class WebhookDeliveries
      *
      * `limit` is the page size, not a cap on the items.
      *
+     * @param  list<string>|string|null  $status  One status or a comma list. Values: `pending`, `failed`, `delivered`, `dead`.
      * @param  ?int  $limit  Page size, 1 to 200.
      * @return Generator<int, Models\WebhookDelivery>
      *
@@ -86,7 +97,7 @@ final class WebhookDeliveries
      */
     public function all(
         string $id,
-        ?string $status = null,
+        array|string|null $status = null,
         ?string $event_type = null,
         ?string $event_id = null,
         DateTimeInterface|string|null $created_after = null,
@@ -104,6 +115,7 @@ final class WebhookDeliveries
      * endpoint in `status` (default `dead`) created inside the optional window. Deliveries whose payload was
      * removed after 30 days are skipped.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -114,6 +126,19 @@ final class WebhookDeliveries
         DateTimeInterface|string|null $created_before = null,
         ?RequestOptions $requestOptions = null,
     ): Models\WebhookDeliveriesBulkReplayResponse {
+        $this->connection->guard(
+            'webhookDeliveries.bulkReplay',
+            [
+                'status' => $status,
+            ],
+            [
+                'status' => [
+                    'enum' => ['pending', 'failed', 'delivered', 'dead'],
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'webhookDeliveries.bulkReplay',
             'POST',

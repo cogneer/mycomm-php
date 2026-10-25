@@ -29,6 +29,18 @@ final class ValidationException extends UnprocessableException
         return $fields;
     }
 
+    protected function summaryDetails(): string
+    {
+        $lines = [];
+        foreach ($this->fields() as $field => $violations) {
+            foreach ($violations as $violation) {
+                $lines[] = "{$field}: {$violation['code']}: {$violation['message']}";
+            }
+        }
+
+        return implode('; ', $lines);
+    }
+
     /**
      * The messages of one field, empty when the field is valid.
      *

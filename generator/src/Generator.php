@@ -36,9 +36,9 @@ final class Generator
      */
     public function run(): array
     {
-        $types = new Types($this->config['enums'], $this->config['models'], $this->config['nullable']);
+        $types = new Types($this->config['enums'], $this->config['models'], $this->config['nullable'], $this->config['plain_enums'] ?? [], $this->config['skip_fields'] ?? []);
         $emitter = new Emitter;
-        $reader = new Operations($types, $this->config['multipart']);
+        $reader = new Operations($types, $this->config['multipart'], $this->config['operations']);
 
         /** @var array<string, Spec> $specs */
         $specs = [];
@@ -257,6 +257,13 @@ final class Generator
             foreach ($operation['fields'] as $name => $field) {
                 if ($field['required']) {
                     $arguments[$name] = $field['type']->file ? '@file' : Examples::of($spec, $source['fields'][$name] ?? [], (string) $name);
+                }
+            }
+            // A call must satisfy the rules between fields too: one of an exclusive or at-least-one group.
+            foreach ($operation['rules'] ?? [] as $rule) {
+                if (in_array($rule[0], ['exactlyOne', 'atLeastOne'], true) && array_intersect($rule[1], array_keys($arguments)) === []) {
+                    $name = in_array('body', $rule[1], true) ? 'body' : $rule[1][0];
+                    $arguments[$name] = Examples::of($spec, $source['fields'][$name] ?? [], (string) $name);
                 }
             }
             foreach ($operation['query'] as $name => $parameter) {

@@ -6,18 +6,13 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Generator;
 use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -25,9 +20,7 @@ use MyComm\RequestOptions;
 
 final class Exports
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * List exports.
@@ -41,6 +34,7 @@ final class Exports
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\Export>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -51,6 +45,20 @@ final class Exports
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'exports.list',
+            [
+                'limit' => $limit,
+            ],
+            [
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'exports.list',
             'GET',
@@ -101,6 +109,7 @@ final class Exports
      *
      * @param  array<string, mixed>|null  $params
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -109,6 +118,19 @@ final class Exports
         ?array $params = null,
         ?RequestOptions $requestOptions = null,
     ): Models\Export {
+        $this->connection->guard(
+            'exports.create',
+            [
+                'type' => $type,
+            ],
+            [
+                'type' => [
+                    'enum' => ['messages_csv', 'contacts_csv', 'campaign_report', 'contact_json', 'account_zip'],
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'exports.create',
             'POST',

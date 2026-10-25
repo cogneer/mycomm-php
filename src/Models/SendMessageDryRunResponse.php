@@ -7,20 +7,8 @@ declare(strict_types=1);
 namespace MyComm\Models;
 
 use DateTimeImmutable;
-use DateTimeInterface;
-use Generator;
 use MyComm\Enums;
-use MyComm\Exceptions\ApiException;
-use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
-use MyComm\Http\Connection;
-use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
 use MyComm\Model;
-use MyComm\Omit;
-use MyComm\Page;
-use MyComm\RequestOptions;
 
 /**
  * The would-be message of a dry run. `id`, `status`, `conversation_id` and the timestamps are `null`.
@@ -44,9 +32,9 @@ final class SendMessageDryRunResponse extends Model
 
     public readonly ?int $segments;
 
-    public readonly ?string $type;
+    public readonly Enums\MessageType|string|null $type;
 
-    public readonly ?string $hold_reason;
+    public readonly Enums\HoldReason|string|null $hold_reason;
 
     public readonly ?DateTimeImmutable $expires_at;
 
@@ -64,8 +52,8 @@ final class SendMessageDryRunResponse extends Model
         $this->contact_id = $data['contact_id'] ?? null;
         $this->encoding = $data['encoding'] ?? null;
         $this->segments = $data['segments'] ?? null;
-        $this->type = $data['type'] ?? null;
-        $this->hold_reason = $data['hold_reason'] ?? null;
+        $this->type = isset($data['type']) ? self::enum(Enums\MessageType::class, $data['type']) : null;
+        $this->hold_reason = isset($data['hold_reason']) ? self::enum(Enums\HoldReason::class, $data['hold_reason']) : null;
         $this->expires_at = isset($data['expires_at']) ? self::dateTime($data['expires_at']) : null;
         $this->warnings = array_map(static fn (array $item): SendMessageWarning => SendMessageWarning::fromArray($item), array_values($data['warnings']));
     }

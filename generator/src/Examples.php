@@ -72,7 +72,7 @@ final class Examples
         $types = array_values(array_filter((array) ($schema['type'] ?? []), static fn (string $type): bool => $type !== 'null'));
 
         return match ($types[0] ?? null) {
-            'string' => self::string($schema, $name),
+            'string' => self::matching($schema, self::string($schema, $name)),
             'integer' => max(1, (int) ($schema['minimum'] ?? 1)),
             'number' => 0.5,
             'boolean' => true,
@@ -110,6 +110,27 @@ final class Examples
         }
 
         return false;
+    }
+
+    /**
+     * A value that also keeps the schema's `pattern`, when it has one.
+     *
+     * @param  array<string, mixed>  $schema
+     */
+    private static function matching(array $schema, string $value): string
+    {
+        $pattern = $schema['pattern'] ?? null;
+        if (! is_string($pattern)) {
+            return $value;
+        }
+        $regex = '/'.str_replace('/', '\/', $pattern).'/u';
+        foreach ([$value, 'example', 'example_key', 'example-1', 'example1', 'a'] as $candidate) {
+            if (@preg_match($regex, $candidate) === 1) {
+                return $candidate;
+            }
+        }
+
+        return $value;
     }
 
     /**

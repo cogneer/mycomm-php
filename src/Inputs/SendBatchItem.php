@@ -6,39 +6,41 @@ declare(strict_types=1);
 
 namespace MyComm\Inputs;
 
-use DateTimeImmutable;
 use DateTimeInterface;
-use Generator;
 use MyComm\Enums;
-use MyComm\Exceptions\ApiException;
-use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
-use MyComm\Http\Connection;
 use MyComm\Http\Params;
 use MyComm\Input;
-use MyComm\Model;
-use MyComm\Models;
 use MyComm\Omit;
-use MyComm\Page;
-use MyComm\RequestOptions;
 
 /**
- * An item of a batch: the fields of `SendMessageRequest`. Fields the item omits come from `defaults`.
+ * An item of a batch: the sender, recipient, content and option fields of `SendMessageRequest`, without
+ * `dry_run` (the batch has its own). Fields the item omits come from `defaults`; the rules of
+ * `SendMessageRequest` (a recipient, some content, `category` on the bulk lane) apply to the item after
+ * the defaults are merged in. A batch item always needs a `category`, in the item or in `defaults`.
  */
 final class SendBatchItem extends Input
 {
     /**
-     * @param  ?string  $from  A channel address; resolves to that channel's main inbox.
-     * @param  ?string  $to  Recipient address in the channel's format (a phone number in any accepted format for SMS).
-     * @param  array<string, mixed>|null  $content  The content union. `type` is `text`, `media`, `template` or a seam type refused with `CHANNEL_CAPABILITY_UNSUPPORTED`.
-     * @param  list<string>|null  $media_ids
-     * @param  array<string, mixed>|null  $variables
-     * @param  array<string, mixed>|null  $channel_options
+     * @param  ?string  $inbox_id  The inbox to send from. A key limited to one inbox may leave all sender fields out.
+     * @param  ?string  $channel_id  Send from this channel's main inbox.
+     * @param  ?string  $from  A channel address (for SMS, the number); resolves to that channel's main inbox.
+     * @param  ?string  $channel_type  Only to choose between channels of different types that share the `from` address.
+     * @param  ?string  $to  Recipient address in the channel's format (a phone number in any accepted format for SMS). Not together with `contact_id`.
+     * @param  ?string  $contact_id  Send to this contact's address for the channel. Not together with `to`.
+     * @param  array<string, mixed>|null  $content  The full content form. `type` is `text`, `media`, `template` or a channel-specific type refused with `CHANNEL_CAPABILITY_UNSUPPORTED`. Excludes `body`, `media_ids`, `template_id` and `variables`.
+     * @param  ?string  $body  Shorthand for text content. May go with `media_ids`.
+     * @param  list<string>|null  $media_ids  Shorthand for media content: ids from `POST /v1/media`. One item today.
+     * @param  ?string  $template_id  Shorthand for template content.
+     * @param  array<string, mixed>|null  $variables  Values for the template's variables. Needs `template_id`.
+     * @param  array<string, mixed>|null  $channel_options  Options only some channels understand; ignored with a warning elsewhere.
+     * @param  ?bool  $smart_replace  Replace characters that force UCS-2 encoding with plain look-alikes where it saves segments.
      * @param  Enums\MessageCategory|string|null  $category  Required when `lane` is `bulk` (`CATEGORY_REQUIRED`).
-     * @param  DateTimeInterface|string|null  $send_after  At most 30 days ahead (`SEND_AFTER_TOO_FAR`). Past values mean now.
-     * @param  ?string  $reference_id  Unique per account forever.
-     * @param  array<string, mixed>|null  $metadata  At most 2 KB as JSON; scalar values only.
-     * @param  ?bool  $dry_run  Validate, render and compute segments and holds without creating anything (answers `200`).
+     * @param  Enums\MessageLane|string|null  $lane  How urgently the message is sent. `bulk` is paced behind other traffic and needs `category`.
+     * @param  DateTimeInterface|string|null  $send_after  At most 30 days ahead (`SEND_AFTER_TOO_FAR`). A time in the past means now.
+     * @param  ?int  $expires_in  Seconds after which an unsent message is dropped, 60 to 604800 (7 days).
+     * @param  ?string  $reference_id  Your own id for this message, 1 to 100 characters without spaces. Unique per account forever (`REFERENCE_ID_EXISTS`).
+     * @param  array<string, mixed>|null  $metadata  Up to 50 keys, 2 KB as JSON, scalar values only. Returned on the message and in webhooks.
+     * @param  ?bool  $shorten_links  Replace each URL with a short link so clicks are counted.
      */
     public function __construct(
         public readonly ?string $inbox_id = null,
@@ -61,7 +63,6 @@ final class SendBatchItem extends Input
         public readonly ?string $reference_id = null,
         public readonly ?array $metadata = null,
         public readonly ?bool $shorten_links = null,
-        public readonly ?bool $dry_run = null,
     ) {}
 
     public function toArray(): array
@@ -87,7 +88,6 @@ final class SendBatchItem extends Input
             'reference_id' => $this->reference_id ?? Omit::Value,
             'metadata' => Params::object($this->metadata ?? Omit::Value),
             'shorten_links' => $this->shorten_links ?? Omit::Value,
-            'dry_run' => $this->dry_run ?? Omit::Value,
         ]);
     }
 }

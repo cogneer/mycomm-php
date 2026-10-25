@@ -23,6 +23,7 @@ final class Emitter
         'MyComm\Enums',
         'MyComm\Exceptions\ApiException',
         'MyComm\Exceptions\ConnectionException',
+        'MyComm\Exceptions\InvalidArgumentException',
         'MyComm\FileUpload',
         'MyComm\Http\Connection',
         'MyComm\Http\Params',
@@ -249,6 +250,10 @@ final class Emitter
         }
 
         [$returnType, $returnDoc, $returnCode] = $this->returns($operation, $parameters);
+        $guard = $this->guard($operation, $names);
+        if ($guard !== '') {
+            $returnCode = $guard.$returnCode;
+        }
 
         $signature = '';
         foreach ($parameters as $parameter) {
@@ -302,6 +307,9 @@ final class Emitter
             $tags[] = '@return '.$returnDoc;
         }
         $tags[] = '';
+        if ($guard !== '') {
+            $tags[] = '@throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)';
+        }
         $tags[] = '@throws ApiException when the API answers with an error';
         $tags[] = '@throws ConnectionException when the API cannot be reached';
 
@@ -314,6 +322,60 @@ final class Emitter
         }
 
         return $code;
+    }
+
+    /**
+     * The call that checks the arguments against the limits and rules of the document before the request is sent.
+     *
+     * @param  array<string, mixed>  $operation
+     * @param  list<string>  $arguments  The names of the method's arguments.
+     */
+    private function guard(array $operation, array $arguments): string
+    {
+        $constraints = [];
+        foreach ([...$operation['fields'], ...$operation['query']] as $name => $field) {
+            if (($field['constraints'] ?? []) !== []) {
+                $constraints[$name] = $field['constraints'];
+            }
+        }
+        $rules = $operation['rules'] ?? [];
+        if ($constraints === [] && $rules === []) {
+            return '';
+        }
+
+        $names = array_keys($constraints);
+        foreach ($rules as $rule) {
+            foreach (array_slice($rule, 1) as $part) {
+                if ($rule[0] === 'requiredWhen' && $part === $rule[3]) {
+                    continue;
+                }
+                array_push($names, ...(array) $part);
+            }
+        }
+        $names = array_values(array_unique($names));
+        $unknown = array_diff($names, $arguments);
+        if ($unknown !== []) {
+            throw new RuntimeException("{$operation['id']}: a rule or limit names ".implode(', ', $unknown).', which is not an argument of the method.');
+        }
+
+        $values = [];
+        foreach ($names as $name) {
+            $values[$name] = new RawCode('$'.$name);
+        }
+
+        return '        $this->connection->guard(
+'
+            ."            '{$operation['id']}',
+"
+            .'            '.self::export($values, 3).',
+'
+            .'            '.self::export($constraints, 3).',
+'
+            .'            '.self::export($rules, 3).',
+'
+            .'        );
+
+';
     }
 
     /**
@@ -470,10 +532,10 @@ final class Emitter
             self::assertIdentifier($name, 'query parameter');
             $type = clone $parameter['type'];
             if ($parameter['required']) {
-                $required[] = ['name' => $name, 'declaration' => "{$type->declaration()} \${$name}", 'doc' => null, 'description' => $parameter['description']];
+                $required[] = ['name' => $name, 'declaration' => "{$type->declaration()} \${$name}", 'doc' => $type->needsDoc() ? $type->docType() : null, 'description' => $parameter['description']];
             } else {
                 $type->nullable = true;
-                $optional[] = ['name' => $name, 'declaration' => "{$type->declaration()} \${$name} = null", 'doc' => null, 'description' => $parameter['description']];
+                $optional[] = ['name' => $name, 'declaration' => "{$type->declaration()} \${$name} = null", 'doc' => $type->needsDoc() ? $type->docType() : null, 'description' => $parameter['description']];
             }
         }
 
@@ -647,6 +709,7 @@ final class Emitter
     {
         if (! is_array($value)) {
             return match (true) {
+                $value instanceof RawCode => $value->code,
                 $value === null => 'null',
                 is_bool($value) => $value ? 'true' : 'false',
                 default => var_export($value, true),
@@ -654,6 +717,9 @@ final class Emitter
         }
         if ($value === []) {
             return '[]';
+        }
+        if (array_is_list($value) && array_filter($value, static fn (mixed $item): bool => is_scalar($item) || $item instanceof RawCode) === $value && count($value) <= 8) {
+            return '['.implode(', ', array_map(static fn (mixed $item): string => self::export($item, 0), $value)).']';
         }
 
         $pad = str_repeat('    ', $indent + 1);

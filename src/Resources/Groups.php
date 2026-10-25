@@ -6,18 +6,12 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Generator;
-use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -44,6 +38,7 @@ final class Groups
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\Group>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -54,6 +49,24 @@ final class Groups
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'groups.list',
+            [
+                'q' => $q,
+                'limit' => $limit,
+            ],
+            [
+                'q' => [
+                    'minLength' => 2,
+                ],
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'groups.list',
             'GET',
@@ -97,6 +110,7 @@ final class Groups
      *
      * Requires `groups:write`. The name is unique per account, ignoring case (`409 NAME_TAKEN`).
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -105,6 +119,24 @@ final class Groups
         string|Omit|null $description = Omit::Value,
         ?RequestOptions $requestOptions = null,
     ): Models\Group {
+        $this->connection->guard(
+            'groups.create',
+            [
+                'name' => $name,
+                'description' => $description,
+            ],
+            [
+                'name' => [
+                    'minLength' => 1,
+                    'maxLength' => 100,
+                ],
+                'description' => [
+                    'maxLength' => 255,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'groups.create',
             'POST',
@@ -141,6 +173,7 @@ final class Groups
      *
      * Requires `groups:write`. Changes `name` and `description`; a duplicate name answers `409 NAME_TAKEN`.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -150,6 +183,24 @@ final class Groups
         string|Omit|null $description = Omit::Value,
         ?RequestOptions $requestOptions = null,
     ): Models\Group {
+        $this->connection->guard(
+            'groups.update',
+            [
+                'name' => $name,
+                'description' => $description,
+            ],
+            [
+                'name' => [
+                    'minLength' => 1,
+                    'maxLength' => 100,
+                ],
+                'description' => [
+                    'maxLength' => 255,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'groups.update',
             'PATCH',

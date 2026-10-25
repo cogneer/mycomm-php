@@ -6,18 +6,13 @@ declare(strict_types=1);
 
 namespace MyComm\Resources\Partner;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use Generator;
-use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -25,9 +20,7 @@ use MyComm\RequestOptions;
 
 final class Accounts
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * List managed accounts.
@@ -43,6 +36,7 @@ final class Accounts
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\ManagedAccount>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -58,6 +52,20 @@ final class Accounts
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'partner.accounts.list',
+            [
+                'limit' => $limit,
+            ],
+            [
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'partner.accounts.list',
             'GET',
@@ -123,8 +131,9 @@ final class Accounts
      * @param  string  $country_iso  ISO 3166-1 alpha-2.
      * @param  string  $timezone  IANA zone, for example `Asia/Karachi`.
      * @param  ?string  $default_locale  BCP 47, default `en-GB`.
-     * @param  array<string, mixed>|null  $settings  Initial settings (subset of 03 section 3.15); `channels.auto_connect_sims` defaults to `true`.
+     * @param  array<string, mixed>|null  $settings  Initial settings (the account settings a partner may set); `channels.auto_connect_sims` defaults to `true`.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -137,6 +146,29 @@ final class Accounts
         ?array $settings = null,
         ?RequestOptions $requestOptions = null,
     ): Models\ManagedAccount {
+        $this->connection->guard(
+            'partner.accounts.provision',
+            [
+                'external_ref' => $external_ref,
+                'name' => $name,
+                'country_iso' => $country_iso,
+            ],
+            [
+                'external_ref' => [
+                    'minLength' => 1,
+                    'maxLength' => 100,
+                ],
+                'name' => [
+                    'minLength' => 1,
+                    'maxLength' => 100,
+                ],
+                'country_iso' => [
+                    'pattern' => '^[A-Z]{2}$',
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'partner.accounts.provision',
             'POST',
@@ -179,6 +211,7 @@ final class Accounts
      *
      * @param  array<string, mixed>|null  $settings  Deep-merged; the partner may also set `limits.max_daily_segments` and `channels.allowed_types`.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -192,6 +225,29 @@ final class Accounts
         ?array $settings = null,
         ?RequestOptions $requestOptions = null,
     ): Models\ManagedAccount {
+        $this->connection->guard(
+            'partner.accounts.update',
+            [
+                'external_ref' => $external_ref,
+                'name' => $name,
+                'country_iso' => $country_iso,
+            ],
+            [
+                'external_ref' => [
+                    'minLength' => 1,
+                    'maxLength' => 100,
+                ],
+                'name' => [
+                    'minLength' => 1,
+                    'maxLength' => 100,
+                ],
+                'country_iso' => [
+                    'pattern' => '^[A-Z]{2}$',
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'partner.accounts.update',
             'PATCH',
@@ -234,6 +290,7 @@ final class Accounts
      *
      * `status: suspended`; `/v1` writes then get `403 ACCOUNT_SUSPENDED`. Emits `account.suspended`.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -242,6 +299,20 @@ final class Accounts
         string $reason,
         ?RequestOptions $requestOptions = null,
     ): Models\ManagedAccount {
+        $this->connection->guard(
+            'partner.accounts.suspend',
+            [
+                'reason' => $reason,
+            ],
+            [
+                'reason' => [
+                    'minLength' => 1,
+                    'maxLength' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'partner.accounts.suspend',
             'POST',

@@ -6,23 +6,6 @@ declare(strict_types=1);
 
 namespace MyComm\Webhooks;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use Generator;
-use MyComm\Enums;
-use MyComm\Exceptions\ApiException;
-use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
-use MyComm\Http\Connection;
-use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
-use MyComm\Models;
-use MyComm\Omit;
-use MyComm\Page;
-use MyComm\RequestOptions;
-
 /**
  * Event type => event class.
  *
@@ -32,12 +15,20 @@ final class EventMap
 {
     /** @var array<string, class-string<Event>> */
     public const EVENTS = [
+        'campaign.scheduled' => Events\CampaignScheduled::class,
+        'campaign.unscheduled' => Events\CampaignUnscheduled::class,
+        'campaign.started' => Events\CampaignStarted::class,
+        'campaign.paused' => Events\CampaignPaused::class,
+        'campaign.resumed' => Events\CampaignResumed::class,
+        'campaign.completed' => Events\CampaignCompleted::class,
+        'campaign.cancelled' => Events\CampaignCancelled::class,
         'contact.created' => Events\ContactCreated::class,
         'contact.updated' => Events\ContactUpdated::class,
         'contact.deleted' => Events\ContactDeleted::class,
         'import.completed' => Events\ImportCompleted::class,
         'import.failed' => Events\ImportFailed::class,
         'export.completed' => Events\ExportCompleted::class,
+        'link.clicked' => Events\LinkClicked::class,
         'channel.connected' => Events\ChannelConnected::class,
         'channel.verification_failed' => Events\ChannelVerificationFailed::class,
         'channel.disconnected' => Events\ChannelDisconnected::class,

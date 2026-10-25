@@ -6,28 +6,21 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Generator;
 use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\FileUpload;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
-use MyComm\Omit;
 use MyComm\Page;
 use MyComm\RequestOptions;
 
 final class Imports
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * List imports.
@@ -38,6 +31,7 @@ final class Imports
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\Import>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -48,6 +42,20 @@ final class Imports
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'imports.list',
+            [
+                'limit' => $limit,
+            ],
+            [
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'imports.list',
             'GET',
@@ -102,6 +110,7 @@ final class Imports
      *
      * @param  array{days: int}  $options
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -111,6 +120,23 @@ final class Imports
         array $options,
         ?RequestOptions $requestOptions = null,
     ): Models\Import {
+        $this->connection->guard(
+            'imports.create',
+            [
+                'type' => $type,
+                'channel_id' => $channel_id,
+            ],
+            [
+                'type' => [
+                    'enum' => ['phone_history'],
+                ],
+                'channel_id' => [
+                    'uuid' => true,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'imports.create',
             'POST',
@@ -144,6 +170,7 @@ final class Imports
      *
      * @param  ?string  $options  JSON object of the import options.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -153,6 +180,19 @@ final class Imports
         ?string $options = null,
         ?RequestOptions $requestOptions = null,
     ): Models\Import {
+        $this->connection->guard(
+            'imports.create',
+            [
+                'type' => $type,
+            ],
+            [
+                'type' => [
+                    'enum' => ['phone_history', 'contacts_csv', 'suppressions_csv'],
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'imports.create',
             'POST',

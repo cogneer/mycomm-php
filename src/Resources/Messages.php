@@ -6,18 +6,15 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use Generator;
 use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
 use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -25,9 +22,7 @@ use MyComm\RequestOptions;
 
 final class Messages
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * Cancel a message.
@@ -36,8 +31,7 @@ final class Messages
      * with the message in `status: cancelled`. A `leased` message is already on the phone, so the call is a
      * best-effort cancel request: `202` with the message still `leased` and `cancel_requested_at` set; the
      * phone's later report decides the outcome. A `sent` or other terminal message answers `409
-     * NOT_CANCELLABLE` with `details.status`. A message outside the key's inbox scope answers 404. Send an
-     * empty JSON object `{}` as the body.
+     * NOT_CANCELLABLE` with `details.status`. A message outside the key's inbox scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -61,8 +55,7 @@ final class Messages
      * `UNCONFIRMED`; it is ignored otherwise. Errors: `409 NOT_RETRYABLE` (`details.status`,
      * `details.failure_code`; not `failed` or `expired`, inbound, or `UNCONFIRMED` without acknowledgement),
      * `409 RETRY_LIMIT_REACHED` (5 manual retries), and `422` `RECIPIENT_OPTED_OUT`, `CONTACT_BLOCKED`,
-     * `CHANNEL_INACTIVE` or `INBOX_ARCHIVED`. A message outside the key's inbox scope answers 404. Send `{}`
-     * when there is nothing to acknowledge.
+     * `CHANNEL_INACTIVE` or `INBOX_ARCHIVED`. A message outside the key's inbox scope answers 404.
      *
      * @param  ?bool  $acknowledge_possible_duplicate  Must be `true` to retry a message that failed with `UNCONFIRMED` (it may already have been delivered).
      *
@@ -110,17 +103,32 @@ final class Messages
      *
      * @param  list<Inputs\SendBatchItem|array<string, mixed>>  $messages
      * @param  ?bool  $dry_run  Validate every item through the same checks without storing anything.
-     * @param  Inputs\SendMessage|array<string, mixed>|null  $defaults  Supplies any field an item omits; the item's value wins.
+     * @param  Inputs\SendBatchItem|array<string, mixed>|null  $defaults  Supplies any field an item omits; the item's value wins.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
     public function sendBatch(
         array $messages,
         ?bool $dry_run = null,
-        Inputs\SendMessage|array|null $defaults = null,
+        Inputs\SendBatchItem|array|null $defaults = null,
         ?RequestOptions $requestOptions = null,
     ): Models\SendBatchResponse {
+        $this->connection->guard(
+            'messages.sendBatch',
+            [
+                'messages' => $messages,
+            ],
+            [
+                'messages' => [
+                    'minItems' => 1,
+                    'maxItems' => 1000,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'messages.sendBatch',
             'POST',
@@ -144,17 +152,16 @@ final class Messages
      * search on `body` (at least 2 characters, Postgres `simple` configuration, so Urdu and Roman Urdu match
      * word by word) and always sorts newest first.
      *
-     * @param  ?string  $direction  `outbound` or `inbound`.
      * @param  ?string  $reference_id  Exact match; returns 0 or 1 item.
-     * @param  ?string  $status  Comma list.
-     * @param  ?string  $type  Comma list.
-     * @param  ?string  $category  Comma list.
-     * @param  ?string  $lane  Comma list.
-     * @param  ?string  $origin  Comma list.
-     * @param  ?string  $failure_code  Comma list.
-     * @param  ?string  $channel_type  Comma list.
-     * @param  ?string  $content_type  Comma list.
-     * @param  ?string  $hold_reason  Comma list.
+     * @param  list<string>|string|null  $status  One value or a comma list. Values: `queued`, `leased`, `sent`, `delivered`, `read`, `failed`, `expired`, `cancelled`, `received`.
+     * @param  list<string>|string|null  $type  One value or a comma list. Values: `sms`, `mms`, `whatsapp`, `telegram`.
+     * @param  list<string>|string|null  $category  One value or a comma list. Values: `transactional`, `marketing`.
+     * @param  list<string>|string|null  $lane  One value or a comma list. Values: `high`, `normal`, `bulk`.
+     * @param  list<string>|string|null  $origin  One value or a comma list. Values: `portal`, `api`, `campaign`, `automation`, `phone`, `import`, `system`, `canary`.
+     * @param  list<string>|string|null  $failure_code  Comma list.
+     * @param  list<string>|string|null  $channel_type  Comma list.
+     * @param  list<string>|string|null  $content_type  One value or a comma list. Values: `text`, `media`, `interactive`, `location`, `reaction`, `channel_template`, `unsupported`.
+     * @param  list<string>|string|null  $hold_reason  One value or a comma list. Values: `scheduled`, `quiet_hours`, `frequency_cap`, `channel_paused`, `device_offline`, `device_paused`, `campaign_paused`, `media_processing`, `content_cap`, `recipient_cap`, `new_recipient_…
      * @param  ?string  $to  Recipient address; phone numbers in any accepted format are normalised.
      * @param  ?string  $from  Sender address; phone numbers in any accepted format are normalised.
      * @param  ?string  $q  Full-text search on the body, at least 2 characters.
@@ -165,6 +172,7 @@ final class Messages
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\Message>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -174,17 +182,17 @@ final class Messages
         ?string $conversation_id = null,
         ?string $contact_id = null,
         ?string $campaign_id = null,
-        ?string $direction = null,
+        Enums\MessageDirection|string|null $direction = null,
         ?string $reference_id = null,
-        ?string $status = null,
-        ?string $type = null,
-        ?string $category = null,
-        ?string $lane = null,
-        ?string $origin = null,
-        ?string $failure_code = null,
-        ?string $channel_type = null,
-        ?string $content_type = null,
-        ?string $hold_reason = null,
+        array|string|null $status = null,
+        array|string|null $type = null,
+        array|string|null $category = null,
+        array|string|null $lane = null,
+        array|string|null $origin = null,
+        array|string|null $failure_code = null,
+        array|string|null $channel_type = null,
+        array|string|null $content_type = null,
+        array|string|null $hold_reason = null,
         ?string $to = null,
         ?string $from = null,
         ?string $q = null,
@@ -195,6 +203,44 @@ final class Messages
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'messages.list',
+            [
+                'inbox_id' => $inbox_id,
+                'channel_id' => $channel_id,
+                'conversation_id' => $conversation_id,
+                'contact_id' => $contact_id,
+                'campaign_id' => $campaign_id,
+                'q' => $q,
+                'limit' => $limit,
+            ],
+            [
+                'inbox_id' => [
+                    'uuid' => true,
+                ],
+                'channel_id' => [
+                    'uuid' => true,
+                ],
+                'conversation_id' => [
+                    'uuid' => true,
+                ],
+                'contact_id' => [
+                    'uuid' => true,
+                ],
+                'campaign_id' => [
+                    'uuid' => true,
+                ],
+                'q' => [
+                    'minLength' => 2,
+                ],
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'messages.list',
             'GET',
@@ -236,17 +282,16 @@ final class Messages
      *
      * `limit` is the page size, not a cap on the items.
      *
-     * @param  ?string  $direction  `outbound` or `inbound`.
      * @param  ?string  $reference_id  Exact match; returns 0 or 1 item.
-     * @param  ?string  $status  Comma list.
-     * @param  ?string  $type  Comma list.
-     * @param  ?string  $category  Comma list.
-     * @param  ?string  $lane  Comma list.
-     * @param  ?string  $origin  Comma list.
-     * @param  ?string  $failure_code  Comma list.
-     * @param  ?string  $channel_type  Comma list.
-     * @param  ?string  $content_type  Comma list.
-     * @param  ?string  $hold_reason  Comma list.
+     * @param  list<string>|string|null  $status  One value or a comma list. Values: `queued`, `leased`, `sent`, `delivered`, `read`, `failed`, `expired`, `cancelled`, `received`.
+     * @param  list<string>|string|null  $type  One value or a comma list. Values: `sms`, `mms`, `whatsapp`, `telegram`.
+     * @param  list<string>|string|null  $category  One value or a comma list. Values: `transactional`, `marketing`.
+     * @param  list<string>|string|null  $lane  One value or a comma list. Values: `high`, `normal`, `bulk`.
+     * @param  list<string>|string|null  $origin  One value or a comma list. Values: `portal`, `api`, `campaign`, `automation`, `phone`, `import`, `system`, `canary`.
+     * @param  list<string>|string|null  $failure_code  Comma list.
+     * @param  list<string>|string|null  $channel_type  Comma list.
+     * @param  list<string>|string|null  $content_type  One value or a comma list. Values: `text`, `media`, `interactive`, `location`, `reaction`, `channel_template`, `unsupported`.
+     * @param  list<string>|string|null  $hold_reason  One value or a comma list. Values: `scheduled`, `quiet_hours`, `frequency_cap`, `channel_paused`, `device_offline`, `device_paused`, `campaign_paused`, `media_processing`, `content_cap`, `recipient_cap`, `new_recipient_…
      * @param  ?string  $to  Recipient address; phone numbers in any accepted format are normalised.
      * @param  ?string  $from  Sender address; phone numbers in any accepted format are normalised.
      * @param  ?string  $q  Full-text search on the body, at least 2 characters.
@@ -265,17 +310,17 @@ final class Messages
         ?string $conversation_id = null,
         ?string $contact_id = null,
         ?string $campaign_id = null,
-        ?string $direction = null,
+        Enums\MessageDirection|string|null $direction = null,
         ?string $reference_id = null,
-        ?string $status = null,
-        ?string $type = null,
-        ?string $category = null,
-        ?string $lane = null,
-        ?string $origin = null,
-        ?string $failure_code = null,
-        ?string $channel_type = null,
-        ?string $content_type = null,
-        ?string $hold_reason = null,
+        array|string|null $status = null,
+        array|string|null $type = null,
+        array|string|null $category = null,
+        array|string|null $lane = null,
+        array|string|null $origin = null,
+        array|string|null $failure_code = null,
+        array|string|null $channel_type = null,
+        array|string|null $content_type = null,
+        array|string|null $hold_reason = null,
         ?string $to = null,
         ?string $from = null,
         ?string $q = null,
@@ -302,9 +347,9 @@ final class Messages
      *
      * `Idempotency-Key` replays the stored `202` for the same request. A `reference_id` already used by the
      * account without a matching key answers `409 REFERENCE_ID_EXISTS` with `details.message_id` and the
-     * existing message in `details.message`; nothing is created. Every acceptance rejection of 02 section 6.4
-     * answers `422` with its own code (`CATEGORY_REQUIRED`, `SEND_AFTER_TOO_FAR`, `INVALID_NUMBER`,
-     * `RECIPIENT_OPTED_OUT`, `CHANNEL_INACTIVE`, ...) and the `details` of 03 section 2.6.1. Shape errors
+     * existing message in `details.message`; nothing is created. Every acceptance rejection answers `422` with
+     * its own code (`CATEGORY_REQUIRED`, `SEND_AFTER_TOO_FAR`, `INVALID_NUMBER`, `RECIPIENT_OPTED_OUT`,
+     * `CHANNEL_INACTIVE`, ...) and the `details` listed per code in the error reference. Shape errors
      * (including `metadata` over 2 KB or 50 keys, or non-scalar values) answer `422 VALIDATION_FAILED` with
      * `details.fields`. An inbox, channel or contact outside the key's scope answers 404.
      *
@@ -314,18 +359,29 @@ final class Messages
      * `segments`, `type`, `hold_reason` and `expires_at`. `hold_reason` predicts compliance and scheduling
      * holds only. `Idempotency-Key` and `reference_id` are checked but not consumed.
      *
-     * @param  ?string  $from  A channel address; resolves to that channel's main inbox.
-     * @param  ?string  $to  Recipient address in the channel's format (a phone number in any accepted format for SMS).
-     * @param  array<string, mixed>|null  $content  The content union. `type` is `text`, `media`, `template` or a seam type refused with `CHANNEL_CAPABILITY_UNSUPPORTED`.
-     * @param  list<string>|null  $media_ids
-     * @param  array<string, mixed>|null  $variables
-     * @param  array<string, mixed>|null  $channel_options
+     * @param  ?string  $inbox_id  The inbox to send from. A key limited to one inbox may leave all sender fields out.
+     * @param  ?string  $channel_id  Send from this channel's main inbox.
+     * @param  ?string  $from  A channel address (for SMS, the number); resolves to that channel's main inbox.
+     * @param  ?string  $channel_type  Only to choose between channels of different types that share the `from` address.
+     * @param  ?string  $to  Recipient address in the channel's format (a phone number in any accepted format for SMS). Not together with `contact_id`.
+     * @param  ?string  $contact_id  Send to this contact's address for the channel. Not together with `to`.
+     * @param  array<string, mixed>|null  $content  The full content form. `type` is `text`, `media`, `template` or a channel-specific type refused with `CHANNEL_CAPABILITY_UNSUPPORTED`. Excludes `body`, `media_ids`, `template_id` and `variables`.
+     * @param  ?string  $body  Shorthand for text content. May go with `media_ids`.
+     * @param  list<string>|null  $media_ids  Shorthand for media content: ids from `POST /v1/media`. One item today.
+     * @param  ?string  $template_id  Shorthand for template content.
+     * @param  array<string, mixed>|null  $variables  Values for the template's variables. Needs `template_id`.
+     * @param  array<string, mixed>|null  $channel_options  Options only some channels understand; ignored with a warning elsewhere.
+     * @param  ?bool  $smart_replace  Replace characters that force UCS-2 encoding with plain look-alikes where it saves segments.
      * @param  Enums\MessageCategory|string|null  $category  Required when `lane` is `bulk` (`CATEGORY_REQUIRED`).
-     * @param  DateTimeInterface|string|null  $send_after  At most 30 days ahead (`SEND_AFTER_TOO_FAR`). Past values mean now.
-     * @param  ?string  $reference_id  Unique per account forever.
-     * @param  array<string, mixed>|null  $metadata  At most 2 KB as JSON; scalar values only.
+     * @param  Enums\MessageLane|string|null  $lane  How urgently the message is sent. `bulk` is paced behind other traffic and needs `category`.
+     * @param  DateTimeInterface|string|null  $send_after  At most 30 days ahead (`SEND_AFTER_TOO_FAR`). A time in the past means now.
+     * @param  ?int  $expires_in  Seconds after which an unsent message is dropped, 60 to 604800 (7 days).
+     * @param  ?string  $reference_id  Your own id for this message, 1 to 100 characters without spaces. Unique per account forever (`REFERENCE_ID_EXISTS`).
+     * @param  array<string, mixed>|null  $metadata  Up to 50 keys, 2 KB as JSON, scalar values only. Returned on the message and in webhooks.
+     * @param  ?bool  $shorten_links  Replace each URL with a short link so clicks are counted.
      * @param  ?bool  $dry_run  Validate, render and compute segments and holds without creating anything (answers `200`).
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -353,6 +409,75 @@ final class Messages
         ?bool $dry_run = null,
         ?RequestOptions $requestOptions = null,
     ): Models\SendMessageDryRunResponse|Models\SendMessageResponse {
+        $this->connection->guard(
+            'messages.send',
+            [
+                'inbox_id' => $inbox_id,
+                'channel_id' => $channel_id,
+                'contact_id' => $contact_id,
+                'media_ids' => $media_ids,
+                'template_id' => $template_id,
+                'category' => $category,
+                'lane' => $lane,
+                'expires_in' => $expires_in,
+                'reference_id' => $reference_id,
+                'metadata' => $metadata,
+                'to' => $to,
+                'content' => $content,
+                'body' => $body,
+                'variables' => $variables,
+            ],
+            [
+                'inbox_id' => [
+                    'uuid' => true,
+                ],
+                'channel_id' => [
+                    'uuid' => true,
+                ],
+                'contact_id' => [
+                    'uuid' => true,
+                ],
+                'media_ids' => [
+                    'uuid' => true,
+                ],
+                'template_id' => [
+                    'uuid' => true,
+                ],
+                'category' => [
+                    'enum' => ['transactional', 'marketing'],
+                ],
+                'lane' => [
+                    'enum' => ['high', 'normal', 'bulk'],
+                ],
+                'expires_in' => [
+                    'min' => 60,
+                    'max' => 604800,
+                ],
+                'reference_id' => [
+                    'minLength' => 1,
+                    'maxLength' => 100,
+                    'pattern' => '^\\S+$',
+                ],
+                'metadata' => [
+                    'maxProperties' => 50,
+                    'maxBytes' => 2048,
+                    'scalarValues' => true,
+                ],
+            ],
+            [
+                [
+                    'exactlyOne',
+                    ['to', 'contact_id'],
+                ],
+                [
+                    'atLeastOne',
+                    ['content', 'body', 'media_ids', 'template_id'],
+                ],
+                ['requires', 'variables', 'template_id'],
+                ['requiredWhen', 'category', 'lane', 'bulk'],
+            ],
+        );
+
         $response = $this->connection->request(
             'messages.send',
             'POST',

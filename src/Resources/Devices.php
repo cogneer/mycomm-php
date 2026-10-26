@@ -147,6 +147,7 @@ final class Devices
             [
                 'name' => $name,
                 'os_limit_value' => $os_limit_value,
+                'os_limit_raised' => $os_limit_raised,
             ],
             [
                 'name' => [
@@ -158,7 +159,10 @@ final class Devices
                     'max' => 100000,
                 ],
             ],
-            [],
+            [
+                ['requires', 'os_limit_value', 'os_limit_raised'],
+                ['requiredWhen', 'os_limit_value', 'os_limit_raised', true],
+            ],
         );
 
         $response = $this->connection->request(

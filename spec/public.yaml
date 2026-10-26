@@ -803,6 +803,20 @@ components:
         - type
         - name
         - actions
+      if:
+        properties:
+          type:
+            const: keyword
+        required:
+          - type
+      then:
+        required:
+          - match
+      x-required-when:
+        -
+          field: match
+          when: 'type is keyword'
+          error: VALIDATION_FAILED
       properties:
         type:
           type: string
@@ -1626,6 +1640,16 @@ components:
           required:
             - name
             - inbox_id
+          not:
+            required:
+              - body
+              - template_id
+          x-required-when:
+            -
+              field: 'body | template_id'
+              rule: at_most_one
+              error: VALIDATION_FAILED
+              note: 'A campaign uses its own `body` or a template; either may wait until the campaign is started.'
     CampaignUpdate:
       allOf:
         -
@@ -1964,6 +1988,37 @@ components:
     ChannelRatePolicyUpdate:
       type: object
       description: "The policy keys to change and the acknowledgement, or `reset_to_suggested`. `schema` and\n`acknowledged_risk_at` are set by the server and ignored when sent.\n"
+      if:
+        properties:
+          reset_to_suggested:
+            const: true
+        required:
+          - reset_to_suggested
+      then:
+        not:
+          anyOf:
+            -
+              required:
+                - caps
+            -
+              required:
+                - interval_ms
+            -
+              required:
+                - warmup
+            -
+              required:
+                - active_hours
+            -
+              required:
+                - bulk_hours
+      x-required-when:
+        -
+          field: 'caps | interval_ms | warmup | active_hours | bulk_hours'
+          when: 'reset_to_suggested is true'
+          rule: none_allowed
+          error: VALIDATION_FAILED
+          note: 'A reset restores the suggested policy; send the policy keys in a separate request.'
       properties:
         caps:
           type: object
@@ -3584,6 +3639,27 @@ components:
     DeviceUpdate:
       type: object
       description: 'The settings to change; keys left out keep their value.'
+      dependentRequired:
+        os_limit_value:
+          - os_limit_raised
+      if:
+        properties:
+          os_limit_raised:
+            const: true
+        required:
+          - os_limit_raised
+      then:
+        required:
+          - os_limit_value
+      x-required-when:
+        -
+          field: os_limit_value
+          when: 'os_limit_raised is true'
+          error: VALIDATION_FAILED
+        -
+          field: os_limit_raised
+          when: 'os_limit_value is sent'
+          error: VALIDATION_FAILED
       properties:
         name:
           type: string
@@ -5612,6 +5688,12 @@ components:
           maxLength: 1000
     SuppressionRemoveRequest:
       type: object
+      x-required-when:
+        -
+          field: consent_note
+          when: "the suppression's reason is keyword (the contact sent STOP)"
+          error: CONSENT_NOTE_REQUIRED
+          note: 'Depends on the stored suppression, so only the server checks it.'
       properties:
         consent_note:
           type:
@@ -11657,19 +11739,16 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - next_cursor
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ApiKey'
-                  next_cursor:
-                    type:
-                      - string
-                      - 'null'
+                allOf:
+                  -
+                    $ref: '#/components/schemas/ListEnvelope'
+                  -
+                    type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ApiKey'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -13894,19 +13973,16 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - next_cursor
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Channel'
-                  next_cursor:
-                    type:
-                      - string
-                      - 'null'
+                allOf:
+                  -
+                    $ref: '#/components/schemas/ListEnvelope'
+                  -
+                    type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Channel'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -14328,6 +14404,25 @@ paths:
                 - key
                 - label
                 - type
+              if:
+                properties:
+                  type:
+                    const: select
+                required:
+                  - type
+              then:
+                required:
+                  - options
+              else:
+                not:
+                  required:
+                    - options
+              x-required-when:
+                -
+                  field: options
+                  when: 'type is select'
+                  error: VALIDATION_FAILED
+                  note: 'Refused for every other type.'
               properties:
                 key:
                   type: string
@@ -16504,19 +16599,16 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - next_cursor
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Device'
-                  next_cursor:
-                    type:
-                      - string
-                      - 'null'
+                allOf:
+                  -
+                    $ref: '#/components/schemas/ListEnvelope'
+                  -
+                    type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Device'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -16889,12 +16981,88 @@ paths:
               type: object
               required:
                 - type
+              allOf:
+                -
+                  if:
+                    properties:
+                      type:
+                        const: messages_csv
+                    required:
+                      - type
+                  then:
+                    required:
+                      - params
+                    properties:
+                      params:
+                        type: object
+                        required:
+                          - created_after
+                          - created_before
+                        properties:
+                          created_after:
+                            type: string
+                            format: date-time
+                          created_before:
+                            type: string
+                            format: date-time
+                            description: 'Later than `created_after`, at most 366 days after it.'
+                -
+                  if:
+                    properties:
+                      type:
+                        const: contact_json
+                    required:
+                      - type
+                  then:
+                    required:
+                      - params
+                    properties:
+                      params:
+                        type: object
+                        required:
+                          - contact_id
+                        properties:
+                          contact_id:
+                            $ref: '#/components/schemas/Uuid'
+                -
+                  if:
+                    properties:
+                      type:
+                        const: campaign_report
+                    required:
+                      - type
+                  then:
+                    required:
+                      - params
+                    properties:
+                      params:
+                        type: object
+                        required:
+                          - campaign_id
+                        properties:
+                          campaign_id:
+                            $ref: '#/components/schemas/Uuid'
+              x-required-when:
+                -
+                  field: 'params.created_after, params.created_before'
+                  when: 'type is messages_csv'
+                  error: VALIDATION_FAILED
+                  note: 'The other `GET /v1/messages` filters are optional.'
+                -
+                  field: params.contact_id
+                  when: 'type is contact_json'
+                  error: VALIDATION_FAILED
+                -
+                  field: params.campaign_id
+                  when: 'type is campaign_report'
+                  error: VALIDATION_FAILED
               properties:
                 type:
                   $ref: '#/components/schemas/ExportType'
                 params:
                   type: object
                   additionalProperties: true
+                  description: "Per `type`. `messages_csv`: the `GET /v1/messages` filters, `created_after` and `created_before`\nrequired. `contacts_csv`: optional `group_id`, `smart_list_id`, `filter.q`, `contact_ids`,\n`columns`, `excel_bom`. `contact_json`: `contact_id`. `campaign_report`: `campaign_id`.\n`account_zip`: none.\n"
       responses:
         202:
           description: 'The export, `queued`.'
@@ -16974,19 +17142,16 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - next_cursor
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Export'
-                  next_cursor:
-                    type:
-                      - string
-                      - 'null'
+                allOf:
+                  -
+                    $ref: '#/components/schemas/ListEnvelope'
+                  -
+                    type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Export'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -17788,19 +17953,16 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - next_cursor
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Import'
-                  next_cursor:
-                    type:
-                      - string
-                      - 'null'
+                allOf:
+                  -
+                    $ref: '#/components/schemas/ListEnvelope'
+                  -
+                    type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Import'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -18054,19 +18216,16 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - next_cursor
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Inbox'
-                  next_cursor:
-                    type:
-                      - string
-                      - 'null'
+                allOf:
+                  -
+                    $ref: '#/components/schemas/ListEnvelope'
+                  -
+                    type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Inbox'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -18753,6 +18912,43 @@ paths:
         - Messages
       summary: 'Send one message'
       description: "Queues one message. Requires `messages:send`. The inbox decides the channel: give\n`inbox_id`, `channel_id` or `from` (the key's single inbox is used when it is restricted to exactly one).\nThe recipient is `to` or `contact_id`. The content is the `content` union or one of the shorthand fields\n(`body`, `media_ids`).\n\nAnswers `202` with the message resource (`status: queued`) plus `warnings[]` (empty when none; for example\n`CHANNEL_OPTIONS_IGNORED`). A message is accepted while the phone is offline or the channel is paused; it waits\nwith `hold_reason` `device_offline`, `device_paused` or `channel_paused`.\n\n`Idempotency-Key` replays the stored `202` for the same request. A `reference_id` already used by the account\nwithout a matching key answers `409 REFERENCE_ID_EXISTS` with `details.message_id` and the existing message in\n`details.message`; nothing is created. Every acceptance rejection answers `422` with its own code\n(`CATEGORY_REQUIRED`, `SEND_AFTER_TOO_FAR`, `INVALID_NUMBER`, `RECIPIENT_OPTED_OUT`, `CHANNEL_INACTIVE`, ...) and the\n`details` listed per code in the error reference. Shape errors (including `metadata` over 2 KB or 50 keys, or non-scalar values) answer\n`422 VALIDATION_FAILED` with `details.fields`. An inbox, channel or contact outside the key's scope answers 404.\n\nWith `dry_run: true` the same validation and acceptance errors apply, but nothing is stored,\nqueued or sent and the answer is `200` with the would-be message: `dry_run: true`, `id`, `conversation_id`,\n`status` and the timestamps `null`, `contact_id` `null` for a new number, and the computed `encoding`,\n`segments`, `type`, `hold_reason` and `expires_at`. `hold_reason` predicts compliance and scheduling holds only.\n`Idempotency-Key` and `reference_id` are checked but not consumed.\n"
+      x-error-codes:
+        - VALIDATION_FAILED
+        - CHANNEL_REQUIRED
+        - CHANNEL_INBOX_MISMATCH
+        - FROM_AMBIGUOUS
+        - CHANNEL_INACTIVE
+        - INBOX_ARCHIVED
+        - CHANNEL_CANNOT_INITIATE
+        - NO_IDENTITY_FOR_CHANNEL
+        - ADDRESS_REQUIRED
+        - INVALID_NUMBER
+        - INVALID_ADDRESS
+        - NOT_MOBILE
+        - DESTINATION_NOT_ALLOWED
+        - COUNTRY_NOT_ENABLED
+        - RECIPIENT_IS_CHANNEL
+        - RECIPIENT_OPTED_OUT
+        - CONTACT_BLOCKED
+        - MARKETING_NOT_ALLOWED
+        - CONSENT_PROVENANCE_MISSING
+        - CATEGORY_REQUIRED
+        - SEND_AFTER_TOO_FAR
+        - CONTENT_CONFLICT
+        - CHANNEL_CAPABILITY_UNSUPPORTED
+        - BODY_EMPTY
+        - BODY_TOO_LONG
+        - BODY_TOO_LONG_FOR_BULK
+        - CONTENT_PROHIBITED
+        - LINK_BLOCKED
+        - LINK_PUBLIC_SHORTENER
+        - TOO_MANY_LINKS
+        - MEDIA_NOT_FOUND
+        - MEDIA_COUNT_EXCEEDED
+        - MEDIA_TOO_LARGE
+        - REFERENCE_ID_EXISTS
+        - IDEMPOTENCY_KEY_REUSED
+        - IDEMPOTENCY_IN_PROGRESS
       parameters:
         -
           $ref: '#/components/parameters/IdempotencyKey'
@@ -19003,7 +19199,7 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
         409:
-          description: '`REFERENCE_ID_EXISTS` (`details.message_id`, `details.message`), `IDEMPOTENCY_KEY_REUSED` or `IDEMPOTENCY_IN_PROGRESS`.'
+          description: '409: one of `REFERENCE_ID_EXISTS`, `IDEMPOTENCY_KEY_REUSED`, `IDEMPOTENCY_IN_PROGRESS`. More codes may be added within v1; treat an unknown one by its status.'
           headers:
             MyComm-Request-Id:
               $ref: '#/components/headers/MyComm-Request-Id'
@@ -19016,7 +19212,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                anyOf:
+                  -
+                    $ref: '#/components/schemas/ErrReferenceIdExists'
+                  -
+                    $ref: '#/components/schemas/ErrIdempotencyKeyReused'
+                  -
+                    $ref: '#/components/schemas/ErrIdempotencyInProgress'
+                  -
+                    $ref: '#/components/schemas/Error'
               examples:
                 REFERENCE_ID_EXISTS:
                   summary: REFERENCE_ID_EXISTS
@@ -19044,7 +19248,7 @@ paths:
         415:
           $ref: '#/components/responses/UnsupportedMediaType'
         422:
-          description: '422 VALIDATION_FAILED (`details.fields`) or a specific business-rule code.'
+          description: '422: one of `VALIDATION_FAILED`, `CHANNEL_REQUIRED`, `CHANNEL_INBOX_MISMATCH`, `FROM_AMBIGUOUS`, `CHANNEL_INACTIVE`, `INBOX_ARCHIVED`, `CHANNEL_CANNOT_INITIATE`, `NO_IDENTITY_FOR_CHANNEL`, `ADDRESS_REQUIRED`, `INVALID_NUMBER`, `INVALID_ADDRESS`, `NOT_MOBILE`, `DESTINATION_NOT_ALLOWED`, `COUNTRY_NOT_ENABLED`, `RECIPIENT_IS_CHANNEL`, `RECIPIENT_OPTED_OUT`, `CONTACT_BLOCKED`, `MARKETING_NOT_ALLOWED`, `CONSENT_PROVENANCE_MISSING`, `CATEGORY_REQUIRED`, `SEND_AFTER_TOO_FAR`, `CONTENT_CONFLICT`, `CHANNEL_CAPABILITY_UNSUPPORTED`, `BODY_EMPTY`, `BODY_TOO_LONG`, `BODY_TOO_LONG_FOR_BULK`, `CONTENT_PROHIBITED`, `LINK_BLOCKED`, `LINK_PUBLIC_SHORTENER`, `TOO_MANY_LINKS`, `MEDIA_NOT_FOUND`, `MEDIA_COUNT_EXCEEDED`, `MEDIA_TOO_LARGE`. More codes may be added within v1; treat an unknown one by its status.'
           headers:
             MyComm-Request-Id:
               $ref: '#/components/headers/MyComm-Request-Id'
@@ -19060,6 +19264,70 @@ paths:
                 anyOf:
                   -
                     $ref: '#/components/schemas/ValidationError'
+                  -
+                    $ref: '#/components/schemas/ErrChannelRequired'
+                  -
+                    $ref: '#/components/schemas/ErrChannelInboxMismatch'
+                  -
+                    $ref: '#/components/schemas/ErrFromAmbiguous'
+                  -
+                    $ref: '#/components/schemas/ErrChannelInactive'
+                  -
+                    $ref: '#/components/schemas/ErrInboxArchived'
+                  -
+                    $ref: '#/components/schemas/ErrChannelCannotInitiate'
+                  -
+                    $ref: '#/components/schemas/ErrNoIdentityForChannel'
+                  -
+                    $ref: '#/components/schemas/ErrAddressRequired'
+                  -
+                    $ref: '#/components/schemas/ErrInvalidNumber'
+                  -
+                    $ref: '#/components/schemas/ErrInvalidAddress'
+                  -
+                    $ref: '#/components/schemas/ErrNotMobile'
+                  -
+                    $ref: '#/components/schemas/ErrDestinationNotAllowed'
+                  -
+                    $ref: '#/components/schemas/ErrCountryNotEnabled'
+                  -
+                    $ref: '#/components/schemas/ErrRecipientIsChannel'
+                  -
+                    $ref: '#/components/schemas/ErrRecipientOptedOut'
+                  -
+                    $ref: '#/components/schemas/ErrContactBlocked'
+                  -
+                    $ref: '#/components/schemas/ErrMarketingNotAllowed'
+                  -
+                    $ref: '#/components/schemas/ErrConsentProvenanceMissing'
+                  -
+                    $ref: '#/components/schemas/ErrCategoryRequired'
+                  -
+                    $ref: '#/components/schemas/ErrSendAfterTooFar'
+                  -
+                    $ref: '#/components/schemas/ErrContentConflict'
+                  -
+                    $ref: '#/components/schemas/ErrChannelCapabilityUnsupported'
+                  -
+                    $ref: '#/components/schemas/ErrBodyEmpty'
+                  -
+                    $ref: '#/components/schemas/ErrBodyTooLong'
+                  -
+                    $ref: '#/components/schemas/ErrBodyTooLongForBulk'
+                  -
+                    $ref: '#/components/schemas/ErrContentProhibited'
+                  -
+                    $ref: '#/components/schemas/ErrLinkBlocked'
+                  -
+                    $ref: '#/components/schemas/ErrLinkPublicShortener'
+                  -
+                    $ref: '#/components/schemas/ErrTooManyLinks'
+                  -
+                    $ref: '#/components/schemas/ErrMediaNotFound'
+                  -
+                    $ref: '#/components/schemas/ErrMediaCountExceeded'
+                  -
+                    $ref: '#/components/schemas/ErrMediaTooLarge'
                   -
                     $ref: '#/components/schemas/Error'
               examples:
@@ -20936,6 +21204,24 @@ paths:
                 - name
                 - body
                 - category
+              anyOf:
+                -
+                  properties:
+                    body:
+                      type: string
+                      pattern: \S
+                -
+                  properties:
+                    media_id:
+                      $ref: '#/components/schemas/Uuid'
+                  required:
+                    - media_id
+              x-required-when:
+                -
+                  field: 'body | media_id'
+                  rule: at_least_one
+                  error: VALIDATION_FAILED
+                  note: '`body` is always sent; it may be `null` or blank only when `media_id` is given.'
               properties:
                 name:
                   type: string
@@ -21430,19 +21716,16 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - next_cursor
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/WebhookDelivery'
-                  next_cursor:
-                    type:
-                      - string
-                      - 'null'
+                allOf:
+                  -
+                    $ref: '#/components/schemas/ListEnvelope'
+                  -
+                    type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/WebhookDelivery'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -21687,19 +21970,16 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - next_cursor
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/WebhookEndpoint'
-                  next_cursor:
-                    type:
-                      - string
-                      - 'null'
+                allOf:
+                  -
+                    $ref: '#/components/schemas/ListEnvelope'
+                  -
+                    type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/WebhookEndpoint'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -21733,6 +22013,23 @@ paths:
               type: object
               required:
                 - url
+              if:
+                properties:
+                  include_managed_accounts:
+                    const: true
+                required:
+                  - include_managed_accounts
+              then:
+                properties:
+                  inbox_ids:
+                    type: 'null'
+              x-required-when:
+                -
+                  field: inbox_ids
+                  when: 'include_managed_accounts is true'
+                  rule: must_be_null
+                  error: VALIDATION_FAILED
+                  note: "A partner-wide endpoint receives every inbox of every managed account. Only an approved partner's own account, with an unrestricted key, may include managed accounts."
               properties:
                 url:
                   type: string

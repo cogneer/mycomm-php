@@ -89,7 +89,9 @@ final class ContactFields
                     'min' => 0,
                 ],
             ],
-            [],
+            [
+                ['requiredWhen', 'options', 'type', 'select'],
+            ],
         );
 
         $response = $this->connection->request(

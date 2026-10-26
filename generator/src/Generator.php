@@ -266,6 +266,17 @@ final class Generator
                     $arguments[$name] = Examples::of($spec, $source['fields'][$name] ?? [], (string) $name);
                 }
             }
+            // And a field required by the value of another, or by the presence of another.
+            foreach ($operation['rules'] ?? [] as $rule) {
+                $needed = match ($rule[0]) {
+                    'requiredWhen' => ($arguments[$rule[2]] ?? null) === $rule[3] ? $rule[1] : null,
+                    'requires' => array_key_exists($rule[1], $arguments) ? $rule[2] : null,
+                    default => null,
+                };
+                if ($needed !== null && ! array_key_exists($needed, $arguments)) {
+                    $arguments[$needed] = Examples::of($spec, $source['fields'][$needed] ?? [], $needed);
+                }
+            }
             foreach ($operation['query'] as $name => $parameter) {
                 if ($parameter['required']) {
                     $arguments[$name] = Examples::of($spec, $source['query'][$name] ?? [], (string) $name);

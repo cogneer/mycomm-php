@@ -107,7 +107,7 @@ final class Exports
      *
      * Errors: `422 VALIDATION_FAILED` (unknown `type` or invalid `params`), `403 ABILITY_MISSING`.
      *
-     * @param  array<string, mixed>|null  $params
+     * @param  array<string, mixed>|null  $params  Per `type`. `messages_csv`: the `GET /v1/messages` filters, `created_after` and `created_before` required. `contacts_csv`: optional `group_id`, `smart_list_id`, `filter.q`, `contact_ids`, `columns`, `excel_bom`. `contac…
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
@@ -122,13 +122,18 @@ final class Exports
             'exports.create',
             [
                 'type' => $type,
+                'params' => $params,
             ],
             [
                 'type' => [
                     'enum' => ['messages_csv', 'contacts_csv', 'campaign_report', 'contact_json', 'account_zip'],
                 ],
             ],
-            [],
+            [
+                ['requiredWhen', 'params', 'type', 'messages_csv'],
+                ['requiredWhen', 'params', 'type', 'contact_json'],
+                ['requiredWhen', 'params', 'type', 'campaign_report'],
+            ],
         );
 
         $response = $this->connection->request(

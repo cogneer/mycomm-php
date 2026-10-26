@@ -105,6 +105,11 @@ return [
                     'template_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 ],
             ],
+            'match' => [
+                'mode' => 'exact',
+                'keywords' => ['Example keyword'],
+                'case_sensitive' => true,
+            ],
         ],
         'http' => 'POST',
         'path' => '/v1/inboxes/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/automation-rules',
@@ -1059,6 +1064,7 @@ return [
         'method' => 'create',
         'arguments' => [
             'type' => 'messages_csv',
+            'params' => [],
         ],
         'http' => 'POST',
         'path' => '/v1/exports',

@@ -83,6 +83,7 @@ final class AutomationRules
                 'actions' => $actions,
                 'cooldown_minutes' => $cooldown_minutes,
                 'position' => $position,
+                'match' => $match,
             ],
             [
                 'type' => [
@@ -104,7 +105,9 @@ final class AutomationRules
                     'min' => 1,
                 ],
             ],
-            [],
+            [
+                ['requiredWhen', 'match', 'type', 'keyword'],
+            ],
         );
 
         $response = $this->connection->request(

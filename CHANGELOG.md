@@ -4,6 +4,18 @@ All notable changes to this package are listed here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the package follows
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-10-26
+
+Built from the same API `1.0.0`, whose document now states more of the rules the server already applies.
+
+### Fixed
+
+- More checks before sending, for rules the server already enforced: `contactFields->create()` needs `options` for a
+  `select` field, `devices->update()` needs `os_limit_raised` with `os_limit_value` and a value when raising,
+  `automationRules->create()` needs `match` for a keyword rule, and `exports->create()` needs `params` for
+  `messages_csv`, `contact_json` and `campaign_report`. A broken rule now fails at once with `InvalidArgumentException`
+  instead of a `422` from the API.
+
 ## [1.0.0] - 2026-10-26
 
 The first stable release, built from the MyComm public API and partner API `1.0.0`, the frozen contract. From here the

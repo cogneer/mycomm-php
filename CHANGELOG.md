@@ -4,7 +4,7 @@ All notable changes to this package are listed here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the package follows
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - Unreleased
+## [1.0.0] - 2026-10-26
 
 The first stable release, built from the MyComm public API and partner API `1.0.0`, the frozen contract. From here the
 package follows semantic versioning against that contract: `1.x` releases only add. Against 0.1.0 this release changes

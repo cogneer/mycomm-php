@@ -6,18 +6,12 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Generator;
-use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -25,9 +19,7 @@ use MyComm\RequestOptions;
 
 final class WebhookEndpoints
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * List webhook endpoints.
@@ -39,6 +31,7 @@ final class WebhookEndpoints
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\WebhookEndpoint>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -47,6 +40,20 @@ final class WebhookEndpoints
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'webhookEndpoints.list',
+            [
+                'limit' => $limit,
+            ],
+            [
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'webhookEndpoints.list',
             'GET',
@@ -93,6 +100,7 @@ final class WebhookEndpoints
      * @param  list<string>|Omit|null  $channel_types
      * @param  ?bool  $include_managed_accounts  Also receive the events of every managed account. Only on an approved partner's own account, with `inbox_ids` `null`, and never with a restricted key.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -105,6 +113,33 @@ final class WebhookEndpoints
         ?bool $include_managed_accounts = null,
         ?RequestOptions $requestOptions = null,
     ): Models\CreatedWebhookEndpoint {
+        $this->connection->guard(
+            'webhookEndpoints.create',
+            [
+                'url' => $url,
+                'description' => $description,
+                'inbox_ids' => $inbox_ids,
+                'channel_types' => $channel_types,
+            ],
+            [
+                'url' => [
+                    'maxLength' => 2048,
+                ],
+                'description' => [
+                    'maxLength' => 255,
+                ],
+                'inbox_ids' => [
+                    'minItems' => 1,
+                    'maxItems' => 100,
+                    'uuid' => true,
+                ],
+                'channel_types' => [
+                    'minItems' => 1,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'webhookEndpoints.create',
             'POST',
@@ -151,6 +186,7 @@ final class WebhookEndpoints
      * @param  list<string>|Omit|null  $channel_types
      * @param  ?bool  $include_managed_accounts  Only on an approved partner's own account, with `inbox_ids` `null`, and never with a restricted key.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -165,6 +201,33 @@ final class WebhookEndpoints
         ?bool $active = null,
         ?RequestOptions $requestOptions = null,
     ): Models\WebhookEndpoint {
+        $this->connection->guard(
+            'webhookEndpoints.update',
+            [
+                'url' => $url,
+                'description' => $description,
+                'inbox_ids' => $inbox_ids,
+                'channel_types' => $channel_types,
+            ],
+            [
+                'url' => [
+                    'maxLength' => 2048,
+                ],
+                'description' => [
+                    'maxLength' => 255,
+                ],
+                'inbox_ids' => [
+                    'minItems' => 1,
+                    'maxItems' => 100,
+                    'uuid' => true,
+                ],
+                'channel_types' => [
+                    'minItems' => 1,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'webhookEndpoints.update',
             'PATCH',
@@ -206,6 +269,7 @@ final class WebhookEndpoints
      * `previous_secret_valid_seconds` (0 to 86400, default 86400); during the overlap every delivery carries
      * both signatures. Rotating again replaces the previous secret.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -214,6 +278,20 @@ final class WebhookEndpoints
         ?int $previous_secret_valid_seconds = null,
         ?RequestOptions $requestOptions = null,
     ): Models\RotatedWebhookSecret {
+        $this->connection->guard(
+            'webhookEndpoints.rotateSecret',
+            [
+                'previous_secret_valid_seconds' => $previous_secret_valid_seconds,
+            ],
+            [
+                'previous_secret_valid_seconds' => [
+                    'min' => 0,
+                    'max' => 86400,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'webhookEndpoints.rotateSecret',
             'POST',

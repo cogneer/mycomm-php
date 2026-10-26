@@ -6,22 +6,7 @@ declare(strict_types=1);
 
 namespace MyComm\Resources\Concerns;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use Generator;
-use MyComm\Enums;
-use MyComm\Exceptions\ApiException;
-use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
 use MyComm\Http\Connection;
-use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
-use MyComm\Models;
-use MyComm\Omit;
-use MyComm\Page;
-use MyComm\RequestOptions;
 use MyComm\Resources;
 
 /**
@@ -35,7 +20,15 @@ trait ProvidesResources
 
     public readonly Resources\ApiKeys $apiKeys;
 
+    public readonly Resources\AutomationRules $automationRules;
+
+    public readonly Resources\AutomationRuns $automationRuns;
+
+    public readonly Resources\Campaigns $campaigns;
+
     public readonly Resources\Channels $channels;
+
+    public readonly Resources\ConnectSessions $connectSessions;
 
     public readonly Resources\ContactFields $contactFields;
 
@@ -67,6 +60,8 @@ trait ProvidesResources
 
     public readonly Resources\ConsentEvents $consentEvents;
 
+    public readonly Resources\Templates $templates;
+
     public readonly Resources\WebhookDeliveries $webhookDeliveries;
 
     public readonly Resources\WebhookEndpoints $webhookEndpoints;
@@ -77,7 +72,11 @@ trait ProvidesResources
     {
         $this->account = new Resources\Account($connection);
         $this->apiKeys = new Resources\ApiKeys($connection);
+        $this->automationRules = new Resources\AutomationRules($connection);
+        $this->automationRuns = new Resources\AutomationRuns($connection);
+        $this->campaigns = new Resources\Campaigns($connection);
         $this->channels = new Resources\Channels($connection);
+        $this->connectSessions = new Resources\ConnectSessions($connection);
         $this->contactFields = new Resources\ContactFields($connection);
         $this->contacts = new Resources\Contacts($connection);
         $this->conversations = new Resources\Conversations($connection);
@@ -93,6 +92,7 @@ trait ProvidesResources
         $this->stats = new Resources\Stats($connection);
         $this->suppressions = new Resources\Suppressions($connection);
         $this->consentEvents = new Resources\ConsentEvents($connection);
+        $this->templates = new Resources\Templates($connection);
         $this->webhookDeliveries = new Resources\WebhookDeliveries($connection);
         $this->webhookEndpoints = new Resources\WebhookEndpoints($connection);
         $this->partner = new Resources\Partner($connection);

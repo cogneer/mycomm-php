@@ -6,18 +6,14 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use Generator;
 use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -25,16 +21,13 @@ use MyComm\RequestOptions;
 
 final class Conversations
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * Mark a conversation read.
      *
      * Sets `unread_count` to 0 and stamps `read_at` on its unread inbound messages. Emits `conversation.read`.
-     * Requires `conversations:write`. A conversation outside the key's inbox scope answers 404. Send an empty
-     * JSON object `{}` as the body.
+     * Requires `conversations:write`. A conversation outside the key's inbox scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -52,7 +45,7 @@ final class Conversations
      * Mark a conversation unread.
      *
      * Sets `unread_count` to 1. Emits `conversation.unread`. Requires `conversations:write`. A conversation
-     * outside the key's inbox scope answers 404. Send an empty JSON object `{}` as the body.
+     * outside the key's inbox scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -70,8 +63,7 @@ final class Conversations
      * Archive a conversation.
      *
      * Sets `status` to `archived`; the next inbound message reopens it. Emits `conversation.archived`.
-     * Requires `conversations:write`. A conversation outside the key's inbox scope answers 404. Send an empty
-     * JSON object `{}` as the body.
+     * Requires `conversations:write`. A conversation outside the key's inbox scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -89,7 +81,7 @@ final class Conversations
      * Unarchive a conversation.
      *
      * Sets `status` back to `open`. Emits `conversation.unarchived`. Requires `conversations:write`. A
-     * conversation outside the key's inbox scope answers 404. Send an empty JSON object `{}` as the body.
+     * conversation outside the key's inbox scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -109,7 +101,7 @@ final class Conversations
      * Convenience route: blocks the conversation's contact identity account-wide (every inbox and channel),
      * exactly like `POST /v1/contacts/{id}/identities/{identity_id}/block`. Idempotent. Every conversation of
      * that identity shows the same `blocked_at`. Requires `conversations:write`. A conversation outside the
-     * key's inbox scope answers 404. Send an empty JSON object `{}` as the body.
+     * key's inbox scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -127,8 +119,7 @@ final class Conversations
      * Unblock the conversation's contact identity.
      *
      * Clears `blocked_at` of the conversation's contact identity, account-wide. Nothing is replayed. Requires
-     * `conversations:write`. A conversation outside the key's inbox scope answers 404. Send an empty JSON
-     * object `{}` as the body.
+     * `conversations:write`. A conversation outside the key's inbox scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -188,7 +179,7 @@ final class Conversations
      * without messages is not listed. Comma lists match any of the values. `q` matches the contact name,
      * address and last message preview (case-insensitive, at least 2 characters).
      *
-     * @param  ?string  $channel_type  Comma list.
+     * @param  list<string>|string|null  $channel_type  Comma list.
      * @param  ?string  $status  `open` (default), `archived` or `all`. One of: `open`, `archived`, `all`.
      * @param  ?bool  $unread  `true` = `unread_count > 0`, `false` = read only.
      * @param  ?bool  $blocked  `true` = the identity is blocked, `false` = not blocked.
@@ -200,13 +191,14 @@ final class Conversations
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\Conversation>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
     public function list(
         ?string $inbox_id = null,
         ?string $channel_id = null,
-        ?string $channel_type = null,
+        array|string|null $channel_type = null,
         ?string $contact_id = null,
         ?string $status = null,
         ?bool $unread = null,
@@ -219,6 +211,36 @@ final class Conversations
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'conversations.list',
+            [
+                'inbox_id' => $inbox_id,
+                'channel_id' => $channel_id,
+                'contact_id' => $contact_id,
+                'q' => $q,
+                'limit' => $limit,
+            ],
+            [
+                'inbox_id' => [
+                    'uuid' => true,
+                ],
+                'channel_id' => [
+                    'uuid' => true,
+                ],
+                'contact_id' => [
+                    'uuid' => true,
+                ],
+                'q' => [
+                    'minLength' => 2,
+                ],
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'conversations.list',
             'GET',
@@ -249,7 +271,7 @@ final class Conversations
      *
      * `limit` is the page size, not a cap on the items.
      *
-     * @param  ?string  $channel_type  Comma list.
+     * @param  list<string>|string|null  $channel_type  Comma list.
      * @param  ?string  $status  `open` (default), `archived` or `all`. One of: `open`, `archived`, `all`.
      * @param  ?bool  $unread  `true` = `unread_count > 0`, `false` = read only.
      * @param  ?bool  $blocked  `true` = the identity is blocked, `false` = not blocked.
@@ -266,7 +288,7 @@ final class Conversations
     public function all(
         ?string $inbox_id = null,
         ?string $channel_id = null,
-        ?string $channel_type = null,
+        array|string|null $channel_type = null,
         ?string $contact_id = null,
         ?string $status = null,
         ?bool $unread = null,
@@ -290,7 +312,7 @@ final class Conversations
      * `id`. `q` is the full-text search on `body` of `GET /v1/messages` (at least 2 characters). A
      * conversation outside the key's inbox scope answers 404.
      *
-     * @param  ?string  $direction  Comma list of `outbound`, `inbound`.
+     * @param  list<string>|string|null  $direction  Comma list of `outbound`, `inbound`.
      * @param  ?string  $q  Full-text search on the body, at least 2 characters.
      * @param  DateTimeInterface|string|null  $created_after  Inclusive lower bound.
      * @param  DateTimeInterface|string|null  $created_before  Exclusive upper bound.
@@ -299,12 +321,13 @@ final class Conversations
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\Message>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
     public function messages(
         string $id,
-        ?string $direction = null,
+        array|string|null $direction = null,
         ?string $q = null,
         DateTimeInterface|string|null $created_after = null,
         DateTimeInterface|string|null $created_before = null,
@@ -313,6 +336,24 @@ final class Conversations
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'conversations.messages',
+            [
+                'q' => $q,
+                'limit' => $limit,
+            ],
+            [
+                'q' => [
+                    'minLength' => 2,
+                ],
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'conversations.messages',
             'GET',
@@ -342,14 +383,25 @@ final class Conversations
      *
      * Everything else behaves as on `POST /v1/messages`: `202` with the message resource plus `warnings[]`,
      * `dry_run`, `Idempotency-Key`, `reference_id` (`409 REFERENCE_ID_EXISTS`) and the `422` acceptance
-     * rejections of 02 section 6.4. A conversation outside the key's inbox scope answers 404.
+     * rejections of `POST /v1/messages`. A conversation outside the key's inbox scope answers 404.
      *
-     * @param  array<string, mixed>|null  $content  The content union.
-     * @param  list<string>|null  $media_ids
-     * @param  array<string, mixed>|null  $variables
-     * @param  array<string, mixed>|null  $channel_options
-     * @param  array<string, mixed>|null  $metadata
+     * @param  array<string, mixed>|null  $content  The full content form. `type` is `text`, `media`, `template` or a channel-specific type refused with `CHANNEL_CAPABILITY_UNSUPPORTED`. Excludes `body`, `media_ids`, `template_id` and `variables`.
+     * @param  ?string  $body  Shorthand for text content. May go with `media_ids`.
+     * @param  list<string>|null  $media_ids  Shorthand for media content: ids from `POST /v1/media`. One item today.
+     * @param  ?string  $template_id  Shorthand for template content.
+     * @param  array<string, mixed>|null  $variables  Values for the template's variables. Needs `template_id`.
+     * @param  array<string, mixed>|null  $channel_options  Options only some channels understand; ignored with a warning elsewhere.
+     * @param  ?bool  $smart_replace  Replace characters that force UCS-2 encoding with plain look-alikes where it saves segments.
+     * @param  Enums\MessageCategory|string|null  $category  Required when `lane` is `bulk` (`CATEGORY_REQUIRED`).
+     * @param  Enums\MessageLane|string|null  $lane  How urgently the message is sent. `bulk` is paced behind other traffic and needs `category`.
+     * @param  DateTimeInterface|string|null  $send_after  At most 30 days ahead (`SEND_AFTER_TOO_FAR`). A time in the past means now.
+     * @param  ?int  $expires_in  Seconds after which an unsent message is dropped, 60 to 604800 (7 days).
+     * @param  ?string  $reference_id  Your own id for this message, 1 to 100 characters without spaces. Unique per account forever (`REFERENCE_ID_EXISTS`).
+     * @param  array<string, mixed>|null  $metadata  Up to 50 keys, 2 KB as JSON, scalar values only. Returned on the message and in webhooks.
+     * @param  ?bool  $shorten_links  Replace each URL with a short link so clicks are counted.
+     * @param  ?bool  $dry_run  Validate, render and compute segments and holds without creating anything (answers `200`).
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -372,6 +424,58 @@ final class Conversations
         ?bool $dry_run = null,
         ?RequestOptions $requestOptions = null,
     ): Models\SendMessageDryRunResponse|Models\SendMessageResponse {
+        $this->connection->guard(
+            'conversations.reply',
+            [
+                'media_ids' => $media_ids,
+                'template_id' => $template_id,
+                'category' => $category,
+                'lane' => $lane,
+                'expires_in' => $expires_in,
+                'reference_id' => $reference_id,
+                'metadata' => $metadata,
+                'content' => $content,
+                'body' => $body,
+                'variables' => $variables,
+            ],
+            [
+                'media_ids' => [
+                    'uuid' => true,
+                ],
+                'template_id' => [
+                    'uuid' => true,
+                ],
+                'category' => [
+                    'enum' => ['transactional', 'marketing'],
+                ],
+                'lane' => [
+                    'enum' => ['high', 'normal', 'bulk'],
+                ],
+                'expires_in' => [
+                    'min' => 60,
+                    'max' => 604800,
+                ],
+                'reference_id' => [
+                    'minLength' => 1,
+                    'maxLength' => 100,
+                    'pattern' => '^\\S+$',
+                ],
+                'metadata' => [
+                    'maxProperties' => 50,
+                    'maxBytes' => 2048,
+                    'scalarValues' => true,
+                ],
+            ],
+            [
+                [
+                    'atLeastOne',
+                    ['content', 'body', 'media_ids', 'template_id'],
+                ],
+                ['requires', 'variables', 'template_id'],
+                ['requiredWhen', 'category', 'lane', 'bulk'],
+            ],
+        );
+
         $response = $this->connection->request(
             'conversations.reply',
             'POST',

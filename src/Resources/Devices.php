@@ -6,18 +6,12 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Generator;
-use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -44,6 +38,7 @@ final class Devices
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\Device>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -54,6 +49,20 @@ final class Devices
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'devices.list',
+            [
+                'limit' => $limit,
+            ],
+            [
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'devices.list',
             'GET',
@@ -122,6 +131,7 @@ final class Devices
      * @param  ?bool  $os_limit_raised  Required when `os_limit_value` is sent.
      * @param  int|Omit|null  $os_limit_value  Required when `os_limit_raised` is `true`; ignored and cleared when it is `false`.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -132,6 +142,25 @@ final class Devices
         int|Omit|null $os_limit_value = Omit::Value,
         ?RequestOptions $requestOptions = null,
     ): Models\Device {
+        $this->connection->guard(
+            'devices.update',
+            [
+                'name' => $name,
+                'os_limit_value' => $os_limit_value,
+            ],
+            [
+                'name' => [
+                    'minLength' => 1,
+                    'maxLength' => 60,
+                ],
+                'os_limit_value' => [
+                    'min' => 31,
+                    'max' => 100000,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'devices.update',
             'PATCH',

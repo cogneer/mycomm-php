@@ -6,18 +6,13 @@ declare(strict_types=1);
 
 namespace MyComm\Resources\Partner;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use Generator;
-use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -25,9 +20,7 @@ use MyComm\RequestOptions;
 
 final class AccountKeys
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * List a managed account's keys.
@@ -39,6 +32,7 @@ final class AccountKeys
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\ApiKey>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -49,6 +43,20 @@ final class AccountKeys
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'partner.accountKeys.list',
+            [
+                'limit' => $limit,
+            ],
+            [
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'partner.accountKeys.list',
             'GET',
@@ -96,6 +104,7 @@ final class AccountKeys
      * @param  list<string>|Omit|null  $abilities
      * @param  list<string>|Omit|null  $allowed_ips  IPv4/IPv6 addresses or CIDR ranges.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -109,6 +118,39 @@ final class AccountKeys
         DateTimeInterface|string|Omit|null $expires_at = Omit::Value,
         ?RequestOptions $requestOptions = null,
     ): Models\CreatedApiKey {
+        $this->connection->guard(
+            'partner.accountKeys.create',
+            [
+                'name' => $name,
+                'inbox_ids' => $inbox_ids,
+                'channel_types' => $channel_types,
+                'abilities' => $abilities,
+                'allowed_ips' => $allowed_ips,
+            ],
+            [
+                'name' => [
+                    'minLength' => 1,
+                    'maxLength' => 100,
+                ],
+                'inbox_ids' => [
+                    'minItems' => 1,
+                    'maxItems' => 100,
+                    'uuid' => true,
+                ],
+                'channel_types' => [
+                    'minItems' => 1,
+                ],
+                'abilities' => [
+                    'minItems' => 1,
+                ],
+                'allowed_ips' => [
+                    'minItems' => 1,
+                    'maxItems' => 20,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'partner.accountKeys.create',
             'POST',

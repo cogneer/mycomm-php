@@ -7,8 +7,10 @@ namespace MyComm\Http;
 use Closure;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\FileUpload;
 use MyComm\RequestOptions;
+use MyComm\Validation\Guard;
 use MyComm\Version;
 use SensitiveParameter;
 
@@ -38,10 +40,28 @@ final class Connection
         private readonly ?string $accountId = null,
         private readonly int $maxRetries = 2,
         ?Closure $sleep = null,
+        private readonly bool $validate = true,
     ) {
         $this->sleep = $sleep ?? static function (float $seconds): void {
             usleep((int) round($seconds * 1_000_000));
         };
+    }
+
+    /**
+     * Checks the arguments of a call against the rules the API documents, before anything is sent. Does nothing when the
+     * client was built with `validate: false`.
+     *
+     * @param  array<string, mixed>  $values
+     * @param  array<string, array<string, mixed>>  $constraints
+     * @param  list<array<int, mixed>>  $rules
+     *
+     * @throws InvalidArgumentException
+     */
+    public function guard(string $operation, array $values, array $constraints, array $rules): void
+    {
+        if ($this->validate) {
+            Guard::check($operation, $values, $constraints, $rules);
+        }
     }
 
     /**
@@ -139,8 +159,8 @@ final class Connection
      */
     private static function retryDelay(Request $request, Response $response, ApiException $error, int $attempt): ?float
     {
-        $retryAfter = $response->header('Retry-After');
-        $wait = $retryAfter !== null && is_numeric($retryAfter) ? min((float) $retryAfter, self::MAX_DELAY) : null;
+        $retryAfter = RetryAfter::seconds($response->header('Retry-After'));
+        $wait = $retryAfter !== null ? min((float) $retryAfter, self::MAX_DELAY) : null;
 
         return match (true) {
             // Rejected before any work started, so safe for every method.

@@ -6,28 +6,18 @@ declare(strict_types=1);
 
 namespace MyComm\Resources\Contacts;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use Generator;
-use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
-use MyComm\Page;
 use MyComm\RequestOptions;
 
 final class Identities
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * Add an identity to a contact.
@@ -43,6 +33,7 @@ final class Identities
      *
      * @param  string  $type  `phone` in v1.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -53,6 +44,19 @@ final class Identities
         ?bool $is_primary = null,
         ?RequestOptions $requestOptions = null,
     ): Models\ContactIdentity {
+        $this->connection->guard(
+            'contacts.identities.create',
+            [
+                'address' => $address,
+            ],
+            [
+                'address' => [
+                    'maxLength' => 64,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'contacts.identities.create',
             'POST',
@@ -127,7 +131,7 @@ final class Identities
      * sends no notification and emits no `message.received` webhook; opt-out and opt-in keywords still apply.
      * Campaign recipients are skipped (`blocked`). Any identity can be blocked, a `sender_id` one included.
      * Idempotent: blocking a blocked identity changes nothing. Emits `contact.updated`. An opt-out is neither
-     * set nor cleared. Send an empty JSON object `{}` as the body.
+     * set nor cleared.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached

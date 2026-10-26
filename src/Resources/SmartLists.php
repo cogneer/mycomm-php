@@ -6,18 +6,13 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Generator;
-use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
 use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -44,6 +39,7 @@ final class SmartLists
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\SmartList>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -54,6 +50,24 @@ final class SmartLists
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'smartLists.list',
+            [
+                'q' => $q,
+                'limit' => $limit,
+            ],
+            [
+                'q' => [
+                    'minLength' => 2,
+                ],
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'smartLists.list',
             'GET',
@@ -95,12 +109,13 @@ final class SmartLists
     /**
      * Create a smart list.
      *
-     * Requires `groups:write`. `filter` is the smart list DSL of 02 section 9; a filter that breaks it answers
+     * Requires `groups:write`. `filter` is the smart list filter language; a filter that breaks it answers
      * `422 FILTER_INVALID` with `details.pointer`, a JSON pointer to the bad node. The name is unique per
      * account, ignoring case (`409 NAME_TAKEN`).
      *
      * @param  Inputs\SmartListFilter|array<string, mixed>  $filter
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -109,6 +124,20 @@ final class SmartLists
         Inputs\SmartListFilter|array $filter,
         ?RequestOptions $requestOptions = null,
     ): Models\SmartList {
+        $this->connection->guard(
+            'smartLists.create',
+            [
+                'name' => $name,
+            ],
+            [
+                'name' => [
+                    'minLength' => 1,
+                    'maxLength' => 100,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'smartLists.create',
             'POST',
@@ -178,6 +207,7 @@ final class SmartLists
      *
      * @param  Inputs\SmartListFilter|array<string, mixed>|null  $filter
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -187,6 +217,20 @@ final class SmartLists
         Inputs\SmartListFilter|array|null $filter = null,
         ?RequestOptions $requestOptions = null,
     ): Models\SmartList {
+        $this->connection->guard(
+            'smartLists.update',
+            [
+                'name' => $name,
+            ],
+            [
+                'name' => [
+                    'minLength' => 1,
+                    'maxLength' => 100,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'smartLists.update',
             'PATCH',

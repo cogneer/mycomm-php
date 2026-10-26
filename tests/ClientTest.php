@@ -152,11 +152,11 @@ it('uploads a file from a path or from memory', function () {
 it('sends an import as JSON or as an upload', function () {
     $fake = new MyCommFake;
 
-    $fake->client()->imports->create(type: 'phone_history', channel_id: 'ch-1', options: ['days' => 30]);
+    $fake->client()->imports->create(type: 'phone_history', channel_id: '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c', options: ['days' => 30]);
     $fake->client()->imports->createFromFile(type: 'contacts_csv', file: FileUpload::fromString("phone\n", 'c.csv', 'text/csv'), options: '{"mapping":{"phone":"phone"}}');
 
     [$json, $upload] = $fake->calls('imports.create');
-    expect($json->json)->toBe(['type' => 'phone_history', 'channel_id' => 'ch-1', 'options' => ['days' => 30]])
+    expect($json->json)->toBe(['type' => 'phone_history', 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c', 'options' => ['days' => 30]])
         ->and($upload->multipart)->toHaveKeys(['type', 'file', 'options'])
         ->and($upload->header('Content-Type'))->toStartWith('multipart/form-data');
 });

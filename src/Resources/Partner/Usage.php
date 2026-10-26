@@ -6,39 +6,30 @@ declare(strict_types=1);
 
 namespace MyComm\Resources\Partner;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use Generator;
-use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
-use MyComm\Omit;
 use MyComm\Page;
 use MyComm\RequestOptions;
 
 final class Usage
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * Usage across managed accounts.
      *
      * Dates are interpreted in each account's own time zone (as stored in `usage_daily`). Paginated over
-     * accounts, sorted by `sent_segments` descending. Counters are those of 03 section 3.14; rows and totals
-     * add `by_channel_type`. Per-day detail for one account: `GET /v1/stats/daily` acting as it.
+     * accounts, sorted by `sent_segments` descending. Counters match the usage reports in the portal; rows and
+     * totals add `by_channel_type`. Per-day detail for one account: `GET /v1/stats/daily` acting as it.
      *
      * @param  ?int  $limit  Page size, 1 to 200.
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -50,6 +41,24 @@ final class Usage
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Models\UsageResponse {
+        $this->connection->guard(
+            'partner.usage.get',
+            [
+                'account_id' => $account_id,
+                'limit' => $limit,
+            ],
+            [
+                'account_id' => [
+                    'uuid' => true,
+                ],
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'partner.usage.get',
             'GET',

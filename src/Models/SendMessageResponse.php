@@ -7,20 +7,8 @@ declare(strict_types=1);
 namespace MyComm\Models;
 
 use DateTimeImmutable;
-use DateTimeInterface;
-use Generator;
 use MyComm\Enums;
-use MyComm\Exceptions\ApiException;
-use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
-use MyComm\Http\Connection;
-use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
 use MyComm\Model;
-use MyComm\Omit;
-use MyComm\Page;
-use MyComm\RequestOptions;
 
 /**
  * The message resource plus `warnings[]`.
@@ -46,29 +34,20 @@ final class SendMessageResponse extends Model
 
     public readonly ?MessageIdentity $identity;
 
-    /**
-     * `outbound` or `inbound`.
-     */
-    public readonly string $direction;
+    public readonly Enums\MessageDirection|string $direction;
 
-    /**
-     * `sms` or `mms` (later `whatsapp`, `telegram`).
-     */
-    public readonly string $type;
+    public readonly Enums\MessageType|string $type;
 
-    /**
-     * `portal`, `api`, `campaign`, `automation`, `phone`, `import`, `system` or `canary`.
-     */
-    public readonly string $origin;
+    public readonly Enums\MessageOrigin|string $origin;
 
     public readonly ?string $from;
 
     public readonly ?string $to;
 
-    public readonly string $content_type;
+    public readonly Enums\MessageContentType|string $content_type;
 
     /**
-     * The typed content object of 03 section 3.1; always has `type`.
+     * The typed content object; always has `type`.
      *
      * @var array<string, mixed>
      */
@@ -98,16 +77,13 @@ final class SendMessageResponse extends Model
 
     public readonly ?string $provider_message_id;
 
-    public readonly ?string $category;
+    public readonly Enums\MessageCategory|string|null $category;
 
-    public readonly ?string $lane;
+    public readonly Enums\MessageLane|string|null $lane;
 
-    /**
-     * Outbound: `queued`, `leased`, `sent`, `delivered`, `read`, `failed`, `expired`, `cancelled`. Inbound: `received`.
-     */
-    public readonly string $status;
+    public readonly Enums\MessageStatus|string $status;
 
-    public readonly ?string $hold_reason;
+    public readonly Enums\HoldReason|string|null $hold_reason;
 
     public readonly ?DateTimeImmutable $send_after;
 
@@ -165,12 +141,12 @@ final class SendMessageResponse extends Model
         $this->conversation_id = $data['conversation_id'] ?? null;
         $this->contact_id = $data['contact_id'] ?? null;
         $this->identity = isset($data['identity']) ? MessageIdentity::fromArray($data['identity']) : null;
-        $this->direction = $data['direction'];
-        $this->type = $data['type'];
-        $this->origin = $data['origin'];
+        $this->direction = self::enum(Enums\MessageDirection::class, $data['direction']);
+        $this->type = self::enum(Enums\MessageType::class, $data['type']);
+        $this->origin = self::enum(Enums\MessageOrigin::class, $data['origin']);
         $this->from = $data['from'] ?? null;
         $this->to = $data['to'] ?? null;
-        $this->content_type = $data['content_type'];
+        $this->content_type = self::enum(Enums\MessageContentType::class, $data['content_type']);
         $this->content = $data['content'];
         $this->body = $data['body'] ?? null;
         $this->encoding = $data['encoding'] ?? null;
@@ -178,10 +154,10 @@ final class SendMessageResponse extends Model
         $this->media = array_map(static fn (array $item): MessageMedia => MessageMedia::fromArray($item), array_values($data['media']));
         $this->channel_meta = $data['channel_meta'];
         $this->provider_message_id = $data['provider_message_id'] ?? null;
-        $this->category = $data['category'] ?? null;
-        $this->lane = $data['lane'] ?? null;
-        $this->status = $data['status'];
-        $this->hold_reason = $data['hold_reason'] ?? null;
+        $this->category = isset($data['category']) ? self::enum(Enums\MessageCategory::class, $data['category']) : null;
+        $this->lane = isset($data['lane']) ? self::enum(Enums\MessageLane::class, $data['lane']) : null;
+        $this->status = self::enum(Enums\MessageStatus::class, $data['status']);
+        $this->hold_reason = isset($data['hold_reason']) ? self::enum(Enums\HoldReason::class, $data['hold_reason']) : null;
         $this->send_after = isset($data['send_after']) ? self::dateTime($data['send_after']) : null;
         $this->expires_at = isset($data['expires_at']) ? self::dateTime($data['expires_at']) : null;
         $this->attempts = $data['attempts'];

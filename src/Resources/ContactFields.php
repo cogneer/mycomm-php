@@ -6,18 +6,12 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use Generator;
 use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -25,9 +19,7 @@ use MyComm\RequestOptions;
 
 final class ContactFields
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * List custom contact field definitions.
@@ -57,6 +49,7 @@ final class ContactFields
      *
      * @param  list<string>|null  $options
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -68,6 +61,37 @@ final class ContactFields
         ?int $position = null,
         ?RequestOptions $requestOptions = null,
     ): Models\ContactField {
+        $this->connection->guard(
+            'contactFields.create',
+            [
+                'key' => $key,
+                'label' => $label,
+                'type' => $type,
+                'options' => $options,
+                'position' => $position,
+            ],
+            [
+                'key' => [
+                    'pattern' => '^[a-z][a-z0-9_]{0,39}$',
+                ],
+                'label' => [
+                    'minLength' => 1,
+                    'maxLength' => 60,
+                ],
+                'type' => [
+                    'enum' => ['text', 'number', 'date', 'boolean', 'select'],
+                ],
+                'options' => [
+                    'minItems' => 1,
+                    'maxItems' => 100,
+                ],
+                'position' => [
+                    'min' => 0,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'contactFields.create',
             'POST',
@@ -93,6 +117,7 @@ final class ContactFields
      *
      * @param  list<string>|null  $options
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -103,6 +128,29 @@ final class ContactFields
         ?int $position = null,
         ?RequestOptions $requestOptions = null,
     ): Models\ContactField {
+        $this->connection->guard(
+            'contactFields.update',
+            [
+                'label' => $label,
+                'options' => $options,
+                'position' => $position,
+            ],
+            [
+                'label' => [
+                    'minLength' => 1,
+                    'maxLength' => 60,
+                ],
+                'options' => [
+                    'minItems' => 1,
+                    'maxItems' => 100,
+                ],
+                'position' => [
+                    'min' => 0,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'contactFields.update',
             'PATCH',

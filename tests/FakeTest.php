@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MyComm\Enums\MessageStatus;
 use MyComm\Exceptions\ConnectionException;
 use MyComm\Exceptions\UnprocessableException;
 use MyComm\Exceptions\ValidationException;
@@ -29,7 +30,7 @@ it('lays the given values over the example', function () {
 
     $message = $fake->client()->messages->send(to: '+923331112222', body: 'Hi');
 
-    expect($message->status)->toBe('queued')
+    expect($message->status)->toBe(MessageStatus::Queued)
         ->and($message->to)->toBe('+923331112222')
         ->and($message->id)->not->toBe('');
 });
@@ -42,7 +43,7 @@ it('uses queued answers once, in order, before the standing one', function () {
 
     $statuses = array_map(fn () => $fake->client()->messages->show('m-1')->status, range(1, 4));
 
-    expect($statuses)->toBe(['queued', 'sent', 'delivered', 'delivered']);
+    expect($statuses)->toBe([MessageStatus::Queued, MessageStatus::Sent, MessageStatus::Delivered, MessageStatus::Delivered]);
 });
 
 it('computes an answer from the request', function () {

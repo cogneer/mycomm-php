@@ -6,28 +6,20 @@ declare(strict_types=1);
 
 namespace MyComm\Resources\SmartLists;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use Generator;
-use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
-use MyComm\Omit;
 use MyComm\Page;
 use MyComm\RequestOptions;
 
 final class Members
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * List the contacts of a smart list.
@@ -37,11 +29,11 @@ final class Members
      * a group it names was deleted) answers `422 FILTER_INVALID` until the list is edited.
      *
      * @param  ?string  $q  Name, email or address contains, at least 2 characters.
-     * @param  ?string  $address  Matches any identity address (comma list).
-     * @param  ?string  $identity_type  Comma list.
-     * @param  ?string  $group_id  Further narrows to members of these groups (comma list).
-     * @param  ?string  $source  Comma list.
-     * @param  ?string  $language  Comma list.
+     * @param  list<string>|string|null  $address  Matches any identity address (comma list).
+     * @param  list<string>|string|null  $identity_type  Comma list.
+     * @param  list<string>|string|null  $group_id  Further narrows to members of these groups (comma list).
+     * @param  list<string>|string|null  $source  Comma list.
+     * @param  list<string>|string|null  $language  Comma list.
      * @param  ?bool  $blocked  `true` = any identity is blocked.
      * @param  DateTimeInterface|string|null  $created_after  Inclusive lower bound.
      * @param  DateTimeInterface|string|null  $created_before  Exclusive upper bound.
@@ -51,17 +43,18 @@ final class Members
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\Contact>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
     public function list(
         string $id,
         ?string $q = null,
-        ?string $address = null,
-        ?string $identity_type = null,
-        ?string $group_id = null,
-        ?string $source = null,
-        ?string $language = null,
+        array|string|null $address = null,
+        array|string|null $identity_type = null,
+        array|string|null $group_id = null,
+        array|string|null $source = null,
+        array|string|null $language = null,
         ?bool $blocked = null,
         DateTimeInterface|string|null $created_after = null,
         DateTimeInterface|string|null $created_before = null,
@@ -71,6 +64,24 @@ final class Members
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'smartLists.members.list',
+            [
+                'q' => $q,
+                'limit' => $limit,
+            ],
+            [
+                'q' => [
+                    'minLength' => 2,
+                ],
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'smartLists.members.list',
             'GET',
@@ -102,11 +113,11 @@ final class Members
      * `limit` is the page size, not a cap on the items.
      *
      * @param  ?string  $q  Name, email or address contains, at least 2 characters.
-     * @param  ?string  $address  Matches any identity address (comma list).
-     * @param  ?string  $identity_type  Comma list.
-     * @param  ?string  $group_id  Further narrows to members of these groups (comma list).
-     * @param  ?string  $source  Comma list.
-     * @param  ?string  $language  Comma list.
+     * @param  list<string>|string|null  $address  Matches any identity address (comma list).
+     * @param  list<string>|string|null  $identity_type  Comma list.
+     * @param  list<string>|string|null  $group_id  Further narrows to members of these groups (comma list).
+     * @param  list<string>|string|null  $source  Comma list.
+     * @param  list<string>|string|null  $language  Comma list.
      * @param  ?bool  $blocked  `true` = any identity is blocked.
      * @param  DateTimeInterface|string|null  $created_after  Inclusive lower bound.
      * @param  DateTimeInterface|string|null  $created_before  Exclusive upper bound.
@@ -121,11 +132,11 @@ final class Members
     public function all(
         string $id,
         ?string $q = null,
-        ?string $address = null,
-        ?string $identity_type = null,
-        ?string $group_id = null,
-        ?string $source = null,
-        ?string $language = null,
+        array|string|null $address = null,
+        array|string|null $identity_type = null,
+        array|string|null $group_id = null,
+        array|string|null $source = null,
+        array|string|null $language = null,
         ?bool $blocked = null,
         DateTimeInterface|string|null $created_after = null,
         DateTimeInterface|string|null $created_before = null,

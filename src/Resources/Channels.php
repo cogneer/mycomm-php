@@ -6,18 +6,13 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Generator;
-use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
 use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -25,9 +20,7 @@ use MyComm\RequestOptions;
 
 final class Channels
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * Get a channel.
@@ -61,6 +54,7 @@ final class Channels
      *
      * @param  list<string>|Omit|null  $allowed_destination_countries  `null` is the channel's own country only; a list must contain the channel's own country.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -72,6 +66,29 @@ final class Channels
         ?bool $skip_business_senders = null,
         ?RequestOptions $requestOptions = null,
     ): Models\Channel {
+        $this->connection->guard(
+            'channels.update',
+            [
+                'name' => $name,
+                'reply_window_days' => $reply_window_days,
+                'allowed_destination_countries' => $allowed_destination_countries,
+            ],
+            [
+                'name' => [
+                    'minLength' => 1,
+                    'maxLength' => 100,
+                ],
+                'reply_window_days' => [
+                    'min' => 1,
+                    'max' => 365,
+                ],
+                'allowed_destination_countries' => [
+                    'minItems' => 1,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'channels.update',
             'PATCH',
@@ -169,6 +186,7 @@ final class Channels
      * @param  string|Omit|null  $address  The SIM's number, national or international form.
      * @param  string|Omit|null  $name  Channel label; default the formatted number.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -179,6 +197,23 @@ final class Channels
         string|Omit|null $name = Omit::Value,
         ?RequestOptions $requestOptions = null,
     ): Models\Channel {
+        $this->connection->guard(
+            'channels.connectSim',
+            [
+                'address' => $address,
+                'name' => $name,
+            ],
+            [
+                'address' => [
+                    'maxLength' => 40,
+                ],
+                'name' => [
+                    'maxLength' => 100,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'channels.connectSim',
             'POST',
@@ -205,6 +240,7 @@ final class Channels
      *
      * @param  string|Omit|null  $address  A corrected number; it replaces the one the channel was started with.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -213,6 +249,19 @@ final class Channels
         string|Omit|null $address = Omit::Value,
         ?RequestOptions $requestOptions = null,
     ): Models\Channel {
+        $this->connection->guard(
+            'channels.verify',
+            [
+                'address' => $address,
+            ],
+            [
+                'address' => [
+                    'maxLength' => 40,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'channels.verify',
             'POST',
@@ -231,8 +280,7 @@ final class Channels
      *
      * Requires `channels:read`. Every channel of the account whatever its status, oldest first, unless a
      * filter narrows the list. `health_band` filters on the stored SIM safety band, so a number that was never
-     * evaluated matches no band. A key restricted to inboxes sees only the channels of those inboxes (03
-     * sections 2.3, 3.11.4).
+     * evaluated matches no band. A key restricted to inboxes sees only the channels of those inboxes.
      *
      * @param  ?string  $status  One of: `pending_verification`, `active`, `paused`, `disconnected`.
      * @param  ?string  $type  One of: `android_sim`, `whatsapp_evolution`, `telegram_bot`.
@@ -241,6 +289,7 @@ final class Channels
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\Channel>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -253,6 +302,24 @@ final class Channels
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'channels.list',
+            [
+                'device_id' => $device_id,
+                'limit' => $limit,
+            ],
+            [
+                'device_id' => [
+                    'uuid' => true,
+                ],
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'channels.list',
             'GET',
@@ -358,13 +425,13 @@ final class Channels
      *
      * Checks run in this order and the first failure answers:
      *
-     * 1. Shape and field bounds of 02 section 2.1, `422 VALIDATION_FAILED`: every cap at least 1 and `per_min
-     * <= per_15m <= per_hour <= per_day`, `interval_ms.min >= 60000 / ceiling.per_min`, `interval_ms.max`
-     * between `min` and 600000, `bulk_hours` within 07:00 to 22:00 sender-local. 2. Every cap at or below the
-     * channel's `rate_policy_ceiling`, else `422 ABOVE_PLATFORM_CEILING` with `{field, value, ceiling,
-     * reason}` (`platform`, `country`, `override_limit`, `new_account` or `restricted_country`). During the
-     * first 14 days of the account the suggestion is also the shortest wait allowed: `interval_ms.min` below
-     * the suggested shortest wait, or `interval_ms.max` below the suggested longest wait, answers `422
+     * 1. Shape and field bounds, `422 VALIDATION_FAILED`: every cap at least 1 and `per_min <= per_15m <=
+     * per_hour <= per_day`, `interval_ms.min >= 60000 / ceiling.per_min`, `interval_ms.max` between `min` and
+     * 600000, `bulk_hours` within 07:00 to 22:00 sender-local. 2. Every cap at or below the channel's
+     * `rate_policy_ceiling`, else `422 ABOVE_PLATFORM_CEILING` with `{field, value, ceiling, reason}`
+     * (`platform`, `country`, `override_limit`, `new_account` or `restricted_country`). During the first 14
+     * days of the account the suggestion is also the shortest wait allowed: `interval_ms.min` below the
+     * suggested shortest wait, or `interval_ms.max` below the suggested longest wait, answers `422
      * ABOVE_PLATFORM_CEILING` with `reason: new_account`; for these two fields `value` and `ceiling` are waits
      * in milliseconds and `ceiling` is the shortest wait allowed. A cap above its ceiling is answered first.
      * Acknowledging the risk never lifts a ceiling. After day 14 only step 1 limits a wait.

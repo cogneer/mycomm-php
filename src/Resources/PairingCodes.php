@@ -6,38 +6,30 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use Generator;
-use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
-use MyComm\Page;
 use MyComm\RequestOptions;
 
 final class PairingCodes
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * Create a pairing code.
      *
      * Requires `channels:write`. The code is 8 Crockford base32 characters, single use and valid for 10
-     * minutes. At most 20 codes are pending and 60 are created per account per hour (`422
-     * PAIRING_CODE_LIMIT_REACHED` with `retry_after_seconds`). Render `qr_payload` as-is as a QR code.
+     * minutes. At most 20 codes are pending and 60 are created per account per hour (`429
+     * PAIRING_CODE_LIMIT_REACHED` with `retry_after_seconds` and a `Retry-After` header). Render `qr_payload`
+     * as-is as a QR code.
      *
      * @param  string|Omit|null  $device_name  Becomes the name of the device when it pairs.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -45,6 +37,19 @@ final class PairingCodes
         string|Omit|null $device_name = Omit::Value,
         ?RequestOptions $requestOptions = null,
     ): Models\PairingCode {
+        $this->connection->guard(
+            'pairingCodes.create',
+            [
+                'device_name' => $device_name,
+            ],
+            [
+                'device_name' => [
+                    'maxLength' => 120,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'pairingCodes.create',
             'POST',

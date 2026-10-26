@@ -4,6 +4,7 @@ The official PHP client for the [MyComm](https://mycomm.cogneer.tech) messaging 
 manage contacts and conversations, receive webhooks, and (for partners) provision customer accounts.
 
 - Every operation of the public API and the partner API, with typed arguments and typed results
+- Checks your arguments against the API's documented rules before sending, and tells you which field is wrong
 - Retries that cannot double-send: every POST carries an `Idempotency-Key`
 - Lists you can `foreach` over, across pages
 - Webhook signature verification and a class per event
@@ -36,8 +37,8 @@ $message = $mycomm->messages->send(
     body: 'Your code is 4821',
 );
 
-echo $message->id;       // "01923f80-5c6d-7e7f-8a90-a1b2c3d4e5f6"
-echo $message->status;   // "queued"
+echo $message->id;                // "01923f80-5c6d-7e7f-8a90-a1b2c3d4e5f6"
+echo $message->status->value;     // "queued"  (an enum case, MessageStatus::Queued)
 ```
 
 Create the key in the MyComm portal under **Developers → API keys**. Keep it on your server: never ship it in
@@ -45,16 +46,19 @@ a browser or a mobile app.
 
 ## How the SDK maps to the API
 
-Each resource of the [API reference](https://mycomm.cogneer.tech/docs) is a property of the client and each
-operation a method, named exactly like the operation id in the reference:
+Each resource of the [API reference](https://mycomm.cogneer.tech/docs/api/public) is a property of the client and
+each operation a method. The reference names an operation with a verb in camelCase (`sendMessage`); the SDK groups
+the operations by resource, so the same call reads `messages->send()`:
 
-| Operation id | Call |
+| Operation id in the reference | Call |
 |---|---|
-| `messages.send` | `$mycomm->messages->send(...)` |
-| `contacts.upsertByIdentity` | `$mycomm->contacts->upsertByIdentity(...)` |
-| `contacts.identities.block` | `$mycomm->contacts->identities->block($contactId, $identityId)` |
-| `webhookEndpoints.rotateSecret` | `$mycomm->webhookEndpoints->rotateSecret($id)` |
-| `partner.accounts.provision` | `$mycomm->partner->accounts->provision(...)` |
+| `sendMessage` | `$mycomm->messages->send(...)` |
+| `upsertContactByIdentity` | `$mycomm->contacts->upsertByIdentity(...)` |
+| `blockContactIdentity` | `$mycomm->contacts->identities->block($contactId, $identityId)` |
+| `rotateWebhookEndpointSecret` | `$mycomm->webhookEndpoints->rotateSecret($id)` |
+| `provisionManagedAccount` | `$mycomm->partner->accounts->provision(...)` |
+
+`generator/config.php` holds the full table of operation ids.
 
 Arguments are named like the API's fields (`reference_id`, `send_after`), so the reference and your editor's
 autocompletion agree. Ids in the path come first; everything else is best passed by name.
@@ -110,6 +114,59 @@ foreach ($batch->results as $result) {
 Follow a message afterwards with `$mycomm->messages->show($id)`, or let MyComm tell you through
 [webhooks](#webhooks).
 
+## What the SDK checks before sending
+
+The API documents limits and rules for what you send: ranges, lengths, which fields exclude each other, which
+need another. The SDK checks them first, so a mistake fails at once with the field named, instead of as a
+`422` from the server:
+
+```php
+use MyComm\Exceptions\InvalidArgumentException;
+
+try {
+    $mycomm->messages->send(to: $number, body: $text, expires_in: 30);
+} catch (InvalidArgumentException $e) {
+    echo $e->getMessage();     // expires_in must be between 60 and 604800 (got 30).
+    $e->field;                 // "expires_in"
+    $e->rule;                  // "OUT_OF_RANGE", named like the API's own validation codes
+    $e->violations;            // every problem, not only the first
+}
+```
+
+| Rule | Example |
+|---|---|
+| Ranges and lengths | `expires_in` 60 to 604800; `reference_id` 1 to 100 characters without spaces; `limit` 1 to 200 |
+| Allowed values | `category` is `transactional` or `marketing`; `lane` is `high`, `normal` or `bulk` |
+| Formats | ids are UUIDs |
+| Sizes | `metadata` at most 50 keys, 2048 bytes as JSON, scalar values only |
+| Exactly one of | `to` or `contact_id` |
+| At least one of | `content`, `body`, `media_ids` or `template_id` |
+| Needs another field | `variables` needs `template_id`; `category` is required when `lane` is `bulk` |
+
+The rules are generated from the API's OpenAPI document, so they follow the API. Nothing is sent when one
+fails. Rules the SDK does not know about, such as an opt-out, are still answered by the server (see Errors).
+
+If the API relaxes a rule before you have updated the SDK, turn the checks off with `new Client(..., validate:
+false)`. Values the API may add later (the enum of a response, an unknown error code) are never rejected.
+
+## Verify your settings
+
+`verify()` checks that a key works and, when you give it a number to test with, that a message to that number
+would be accepted. It sends nothing: the second check is a dry run.
+
+```php
+$result = $mycomm->verify(to: '+923001234567');     // add inboxId: '...' when the key can use several
+
+if (! $result->ok()) {
+    foreach ($result->problems() as $problem) {
+        echo $problem, "\n";          // the API's own message, for example why a recipient is refused
+    }
+}
+```
+
+A dry run does not know whether the phone is online or whether the carrier delivers; a hold it can predict is in
+`$result->holdReason`. See the guide [Verify your integration](https://mycomm.cogneer.tech/docs/guides/verify-your-integration).
+
 ## Lists and pagination
 
 A list method returns one `Page`. Loop over it for the items of that page, or use `all()` to walk every page;
@@ -141,8 +198,9 @@ $mycomm->contacts->update($id, first_name: 'Ada', email: null);   // email clear
 
 ## Errors
 
-Every error answer of the API becomes an exception. Branch on `errorCode`, which is stable; the message is
-English text for people and may change.
+Every error answer of the API becomes an exception. Branch on `code()` (or `errorCode`, the same value as text),
+which is stable; the message says what happened and what to do, in English, and may change.
+`echo $e` and `$e->summary()` give one line with the code, status, message, details and request id.
 
 ```php
 use MyComm\Enums\ErrorCode;
@@ -159,9 +217,12 @@ try {
         // do not retry: the recipient unsubscribed
     }
     $e->status;                   // 422
+    $e->code();                   // ErrorCode::RecipientOptedOut, or null for a code newer than this SDK
     $e->errorCode;                // "RECIPIENT_OPTED_OUT"
     $e->details;                  // ['address' => '+923001234567', ...]
     $e->requestId;                // quote this to support
+    $e->docUrl();                 // the page of the error reference that explains the code
+    echo $e;                      // RECIPIENT_OPTED_OUT (422): The recipient ... details: {...}  request_id: ...
 } catch (ConnectionException $e) {
     // MyComm could not be reached, even after the retries
 }
@@ -170,6 +231,8 @@ try {
 | Exception | When |
 |---|---|
 | `BadRequestException` | 400: malformed request, invalid cursor |
+| `InvalidHeaderException` | 400 `INVALID_HEADER` (extends `BadRequestException`): `details['header']` says which |
+| `UnsupportedMediaTypeException` | 415 (extends `BadRequestException`): the body is not in the format the endpoint takes |
 | `AuthenticationException` | 401: key missing, unknown, revoked or expired |
 | `PermissionDeniedException` | 403: ability, scope, IP allow-list, suspended account |
 | `NotFoundException` | 404 |
@@ -181,6 +244,7 @@ try {
 | `ServerException` | 5xx, after the retries |
 
 All of them extend `ApiException`, which extends `MyCommException`, the base of everything the SDK throws.
+`InvalidArgumentException` also extends `MyCommException`, but it is not an `ApiException`: no request was made.
 
 ## Retries and idempotency
 
@@ -323,6 +387,7 @@ $mycomm = new Client(
     httpClient: $yourPsr18Client,              // optional
     maxRetries: 2,
     timeout: 30.0,                             // seconds; applies to the built-in Guzzle client
+    validate: true,                            // check arguments against the API's documented rules first
 );
 ```
 

@@ -7,21 +7,8 @@ declare(strict_types=1);
 namespace MyComm\Webhooks;
 
 use DateTimeImmutable;
-use DateTimeInterface;
-use Generator;
-use MyComm\Enums;
-use MyComm\Exceptions\ApiException;
-use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
-use MyComm\Http\Connection;
-use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
 use MyComm\Model;
 use MyComm\Models;
-use MyComm\Omit;
-use MyComm\Page;
-use MyComm\RequestOptions;
 
 /**
  * A webhook event. `type` names it; `data` (on each event class) carries what happened.
@@ -30,9 +17,17 @@ use MyComm\RequestOptions;
  */
 abstract class Event extends Model
 {
+    /**
+     * The event id. The same for every endpoint and every retry or replay of this event; use it to de-duplicate.
+     */
     public readonly string $id;
 
     public readonly string $type;
+
+    /**
+     * The `info.version` of the API document the payload shape follows. A change tells a receiver the contract moved.
+     */
+    public readonly string $api_version;
 
     public readonly DateTimeImmutable $created_at;
 
@@ -51,6 +46,7 @@ abstract class Event extends Model
     {
         $this->id = $data['id'];
         $this->type = $data['type'];
+        $this->api_version = $data['api_version'];
         $this->created_at = self::dateTime($data['created_at']);
         $this->account_id = $data['account_id'];
         $this->account_external_ref = $data['account_external_ref'] ?? null;

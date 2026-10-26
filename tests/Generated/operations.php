@@ -7,9 +7,7 @@ declare(strict_types=1);
 return [
     [
         'operation' => 'account.get',
-        'resource' => [
-            'account',
-        ],
+        'resource' => ['account'],
         'method' => 'get',
         'arguments' => [],
         'http' => 'GET',
@@ -20,9 +18,7 @@ return [
     ],
     [
         'operation' => 'account.update',
-        'resource' => [
-            'account',
-        ],
+        'resource' => ['account'],
         'method' => 'update',
         'arguments' => [],
         'http' => 'PATCH',
@@ -33,9 +29,7 @@ return [
     ],
     [
         'operation' => 'apiKeys.list',
-        'resource' => [
-            'apiKeys',
-        ],
+        'resource' => ['apiKeys'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -46,9 +40,7 @@ return [
     ],
     [
         'operation' => 'apiKeys.create',
-        'resource' => [
-            'apiKeys',
-        ],
+        'resource' => ['apiKeys'],
         'method' => 'create',
         'arguments' => [
             'name' => 'Example name',
@@ -61,9 +53,7 @@ return [
     ],
     [
         'operation' => 'apiKeys.revoke',
-        'resource' => [
-            'apiKeys',
-        ],
+        'resource' => ['apiKeys'],
         'method' => 'revoke',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -75,10 +65,305 @@ return [
         'item' => null,
     ],
     [
-        'operation' => 'channels.get',
-        'resource' => [
-            'channels',
+        'operation' => 'apiKeys.rotate',
+        'resource' => ['apiKeys'],
+        'method' => 'rotate',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
         ],
+        'http' => 'POST',
+        'path' => '/v1/api-keys/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/rotate',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\ApiKeysRotateResponse',
+        'item' => null,
+    ],
+    [
+        'operation' => 'automationRules.list',
+        'resource' => ['automationRules'],
+        'method' => 'list',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'GET',
+        'path' => '/v1/inboxes/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/automation-rules',
+        'format' => 'none',
+        'returns' => 'MyComm\\Models\\AutomationRuleList',
+        'item' => null,
+    ],
+    [
+        'operation' => 'automationRules.create',
+        'resource' => ['automationRules'],
+        'method' => 'create',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'type' => 'keyword',
+            'name' => 'Example name',
+            'actions' => [
+                [
+                    'type' => 'reply',
+                    'body' => 'Example body',
+                    'template_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                ],
+            ],
+        ],
+        'http' => 'POST',
+        'path' => '/v1/inboxes/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/automation-rules',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\AutomationRule',
+        'item' => null,
+    ],
+    [
+        'operation' => 'automationRules.reorder',
+        'resource' => ['automationRules'],
+        'method' => 'reorder',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'rule_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
+        ],
+        'http' => 'POST',
+        'path' => '/v1/inboxes/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/automation-rules/reorder',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\AutomationRuleList',
+        'item' => null,
+    ],
+    [
+        'operation' => 'automationRules.get',
+        'resource' => ['automationRules'],
+        'method' => 'get',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'rule_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'GET',
+        'path' => '/v1/inboxes/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/automation-rules/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        'format' => 'none',
+        'returns' => 'MyComm\\Models\\AutomationRule',
+        'item' => null,
+    ],
+    [
+        'operation' => 'automationRules.update',
+        'resource' => ['automationRules'],
+        'method' => 'update',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'rule_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'PATCH',
+        'path' => '/v1/inboxes/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/automation-rules/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\AutomationRule',
+        'item' => null,
+    ],
+    [
+        'operation' => 'automationRules.delete',
+        'resource' => ['automationRules'],
+        'method' => 'delete',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'rule_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'DELETE',
+        'path' => '/v1/inboxes/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/automation-rules/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        'format' => 'none',
+        'returns' => 'void',
+        'item' => null,
+    ],
+    [
+        'operation' => 'automationRules.test',
+        'resource' => ['automationRules'],
+        'method' => 'test',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'body' => 'Example body',
+        ],
+        'http' => 'POST',
+        'path' => '/v1/inboxes/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/automation-rules/test',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\AutomationDryRun',
+        'item' => null,
+    ],
+    [
+        'operation' => 'automationRuns.list',
+        'resource' => ['automationRuns'],
+        'method' => 'list',
+        'arguments' => [],
+        'http' => 'GET',
+        'path' => '/v1/automation-runs',
+        'format' => 'none',
+        'returns' => 'page',
+        'item' => 'MyComm\\Models\\AutomationRun',
+    ],
+    [
+        'operation' => 'campaigns.recipients.list',
+        'resource' => ['campaigns', 'recipients'],
+        'method' => 'list',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'GET',
+        'path' => '/v1/campaigns/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/recipients',
+        'format' => 'none',
+        'returns' => 'page',
+        'item' => 'MyComm\\Models\\CampaignRecipient',
+    ],
+    [
+        'operation' => 'campaigns.report',
+        'resource' => ['campaigns'],
+        'method' => 'report',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'GET',
+        'path' => '/v1/campaigns/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/report',
+        'format' => 'none',
+        'returns' => 'MyComm\\Models\\CampaignReport',
+        'item' => null,
+    ],
+    [
+        'operation' => 'campaigns.list',
+        'resource' => ['campaigns'],
+        'method' => 'list',
+        'arguments' => [],
+        'http' => 'GET',
+        'path' => '/v1/campaigns',
+        'format' => 'none',
+        'returns' => 'page',
+        'item' => 'MyComm\\Models\\Campaign',
+    ],
+    [
+        'operation' => 'campaigns.create',
+        'resource' => ['campaigns'],
+        'method' => 'create',
+        'arguments' => [
+            'name' => 'Example name',
+            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'POST',
+        'path' => '/v1/campaigns',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\Campaign',
+        'item' => null,
+    ],
+    [
+        'operation' => 'campaigns.show',
+        'resource' => ['campaigns'],
+        'method' => 'show',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'GET',
+        'path' => '/v1/campaigns/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        'format' => 'none',
+        'returns' => 'MyComm\\Models\\Campaign',
+        'item' => null,
+    ],
+    [
+        'operation' => 'campaigns.update',
+        'resource' => ['campaigns'],
+        'method' => 'update',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'PATCH',
+        'path' => '/v1/campaigns/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\Campaign',
+        'item' => null,
+    ],
+    [
+        'operation' => 'campaigns.delete',
+        'resource' => ['campaigns'],
+        'method' => 'delete',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'DELETE',
+        'path' => '/v1/campaigns/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        'format' => 'none',
+        'returns' => 'void',
+        'item' => null,
+    ],
+    [
+        'operation' => 'campaigns.estimate',
+        'resource' => ['campaigns'],
+        'method' => 'estimate',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'POST',
+        'path' => '/v1/campaigns/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/estimate',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\CampaignEstimate',
+        'item' => null,
+    ],
+    [
+        'operation' => 'campaigns.start',
+        'resource' => ['campaigns'],
+        'method' => 'start',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'POST',
+        'path' => '/v1/campaigns/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/start',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\Campaign',
+        'item' => null,
+    ],
+    [
+        'operation' => 'campaigns.unschedule',
+        'resource' => ['campaigns'],
+        'method' => 'unschedule',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'POST',
+        'path' => '/v1/campaigns/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/unschedule',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\Campaign',
+        'item' => null,
+    ],
+    [
+        'operation' => 'campaigns.pause',
+        'resource' => ['campaigns'],
+        'method' => 'pause',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'POST',
+        'path' => '/v1/campaigns/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/pause',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\Campaign',
+        'item' => null,
+    ],
+    [
+        'operation' => 'campaigns.resume',
+        'resource' => ['campaigns'],
+        'method' => 'resume',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'POST',
+        'path' => '/v1/campaigns/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/resume',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\Campaign',
+        'item' => null,
+    ],
+    [
+        'operation' => 'campaigns.cancel',
+        'resource' => ['campaigns'],
+        'method' => 'cancel',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'POST',
+        'path' => '/v1/campaigns/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/cancel',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\Campaign',
+        'item' => null,
+    ],
+    [
+        'operation' => 'channels.get',
+        'resource' => ['channels'],
         'method' => 'get',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -91,9 +376,7 @@ return [
     ],
     [
         'operation' => 'channels.update',
-        'resource' => [
-            'channels',
-        ],
+        'resource' => ['channels'],
         'method' => 'update',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -106,9 +389,7 @@ return [
     ],
     [
         'operation' => 'channels.pause',
-        'resource' => [
-            'channels',
-        ],
+        'resource' => ['channels'],
         'method' => 'pause',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -121,9 +402,7 @@ return [
     ],
     [
         'operation' => 'channels.resume',
-        'resource' => [
-            'channels',
-        ],
+        'resource' => ['channels'],
         'method' => 'resume',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -136,9 +415,7 @@ return [
     ],
     [
         'operation' => 'channels.disconnect',
-        'resource' => [
-            'channels',
-        ],
+        'resource' => ['channels'],
         'method' => 'disconnect',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -151,9 +428,7 @@ return [
     ],
     [
         'operation' => 'channels.connectSim',
-        'resource' => [
-            'channels',
-        ],
+        'resource' => ['channels'],
         'method' => 'connectSim',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -167,9 +442,7 @@ return [
     ],
     [
         'operation' => 'channels.verify',
-        'resource' => [
-            'channels',
-        ],
+        'resource' => ['channels'],
         'method' => 'verify',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -182,9 +455,7 @@ return [
     ],
     [
         'operation' => 'channels.list',
-        'resource' => [
-            'channels',
-        ],
+        'resource' => ['channels'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -195,9 +466,7 @@ return [
     ],
     [
         'operation' => 'channels.create',
-        'resource' => [
-            'channels',
-        ],
+        'resource' => ['channels'],
         'method' => 'create',
         'arguments' => [],
         'http' => 'POST',
@@ -208,9 +477,7 @@ return [
     ],
     [
         'operation' => 'channels.connectState',
-        'resource' => [
-            'channels',
-        ],
+        'resource' => ['channels'],
         'method' => 'connectState',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -223,9 +490,7 @@ return [
     ],
     [
         'operation' => 'channels.updateRatePolicy',
-        'resource' => [
-            'channels',
-        ],
+        'resource' => ['channels'],
         'method' => 'updateRatePolicy',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -238,9 +503,7 @@ return [
     ],
     [
         'operation' => 'channels.types',
-        'resource' => [
-            'channels',
-        ],
+        'resource' => ['channels'],
         'method' => 'types',
         'arguments' => [],
         'http' => 'GET',
@@ -250,10 +513,45 @@ return [
         'item' => 'MyComm\\Models\\ChannelTypeInfo',
     ],
     [
-        'operation' => 'contactFields.list',
-        'resource' => [
-            'contactFields',
+        'operation' => 'connectSessions.create',
+        'resource' => ['connectSessions'],
+        'method' => 'create',
+        'arguments' => [],
+        'http' => 'POST',
+        'path' => '/v1/connect-sessions',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\ConnectSessionsCreateResponse',
+        'item' => null,
+    ],
+    [
+        'operation' => 'connectSessions.get',
+        'resource' => ['connectSessions'],
+        'method' => 'get',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
         ],
+        'http' => 'GET',
+        'path' => '/v1/connect-sessions/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        'format' => 'none',
+        'returns' => 'MyComm\\Models\\ConnectSession',
+        'item' => null,
+    ],
+    [
+        'operation' => 'connectSessions.delete',
+        'resource' => ['connectSessions'],
+        'method' => 'delete',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'DELETE',
+        'path' => '/v1/connect-sessions/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        'format' => 'none',
+        'returns' => 'void',
+        'item' => null,
+    ],
+    [
+        'operation' => 'contactFields.list',
+        'resource' => ['contactFields'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -264,12 +562,10 @@ return [
     ],
     [
         'operation' => 'contactFields.create',
-        'resource' => [
-            'contactFields',
-        ],
+        'resource' => ['contactFields'],
         'method' => 'create',
         'arguments' => [
-            'key' => 'Example key',
+            'key' => 'example',
             'label' => 'Example label',
             'type' => 'text',
         ],
@@ -281,9 +577,7 @@ return [
     ],
     [
         'operation' => 'contactFields.update',
-        'resource' => [
-            'contactFields',
-        ],
+        'resource' => ['contactFields'],
         'method' => 'update',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -296,9 +590,7 @@ return [
     ],
     [
         'operation' => 'contactFields.delete',
-        'resource' => [
-            'contactFields',
-        ],
+        'resource' => ['contactFields'],
         'method' => 'delete',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -311,10 +603,7 @@ return [
     ],
     [
         'operation' => 'contacts.identities.create',
-        'resource' => [
-            'contacts',
-            'identities',
-        ],
+        'resource' => ['contacts', 'identities'],
         'method' => 'create',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -329,10 +618,7 @@ return [
     ],
     [
         'operation' => 'contacts.identities.update',
-        'resource' => [
-            'contacts',
-            'identities',
-        ],
+        'resource' => ['contacts', 'identities'],
         'method' => 'update',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -347,10 +633,7 @@ return [
     ],
     [
         'operation' => 'contacts.identities.delete',
-        'resource' => [
-            'contacts',
-            'identities',
-        ],
+        'resource' => ['contacts', 'identities'],
         'method' => 'delete',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -364,10 +647,7 @@ return [
     ],
     [
         'operation' => 'contacts.identities.block',
-        'resource' => [
-            'contacts',
-            'identities',
-        ],
+        'resource' => ['contacts', 'identities'],
         'method' => 'block',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -381,10 +661,7 @@ return [
     ],
     [
         'operation' => 'contacts.identities.unblock',
-        'resource' => [
-            'contacts',
-            'identities',
-        ],
+        'resource' => ['contacts', 'identities'],
         'method' => 'unblock',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -397,10 +674,21 @@ return [
         'item' => null,
     ],
     [
-        'operation' => 'contacts.upsertByIdentity',
-        'resource' => [
-            'contacts',
+        'operation' => 'contacts.optOut',
+        'resource' => ['contacts'],
+        'method' => 'optOut',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
         ],
+        'http' => 'POST',
+        'path' => '/v1/contacts/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/opt-out',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\ContactOptOutResult',
+        'item' => null,
+    ],
+    [
+        'operation' => 'contacts.upsertByIdentity',
+        'resource' => ['contacts'],
         'method' => 'upsertByIdentity',
         'arguments' => [
             'identity' => [
@@ -416,9 +704,7 @@ return [
     ],
     [
         'operation' => 'contacts.bulkUpsert',
-        'resource' => [
-            'contacts',
-        ],
+        'resource' => ['contacts'],
         'method' => 'bulkUpsert',
         'arguments' => [
             'contacts' => [
@@ -433,9 +719,7 @@ return [
                     'timezone' => 'Asia/Karachi',
                     'language' => 'en',
                     'custom_fields' => [],
-                    'add_to_group_ids' => [
-                        '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    ],
+                    'add_to_group_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 ],
             ],
         ],
@@ -447,9 +731,7 @@ return [
     ],
     [
         'operation' => 'contacts.list',
-        'resource' => [
-            'contacts',
-        ],
+        'resource' => ['contacts'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -460,9 +742,7 @@ return [
     ],
     [
         'operation' => 'contacts.create',
-        'resource' => [
-            'contacts',
-        ],
+        'resource' => ['contacts'],
         'method' => 'create',
         'arguments' => [
             'identities' => [
@@ -481,9 +761,7 @@ return [
     ],
     [
         'operation' => 'contacts.show',
-        'resource' => [
-            'contacts',
-        ],
+        'resource' => ['contacts'],
         'method' => 'show',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -496,9 +774,7 @@ return [
     ],
     [
         'operation' => 'contacts.update',
-        'resource' => [
-            'contacts',
-        ],
+        'resource' => ['contacts'],
         'method' => 'update',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -511,9 +787,7 @@ return [
     ],
     [
         'operation' => 'contacts.delete',
-        'resource' => [
-            'contacts',
-        ],
+        'resource' => ['contacts'],
         'method' => 'delete',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -526,9 +800,7 @@ return [
     ],
     [
         'operation' => 'contacts.conversations',
-        'resource' => [
-            'contacts',
-        ],
+        'resource' => ['contacts'],
         'method' => 'conversations',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -541,9 +813,7 @@ return [
     ],
     [
         'operation' => 'conversations.read',
-        'resource' => [
-            'conversations',
-        ],
+        'resource' => ['conversations'],
         'method' => 'read',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -556,9 +826,7 @@ return [
     ],
     [
         'operation' => 'conversations.unread',
-        'resource' => [
-            'conversations',
-        ],
+        'resource' => ['conversations'],
         'method' => 'unread',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -571,9 +839,7 @@ return [
     ],
     [
         'operation' => 'conversations.archive',
-        'resource' => [
-            'conversations',
-        ],
+        'resource' => ['conversations'],
         'method' => 'archive',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -586,9 +852,7 @@ return [
     ],
     [
         'operation' => 'conversations.unarchive',
-        'resource' => [
-            'conversations',
-        ],
+        'resource' => ['conversations'],
         'method' => 'unarchive',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -601,9 +865,7 @@ return [
     ],
     [
         'operation' => 'conversations.block',
-        'resource' => [
-            'conversations',
-        ],
+        'resource' => ['conversations'],
         'method' => 'block',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -616,9 +878,7 @@ return [
     ],
     [
         'operation' => 'conversations.unblock',
-        'resource' => [
-            'conversations',
-        ],
+        'resource' => ['conversations'],
         'method' => 'unblock',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -631,9 +891,7 @@ return [
     ],
     [
         'operation' => 'conversations.show',
-        'resource' => [
-            'conversations',
-        ],
+        'resource' => ['conversations'],
         'method' => 'show',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -646,9 +904,7 @@ return [
     ],
     [
         'operation' => 'conversations.delete',
-        'resource' => [
-            'conversations',
-        ],
+        'resource' => ['conversations'],
         'method' => 'delete',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -661,9 +917,7 @@ return [
     ],
     [
         'operation' => 'conversations.list',
-        'resource' => [
-            'conversations',
-        ],
+        'resource' => ['conversations'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -674,9 +928,7 @@ return [
     ],
     [
         'operation' => 'conversations.messages',
-        'resource' => [
-            'conversations',
-        ],
+        'resource' => ['conversations'],
         'method' => 'messages',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -689,12 +941,11 @@ return [
     ],
     [
         'operation' => 'conversations.reply',
-        'resource' => [
-            'conversations',
-        ],
+        'resource' => ['conversations'],
         'method' => 'reply',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'body' => 'Example body',
         ],
         'http' => 'POST',
         'path' => '/v1/conversations/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/messages',
@@ -704,9 +955,7 @@ return [
     ],
     [
         'operation' => 'devices.list',
-        'resource' => [
-            'devices',
-        ],
+        'resource' => ['devices'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -717,9 +966,7 @@ return [
     ],
     [
         'operation' => 'devices.get',
-        'resource' => [
-            'devices',
-        ],
+        'resource' => ['devices'],
         'method' => 'get',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -732,9 +979,7 @@ return [
     ],
     [
         'operation' => 'devices.update',
-        'resource' => [
-            'devices',
-        ],
+        'resource' => ['devices'],
         'method' => 'update',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -747,9 +992,7 @@ return [
     ],
     [
         'operation' => 'devices.pause',
-        'resource' => [
-            'devices',
-        ],
+        'resource' => ['devices'],
         'method' => 'pause',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -762,9 +1005,7 @@ return [
     ],
     [
         'operation' => 'devices.resume',
-        'resource' => [
-            'devices',
-        ],
+        'resource' => ['devices'],
         'method' => 'resume',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -777,9 +1018,7 @@ return [
     ],
     [
         'operation' => 'devices.revoke',
-        'resource' => [
-            'devices',
-        ],
+        'resource' => ['devices'],
         'method' => 'revoke',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -792,10 +1031,7 @@ return [
     ],
     [
         'operation' => 'devices.sims.list',
-        'resource' => [
-            'devices',
-            'sims',
-        ],
+        'resource' => ['devices', 'sims'],
         'method' => 'list',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -808,9 +1044,7 @@ return [
     ],
     [
         'operation' => 'exports.list',
-        'resource' => [
-            'exports',
-        ],
+        'resource' => ['exports'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -821,9 +1055,7 @@ return [
     ],
     [
         'operation' => 'exports.create',
-        'resource' => [
-            'exports',
-        ],
+        'resource' => ['exports'],
         'method' => 'create',
         'arguments' => [
             'type' => 'messages_csv',
@@ -836,9 +1068,7 @@ return [
     ],
     [
         'operation' => 'exports.get',
-        'resource' => [
-            'exports',
-        ],
+        'resource' => ['exports'],
         'method' => 'get',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -851,9 +1081,7 @@ return [
     ],
     [
         'operation' => 'groups.list',
-        'resource' => [
-            'groups',
-        ],
+        'resource' => ['groups'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -864,9 +1092,7 @@ return [
     ],
     [
         'operation' => 'groups.create',
-        'resource' => [
-            'groups',
-        ],
+        'resource' => ['groups'],
         'method' => 'create',
         'arguments' => [
             'name' => 'Example name',
@@ -879,9 +1105,7 @@ return [
     ],
     [
         'operation' => 'groups.show',
-        'resource' => [
-            'groups',
-        ],
+        'resource' => ['groups'],
         'method' => 'show',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -894,9 +1118,7 @@ return [
     ],
     [
         'operation' => 'groups.update',
-        'resource' => [
-            'groups',
-        ],
+        'resource' => ['groups'],
         'method' => 'update',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -909,9 +1131,7 @@ return [
     ],
     [
         'operation' => 'groups.delete',
-        'resource' => [
-            'groups',
-        ],
+        'resource' => ['groups'],
         'method' => 'delete',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -924,10 +1144,7 @@ return [
     ],
     [
         'operation' => 'groups.members.list',
-        'resource' => [
-            'groups',
-            'members',
-        ],
+        'resource' => ['groups', 'members'],
         'method' => 'list',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -940,16 +1157,11 @@ return [
     ],
     [
         'operation' => 'groups.members.add',
-        'resource' => [
-            'groups',
-            'members',
-        ],
+        'resource' => ['groups', 'members'],
         'method' => 'add',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'contact_ids' => [
-                '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            ],
+            'contact_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
         ],
         'http' => 'POST',
         'path' => '/v1/groups/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/members',
@@ -959,16 +1171,11 @@ return [
     ],
     [
         'operation' => 'groups.members.remove',
-        'resource' => [
-            'groups',
-            'members',
-        ],
+        'resource' => ['groups', 'members'],
         'method' => 'remove',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'contact_ids' => [
-                '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            ],
+            'contact_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
         ],
         'http' => 'POST',
         'path' => '/v1/groups/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/members/remove',
@@ -978,9 +1185,7 @@ return [
     ],
     [
         'operation' => 'imports.list',
-        'resource' => [
-            'imports',
-        ],
+        'resource' => ['imports'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -991,9 +1196,7 @@ return [
     ],
     [
         'operation' => 'imports.create',
-        'resource' => [
-            'imports',
-        ],
+        'resource' => ['imports'],
         'method' => 'create',
         'arguments' => [
             'type' => 'phone_history',
@@ -1010,9 +1213,7 @@ return [
     ],
     [
         'operation' => 'imports.create',
-        'resource' => [
-            'imports',
-        ],
+        'resource' => ['imports'],
         'method' => 'createFromFile',
         'arguments' => [
             'type' => 'phone_history',
@@ -1026,9 +1227,7 @@ return [
     ],
     [
         'operation' => 'imports.get',
-        'resource' => [
-            'imports',
-        ],
+        'resource' => ['imports'],
         'method' => 'get',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1041,9 +1240,7 @@ return [
     ],
     [
         'operation' => 'imports.cancel',
-        'resource' => [
-            'imports',
-        ],
+        'resource' => ['imports'],
         'method' => 'cancel',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1056,9 +1253,7 @@ return [
     ],
     [
         'operation' => 'inboxes.list',
-        'resource' => [
-            'inboxes',
-        ],
+        'resource' => ['inboxes'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -1069,9 +1264,7 @@ return [
     ],
     [
         'operation' => 'inboxes.create',
-        'resource' => [
-            'inboxes',
-        ],
+        'resource' => ['inboxes'],
         'method' => 'create',
         'arguments' => [
             'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1085,9 +1278,7 @@ return [
     ],
     [
         'operation' => 'inboxes.archive',
-        'resource' => [
-            'inboxes',
-        ],
+        'resource' => ['inboxes'],
         'method' => 'archive',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1100,9 +1291,7 @@ return [
     ],
     [
         'operation' => 'inboxes.unarchive',
-        'resource' => [
-            'inboxes',
-        ],
+        'resource' => ['inboxes'],
         'method' => 'unarchive',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1115,9 +1304,7 @@ return [
     ],
     [
         'operation' => 'inboxes.get',
-        'resource' => [
-            'inboxes',
-        ],
+        'resource' => ['inboxes'],
         'method' => 'get',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1130,9 +1317,7 @@ return [
     ],
     [
         'operation' => 'inboxes.update',
-        'resource' => [
-            'inboxes',
-        ],
+        'resource' => ['inboxes'],
         'method' => 'update',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1145,9 +1330,7 @@ return [
     ],
     [
         'operation' => 'media.upload',
-        'resource' => [
-            'media',
-        ],
+        'resource' => ['media'],
         'method' => 'upload',
         'arguments' => [
             'file' => '@file',
@@ -1160,9 +1343,7 @@ return [
     ],
     [
         'operation' => 'media.get',
-        'resource' => [
-            'media',
-        ],
+        'resource' => ['media'],
         'method' => 'get',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1175,9 +1356,7 @@ return [
     ],
     [
         'operation' => 'messages.cancel',
-        'resource' => [
-            'messages',
-        ],
+        'resource' => ['messages'],
         'method' => 'cancel',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1190,9 +1369,7 @@ return [
     ],
     [
         'operation' => 'messages.retry',
-        'resource' => [
-            'messages',
-        ],
+        'resource' => ['messages'],
         'method' => 'retry',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1205,9 +1382,7 @@ return [
     ],
     [
         'operation' => 'messages.sendBatch',
-        'resource' => [
-            'messages',
-        ],
+        'resource' => ['messages'],
         'method' => 'sendBatch',
         'arguments' => [
             'messages' => [
@@ -1220,9 +1395,7 @@ return [
                     'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'content' => [],
                     'body' => 'Example body',
-                    'media_ids' => [
-                        '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    ],
+                    'media_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'template_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'variables' => [],
                     'channel_options' => [],
@@ -1236,7 +1409,6 @@ return [
                         'example' => 'Example metadata',
                     ],
                     'shorten_links' => true,
-                    'dry_run' => true,
                 ],
             ],
         ],
@@ -1248,9 +1420,7 @@ return [
     ],
     [
         'operation' => 'messages.list',
-        'resource' => [
-            'messages',
-        ],
+        'resource' => ['messages'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -1261,11 +1431,12 @@ return [
     ],
     [
         'operation' => 'messages.send',
-        'resource' => [
-            'messages',
-        ],
+        'resource' => ['messages'],
         'method' => 'send',
-        'arguments' => [],
+        'arguments' => [
+            'to' => '+923001234567',
+            'body' => 'Example body',
+        ],
         'http' => 'POST',
         'path' => '/v1/messages',
         'format' => 'json',
@@ -1274,9 +1445,7 @@ return [
     ],
     [
         'operation' => 'messages.show',
-        'resource' => [
-            'messages',
-        ],
+        'resource' => ['messages'],
         'method' => 'show',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1289,9 +1458,7 @@ return [
     ],
     [
         'operation' => 'messages.events',
-        'resource' => [
-            'messages',
-        ],
+        'resource' => ['messages'],
         'method' => 'events',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1304,9 +1471,7 @@ return [
     ],
     [
         'operation' => 'pairingCodes.create',
-        'resource' => [
-            'pairingCodes',
-        ],
+        'resource' => ['pairingCodes'],
         'method' => 'create',
         'arguments' => [],
         'http' => 'POST',
@@ -1317,9 +1482,7 @@ return [
     ],
     [
         'operation' => 'pairingCodes.get',
-        'resource' => [
-            'pairingCodes',
-        ],
+        'resource' => ['pairingCodes'],
         'method' => 'get',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1332,9 +1495,7 @@ return [
     ],
     [
         'operation' => 'pairingCodes.delete',
-        'resource' => [
-            'pairingCodes',
-        ],
+        'resource' => ['pairingCodes'],
         'method' => 'delete',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1347,9 +1508,7 @@ return [
     ],
     [
         'operation' => 'smartLists.list',
-        'resource' => [
-            'smartLists',
-        ],
+        'resource' => ['smartLists'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -1360,9 +1519,7 @@ return [
     ],
     [
         'operation' => 'smartLists.create',
-        'resource' => [
-            'smartLists',
-        ],
+        'resource' => ['smartLists'],
         'method' => 'create',
         'arguments' => [
             'name' => 'Example name',
@@ -1381,9 +1538,7 @@ return [
     ],
     [
         'operation' => 'smartLists.preview',
-        'resource' => [
-            'smartLists',
-        ],
+        'resource' => ['smartLists'],
         'method' => 'preview',
         'arguments' => [
             'filter' => [
@@ -1401,9 +1556,7 @@ return [
     ],
     [
         'operation' => 'smartLists.show',
-        'resource' => [
-            'smartLists',
-        ],
+        'resource' => ['smartLists'],
         'method' => 'show',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1416,9 +1569,7 @@ return [
     ],
     [
         'operation' => 'smartLists.update',
-        'resource' => [
-            'smartLists',
-        ],
+        'resource' => ['smartLists'],
         'method' => 'update',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1431,9 +1582,7 @@ return [
     ],
     [
         'operation' => 'smartLists.delete',
-        'resource' => [
-            'smartLists',
-        ],
+        'resource' => ['smartLists'],
         'method' => 'delete',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1446,10 +1595,7 @@ return [
     ],
     [
         'operation' => 'smartLists.members.list',
-        'resource' => [
-            'smartLists',
-            'members',
-        ],
+        'resource' => ['smartLists', 'members'],
         'method' => 'list',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1462,9 +1608,7 @@ return [
     ],
     [
         'operation' => 'smartLists.count',
-        'resource' => [
-            'smartLists',
-        ],
+        'resource' => ['smartLists'],
         'method' => 'count',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1477,9 +1621,7 @@ return [
     ],
     [
         'operation' => 'stats.daily',
-        'resource' => [
-            'stats',
-        ],
+        'resource' => ['stats'],
         'method' => 'daily',
         'arguments' => [
             'from' => '2026-10-01',
@@ -1493,9 +1635,7 @@ return [
     ],
     [
         'operation' => 'stats.summary',
-        'resource' => [
-            'stats',
-        ],
+        'resource' => ['stats'],
         'method' => 'summary',
         'arguments' => [
             'from' => '2026-10-01',
@@ -1509,9 +1649,7 @@ return [
     ],
     [
         'operation' => 'suppressions.list',
-        'resource' => [
-            'suppressions',
-        ],
+        'resource' => ['suppressions'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -1522,9 +1660,7 @@ return [
     ],
     [
         'operation' => 'suppressions.create',
-        'resource' => [
-            'suppressions',
-        ],
+        'resource' => ['suppressions'],
         'method' => 'create',
         'arguments' => [
             'address' => '+923001234567',
@@ -1537,9 +1673,7 @@ return [
     ],
     [
         'operation' => 'suppressions.remove',
-        'resource' => [
-            'suppressions',
-        ],
+        'resource' => ['suppressions'],
         'method' => 'remove',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1552,9 +1686,7 @@ return [
     ],
     [
         'operation' => 'suppressions.check',
-        'resource' => [
-            'suppressions',
-        ],
+        'resource' => ['suppressions'],
         'method' => 'check',
         'arguments' => [
             'address' => '+923001234567',
@@ -1567,9 +1699,7 @@ return [
     ],
     [
         'operation' => 'consentEvents.list',
-        'resource' => [
-            'consentEvents',
-        ],
+        'resource' => ['consentEvents'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -1579,10 +1709,112 @@ return [
         'item' => 'MyComm\\Models\\ConsentEvent',
     ],
     [
-        'operation' => 'webhookDeliveries.list',
-        'resource' => [
-            'webhookDeliveries',
+        'operation' => 'templates.list',
+        'resource' => ['templates'],
+        'method' => 'list',
+        'arguments' => [],
+        'http' => 'GET',
+        'path' => '/v1/templates',
+        'format' => 'none',
+        'returns' => 'page',
+        'item' => 'MyComm\\Models\\Template',
+    ],
+    [
+        'operation' => 'templates.create',
+        'resource' => ['templates'],
+        'method' => 'create',
+        'arguments' => [
+            'name' => 'Example name',
+            'body' => 'Example body',
+            'category' => 'transactional',
         ],
+        'http' => 'POST',
+        'path' => '/v1/templates',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\TemplateSaved',
+        'item' => null,
+    ],
+    [
+        'operation' => 'templates.preview',
+        'resource' => ['templates'],
+        'method' => 'preview',
+        'arguments' => [
+            'body' => 'Example body',
+        ],
+        'http' => 'POST',
+        'path' => '/v1/templates/preview',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\TemplateRender',
+        'item' => null,
+    ],
+    [
+        'operation' => 'templates.show',
+        'resource' => ['templates'],
+        'method' => 'show',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'GET',
+        'path' => '/v1/templates/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        'format' => 'none',
+        'returns' => 'MyComm\\Models\\Template',
+        'item' => null,
+    ],
+    [
+        'operation' => 'templates.update',
+        'resource' => ['templates'],
+        'method' => 'update',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'PATCH',
+        'path' => '/v1/templates/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\TemplateSaved',
+        'item' => null,
+    ],
+    [
+        'operation' => 'templates.archive',
+        'resource' => ['templates'],
+        'method' => 'archive',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'DELETE',
+        'path' => '/v1/templates/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        'format' => 'none',
+        'returns' => 'MyComm\\Models\\Template',
+        'item' => null,
+    ],
+    [
+        'operation' => 'templates.restore',
+        'resource' => ['templates'],
+        'method' => 'restore',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'POST',
+        'path' => '/v1/templates/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/restore',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\Template',
+        'item' => null,
+    ],
+    [
+        'operation' => 'templates.render',
+        'resource' => ['templates'],
+        'method' => 'render',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'POST',
+        'path' => '/v1/templates/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/render',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\TemplateRender',
+        'item' => null,
+    ],
+    [
+        'operation' => 'webhookDeliveries.list',
+        'resource' => ['webhookDeliveries'],
         'method' => 'list',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1595,9 +1827,7 @@ return [
     ],
     [
         'operation' => 'webhookDeliveries.bulkReplay',
-        'resource' => [
-            'webhookDeliveries',
-        ],
+        'resource' => ['webhookDeliveries'],
         'method' => 'bulkReplay',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1610,9 +1840,7 @@ return [
     ],
     [
         'operation' => 'webhookDeliveries.get',
-        'resource' => [
-            'webhookDeliveries',
-        ],
+        'resource' => ['webhookDeliveries'],
         'method' => 'get',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1625,9 +1853,7 @@ return [
     ],
     [
         'operation' => 'webhookDeliveries.replay',
-        'resource' => [
-            'webhookDeliveries',
-        ],
+        'resource' => ['webhookDeliveries'],
         'method' => 'replay',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1640,9 +1866,7 @@ return [
     ],
     [
         'operation' => 'webhookEndpoints.list',
-        'resource' => [
-            'webhookEndpoints',
-        ],
+        'resource' => ['webhookEndpoints'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -1653,9 +1877,7 @@ return [
     ],
     [
         'operation' => 'webhookEndpoints.create',
-        'resource' => [
-            'webhookEndpoints',
-        ],
+        'resource' => ['webhookEndpoints'],
         'method' => 'create',
         'arguments' => [
             'url' => 'https://example.com/mycomm',
@@ -1668,9 +1890,7 @@ return [
     ],
     [
         'operation' => 'webhookEndpoints.get',
-        'resource' => [
-            'webhookEndpoints',
-        ],
+        'resource' => ['webhookEndpoints'],
         'method' => 'get',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1683,9 +1903,7 @@ return [
     ],
     [
         'operation' => 'webhookEndpoints.update',
-        'resource' => [
-            'webhookEndpoints',
-        ],
+        'resource' => ['webhookEndpoints'],
         'method' => 'update',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1698,9 +1916,7 @@ return [
     ],
     [
         'operation' => 'webhookEndpoints.delete',
-        'resource' => [
-            'webhookEndpoints',
-        ],
+        'resource' => ['webhookEndpoints'],
         'method' => 'delete',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1713,9 +1929,7 @@ return [
     ],
     [
         'operation' => 'webhookEndpoints.rotateSecret',
-        'resource' => [
-            'webhookEndpoints',
-        ],
+        'resource' => ['webhookEndpoints'],
         'method' => 'rotateSecret',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1728,9 +1942,7 @@ return [
     ],
     [
         'operation' => 'webhookEndpoints.test',
-        'resource' => [
-            'webhookEndpoints',
-        ],
+        'resource' => ['webhookEndpoints'],
         'method' => 'test',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1743,10 +1955,7 @@ return [
     ],
     [
         'operation' => 'partner.usage.get',
-        'resource' => [
-            'partner',
-            'usage',
-        ],
+        'resource' => ['partner', 'usage'],
         'method' => 'get',
         'arguments' => [
             'from' => '2026-10-01',
@@ -1760,10 +1969,7 @@ return [
     ],
     [
         'operation' => 'partner.accounts.list',
-        'resource' => [
-            'partner',
-            'accounts',
-        ],
+        'resource' => ['partner', 'accounts'],
         'method' => 'list',
         'arguments' => [],
         'http' => 'GET',
@@ -1774,10 +1980,7 @@ return [
     ],
     [
         'operation' => 'partner.accounts.provision',
-        'resource' => [
-            'partner',
-            'accounts',
-        ],
+        'resource' => ['partner', 'accounts'],
         'method' => 'provision',
         'arguments' => [
             'external_ref' => 'Example external ref',
@@ -1793,10 +1996,7 @@ return [
     ],
     [
         'operation' => 'partner.accounts.get',
-        'resource' => [
-            'partner',
-            'accounts',
-        ],
+        'resource' => ['partner', 'accounts'],
         'method' => 'get',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1809,10 +2009,7 @@ return [
     ],
     [
         'operation' => 'partner.accounts.update',
-        'resource' => [
-            'partner',
-            'accounts',
-        ],
+        'resource' => ['partner', 'accounts'],
         'method' => 'update',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1825,10 +2022,7 @@ return [
     ],
     [
         'operation' => 'partner.accounts.delete',
-        'resource' => [
-            'partner',
-            'accounts',
-        ],
+        'resource' => ['partner', 'accounts'],
         'method' => 'delete',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1841,10 +2035,7 @@ return [
     ],
     [
         'operation' => 'partner.accounts.suspend',
-        'resource' => [
-            'partner',
-            'accounts',
-        ],
+        'resource' => ['partner', 'accounts'],
         'method' => 'suspend',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1858,10 +2049,7 @@ return [
     ],
     [
         'operation' => 'partner.accounts.reactivate',
-        'resource' => [
-            'partner',
-            'accounts',
-        ],
+        'resource' => ['partner', 'accounts'],
         'method' => 'reactivate',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1874,10 +2062,7 @@ return [
     ],
     [
         'operation' => 'partner.accountKeys.list',
-        'resource' => [
-            'partner',
-            'accountKeys',
-        ],
+        'resource' => ['partner', 'accountKeys'],
         'method' => 'list',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1890,10 +2075,7 @@ return [
     ],
     [
         'operation' => 'partner.accountKeys.create',
-        'resource' => [
-            'partner',
-            'accountKeys',
-        ],
+        'resource' => ['partner', 'accountKeys'],
         'method' => 'create',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1907,10 +2089,7 @@ return [
     ],
     [
         'operation' => 'partner.accountKeys.revoke',
-        'resource' => [
-            'partner',
-            'accountKeys',
-        ],
+        'resource' => ['partner', 'accountKeys'],
         'method' => 'revoke',
         'arguments' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',

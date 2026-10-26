@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MyComm\Enums\MessageStatus;
 use MyComm\Exceptions\WebhookSignatureException;
 use MyComm\Models\Message;
 use MyComm\Testing\Examples;
@@ -36,7 +37,7 @@ it('returns the typed event of a verified delivery', function () {
         ->and($event->created_at)->toBeInstanceOf(DateTimeImmutable::class)
         ->and($event->channel?->type)->not->toBeNull()
         ->and($event->data->message)->toBeInstanceOf(Message::class)
-        ->and($event->data->message->status)->toBe('delivered');
+        ->and($event->data->message->status)->toBe(MessageStatus::Delivered);
 });
 
 it('accepts either signature during a secret rotation', function () {
@@ -107,5 +108,5 @@ it('reads the sparsest payload of every event', function (string $type) {
 
 it('knows the ping the test action sends', function () {
     expect(Webhook::parse(FakeWebhook::make('ping')->payload))->toBeInstanceOf(Ping::class)
-        ->and(EventMap::EVENTS)->toHaveCount(38);
+        ->and(EventMap::EVENTS)->toHaveCount(46);
 });

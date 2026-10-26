@@ -6,18 +6,14 @@ declare(strict_types=1);
 
 namespace MyComm\Resources;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use Generator;
 use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
+use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -25,9 +21,7 @@ use MyComm\RequestOptions;
 
 final class Suppressions
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * List suppressions.
@@ -37,8 +31,8 @@ final class Suppressions
      * match any of the values. A phone number in `address` written without country code is read in the account
      * country. Only `marketing` traffic is blocked by a suppression.
      *
-     * @param  ?string  $address  Suppressed address, E.164 for phone numbers (comma list).
-     * @param  ?string  $reason  Comma list of `keyword`, `manual`, `import`, `api`, `complaint`, `dnc`, `invalid`.
+     * @param  list<string>|string|null  $address  Suppressed address, E.164 for phone numbers (comma list).
+     * @param  list<string>|string|null  $reason  Comma list of `keyword`, `manual`, `import`, `api`, `complaint`, `dnc`, `invalid`.
      * @param  DateTimeInterface|string|null  $created_after  Inclusive lower bound.
      * @param  DateTimeInterface|string|null  $created_before  Exclusive upper bound.
      * @param  ?string  $sort  One of: `-created_at`, `created_at`.
@@ -46,12 +40,13 @@ final class Suppressions
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\Suppression>
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
     public function list(
-        ?string $address = null,
-        ?string $reason = null,
+        array|string|null $address = null,
+        array|string|null $reason = null,
         DateTimeInterface|string|null $created_after = null,
         DateTimeInterface|string|null $created_before = null,
         ?string $sort = null,
@@ -59,6 +54,20 @@ final class Suppressions
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
     ): Page {
+        $this->connection->guard(
+            'suppressions.list',
+            [
+                'limit' => $limit,
+            ],
+            [
+                'limit' => [
+                    'min' => 1,
+                    'max' => 200,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'suppressions.list',
             'GET',
@@ -83,8 +92,8 @@ final class Suppressions
      *
      * `limit` is the page size, not a cap on the items.
      *
-     * @param  ?string  $address  Suppressed address, E.164 for phone numbers (comma list).
-     * @param  ?string  $reason  Comma list of `keyword`, `manual`, `import`, `api`, `complaint`, `dnc`, `invalid`.
+     * @param  list<string>|string|null  $address  Suppressed address, E.164 for phone numbers (comma list).
+     * @param  list<string>|string|null  $reason  Comma list of `keyword`, `manual`, `import`, `api`, `complaint`, `dnc`, `invalid`.
      * @param  DateTimeInterface|string|null  $created_after  Inclusive lower bound.
      * @param  DateTimeInterface|string|null  $created_before  Exclusive upper bound.
      * @param  ?string  $sort  One of: `-created_at`, `created_at`.
@@ -95,8 +104,8 @@ final class Suppressions
      * @throws ConnectionException when the API cannot be reached
      */
     public function all(
-        ?string $address = null,
-        ?string $reason = null,
+        array|string|null $address = null,
+        array|string|null $reason = null,
         DateTimeInterface|string|null $created_after = null,
         DateTimeInterface|string|null $created_before = null,
         ?string $sort = null,
@@ -109,19 +118,19 @@ final class Suppressions
     /**
      * Suppress a number.
      *
-     * Requires `suppressions:write` (never held by a restricted key, 03 section 2.2). `identity_type` defaults
-     * to `phone` (the only type in v1) and `reason` to `api`; the API may write `api`, `complaint` or `dnc`.
-     * The address is stored in E.164 (a number without country code is read in the account country; one that
-     * is not a valid number is `422 VALIDATION_FAILED` with `INVALID_NUMBER` on `address`). A new suppression
-     * answers `201`, writes a `consent_events` `opt_out` (method `api`) and emits `contact.opted_out`; the
-     * identity's queued marketing is cancelled. A number that is already suppressed, for any reason, answers
-     * `200` with the existing row unchanged. With the account setting `opt_out.scope: contact`, a number that
-     * belongs to a contact suppresses every identity of that contact not suppressed yet, each with its own
-     * consent event and `contact.opted_out`, as a STOP reply does; the answer is still the row of the number
-     * given.
+     * Requires `suppressions:write` (never held by a restricted key). `identity_type` defaults to `phone` (the
+     * only type in v1) and `reason` to `api`; the API may write `api`, `complaint` or `dnc`. The address is
+     * stored in E.164 (a number without country code is read in the account country; one that is not a valid
+     * number is `422 VALIDATION_FAILED` with `INVALID_NUMBER` on `address`). A new suppression answers `201`,
+     * writes a `consent_events` `opt_out` (method `api`) and emits `contact.opted_out`; the identity's queued
+     * marketing is cancelled. A number that is already suppressed, for any reason, answers `200` with the
+     * existing row unchanged. With the account setting `opt_out.scope: contact`, a number that belongs to a
+     * contact suppresses every identity of that contact not suppressed yet, each with its own consent event
+     * and `contact.opted_out`, as a STOP reply does; the answer is still the row of the number given.
      *
      * @param  string  $address  E.164 number, e.g. `+923451234567`; a number without country code is read in the account country.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -132,6 +141,31 @@ final class Suppressions
         string|Omit|null $note = Omit::Value,
         ?RequestOptions $requestOptions = null,
     ): Models\Suppression {
+        $this->connection->guard(
+            'suppressions.create',
+            [
+                'identity_type' => $identity_type,
+                'address' => $address,
+                'reason' => $reason,
+                'note' => $note,
+            ],
+            [
+                'identity_type' => [
+                    'enum' => ['phone'],
+                ],
+                'address' => [
+                    'maxLength' => 64,
+                ],
+                'reason' => [
+                    'enum' => ['api', 'complaint', 'dnc'],
+                ],
+                'note' => [
+                    'maxLength' => 1000,
+                ],
+            ],
+            [],
+        );
+
         $response = $this->connection->request(
             'suppressions.create',
             'POST',
@@ -159,6 +193,7 @@ final class Suppressions
      *
      * @param  string|Omit|null  $consent_note  How the contact agreed to receive marketing again. Required to remove a `keyword` suppression.
      *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
@@ -167,6 +202,19 @@ final class Suppressions
         string|Omit|null $consent_note = Omit::Value,
         ?RequestOptions $requestOptions = null,
     ): void {
+        $this->connection->guard(
+            'suppressions.remove',
+            [
+                'consent_note' => $consent_note,
+            ],
+            [
+                'consent_note' => [
+                    'maxLength' => 1000,
+                ],
+            ],
+            [],
+        );
+
         $this->connection->request(
             'suppressions.remove',
             'POST',

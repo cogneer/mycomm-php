@@ -36,11 +36,15 @@ final class Types
      * @param  array<string, string>  $enumNames  Schema path (`Channel.type`) => enum class name.
      * @param  array<string, string>  $modelNames  Derived model name => the name it gets instead.
      * @param  array<string, string>  $nullable  Schema path of a field the API returns as null although the spec says it never is => why.
+     * @param  array<string, string>  $skipFields  Schema path of a request field the SDK does not offer => why.
+     * @param  list<string>  $plainEnums  Enums that stay plain strings in the SDK (the value set is open, or an event class already says it).
      */
     public function __construct(
         private readonly array $enumNames = [],
         private readonly array $modelNames = [],
         private readonly array $nullable = [],
+        private readonly array $plainEnums = [],
+        private readonly array $skipFields = [],
     ) {}
 
     /**
@@ -196,6 +200,7 @@ final class Types
         return match ($type) {
             'string', 'integer', 'boolean' => new TypeInfo(self::scalar($type), self::scalar($type), $nullable),
             'number' => new TypeInfo('int|float', 'int|float', $nullable),
+            'null' => new TypeInfo('null', 'null'),
             null => new TypeInfo('mixed', 'mixed'),
             default => throw new RuntimeException("Unsupported input type {$type} at {$path}."),
         };
@@ -214,14 +219,117 @@ final class Types
         $flat = $spec->flatten($schema);
         $fields = [];
         foreach ($flat['properties'] as $name => $property) {
+            if (isset($this->skipFields[$path.'.'.$name])) {
+                continue;
+            }
             $fields[$name] = [
                 'type' => $this->input($spec, $property, $context.Names::pascal($name), $path.'.'.$name),
                 'required' => in_array($name, $flat['required'], true),
                 'description' => $property['description'] ?? null,
+                'constraints' => $this->constraints($spec, $property),
             ];
         }
 
         return $fields;
+    }
+
+    /**
+     * The limits a request value must keep, from its schema: what `Validation\Guard` checks before a call is sent.
+     *
+     * @param  array<string, mixed>  $property
+     * @return array<string, mixed>
+     */
+    public function constraints(Spec $spec, array $property): array
+    {
+        $schema = $spec->resolve($property);
+        if (($alias = $spec->alias($schema)) !== null) {
+            $schema = $spec->resolve($alias);
+        }
+        foreach (['oneOf', 'anyOf'] as $keyword) {
+            if (isset($schema[$keyword])) {
+                $branches = array_values(array_filter($schema[$keyword], static fn (array $branch): bool => ! self::isNull($branch)));
+                if (count($branches) === 1) {
+                    $schema = $spec->resolve($branches[0]);
+                }
+            }
+        }
+
+        $found = [];
+        if (isset($schema['enum'])) {
+            $values = array_values(array_filter($schema['enum'], static fn (mixed $value): bool => is_string($value)));
+            if ($values !== []) {
+                $found['enum'] = $values;
+            }
+        }
+        foreach (['minimum' => 'min', 'maximum' => 'max', 'minLength' => 'minLength', 'maxLength' => 'maxLength', 'pattern' => 'pattern',
+            'minItems' => 'minItems', 'maxItems' => 'maxItems', 'maxProperties' => 'maxProperties', 'x-max-json-bytes' => 'maxBytes'] as $keyword => $name) {
+            if (isset($schema[$keyword])) {
+                $found[$name] = $schema[$keyword];
+            }
+        }
+        if (($schema['format'] ?? null) === 'uuid' || (($schema['type'] ?? null) === 'array' && ($spec->resolve($schema['items'] ?? [])['format'] ?? null) === 'uuid')) {
+            $found['uuid'] = true;
+        }
+        $extra = $schema['additionalProperties'] ?? null;
+        if (is_array($extra) && is_array($extra['type'] ?? null) && array_diff($extra['type'], ['string', 'number', 'integer', 'boolean', 'null']) === []) {
+            $found['scalarValues'] = true;
+        }
+
+        return $found;
+    }
+
+    /**
+     * The rules between the fields of a request body, from the JSON Schema keywords of its schema.
+     *
+     * @param  array<string, mixed>  $schema
+     * @return list<array<int, mixed>>
+     */
+    public function rules(Spec $spec, array $schema): array
+    {
+        $rules = [];
+        $this->collectRules($spec, $schema, $rules);
+
+        return $rules;
+    }
+
+    /**
+     * @param  array<string, mixed>  $schema
+     * @param  list<array<int, mixed>>  $rules
+     */
+    private function collectRules(Spec $spec, array $schema, array &$rules): void
+    {
+        $schema = $spec->resolve($schema);
+        foreach ($schema['allOf'] ?? [] as $member) {
+            $this->collectRules($spec, $member, $rules);
+        }
+        foreach (['oneOf' => 'exactlyOne', 'anyOf' => 'atLeastOne'] as $keyword => $rule) {
+            $names = [];
+            foreach ($schema[$keyword] ?? [] as $branch) {
+                if (isset($branch['required']) && count($branch['required']) === 1 && array_keys($branch) === ['required']) {
+                    $names[] = $branch['required'][0];
+                } else {
+                    $names = [];
+                    break;
+                }
+            }
+            if (count($names) > 1) {
+                $rules[] = [$rule, $names];
+            }
+        }
+        foreach ($schema['dependentRequired'] ?? [] as $field => $needs) {
+            foreach ($needs as $need) {
+                $rules[] = ['requires', (string) $field, (string) $need];
+            }
+        }
+        if (isset($schema['if'], $schema['then'])) {
+            foreach ($schema['if']['properties'] ?? [] as $when => $condition) {
+                if (array_key_exists('const', $condition)) {
+                    foreach ($schema['then']['required'] ?? [] as $field) {
+                        $rules[] = ['requiredWhen', (string) $field, (string) $when, $condition['const']];
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -380,6 +488,9 @@ final class Types
         }
 
         $name = $this->enumNames[$path] ?? $context;
+        if (in_array($name, $this->plainEnums, true)) {
+            return new TypeInfo('string', 'string', $nullable, null, 'string');
+        }
         $known = $this->enums[$name]['values'] ?? null;
         if ($known !== null && (array_diff($known, $values) !== [] || array_diff($values, $known) !== [])) {
             throw new RuntimeException("Enum {$name} at {$path} has other values than its earlier definition.");

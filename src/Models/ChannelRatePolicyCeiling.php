@@ -6,24 +6,10 @@ declare(strict_types=1);
 
 namespace MyComm\Models;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use Generator;
-use MyComm\Enums;
-use MyComm\Exceptions\ApiException;
-use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
-use MyComm\Http\Connection;
-use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
 use MyComm\Model;
-use MyComm\Omit;
-use MyComm\Page;
-use MyComm\RequestOptions;
 
 /**
- * The most each cap may be set to for this channel now (03 section 3.11.4, `rate_policy_ceiling`).
+ * The most each cap may be set to for this channel now (`rate_policy_ceiling`).
  */
 final class ChannelRatePolicyCeiling extends Model
 {

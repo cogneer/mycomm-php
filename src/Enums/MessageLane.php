@@ -6,23 +6,10 @@ declare(strict_types=1);
 
 namespace MyComm\Enums;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use Generator;
-use MyComm\Exceptions\ApiException;
-use MyComm\Exceptions\ConnectionException;
-use MyComm\FileUpload;
-use MyComm\Http\Connection;
-use MyComm\Http\Params;
-use MyComm\Input;
-use MyComm\Inputs;
-use MyComm\Model;
-use MyComm\Models;
-use MyComm\Omit;
-use MyComm\Page;
-use MyComm\RequestOptions;
-
 /**
+ * The sending priority: `high` goes first, `normal` is the default, `bulk` waits for quiet capacity and
+ * requires a `category`.
+ *
  * The API may add values: one this SDK version does not know arrives as a plain string.
  */
 enum MessageLane: string

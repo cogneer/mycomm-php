@@ -197,4 +197,49 @@ final class ApiKeys
     ): void {
         $this->connection->request('apiKeys.revoke', 'DELETE', '/v1/api-keys/'.rawurlencode($id), options: $requestOptions);
     }
+
+    /**
+     * Rotate an API key.
+     *
+     * Requires `keys:write`. Creates a new key with the same name, scope, abilities, allowed IPs and expiry,
+     * and returns its `token` once. The old key keeps working for `grace_period_hours` (default 24, at most
+     * 168) so you can deploy the new token without a gap; with `0` it is revoked at once. The old key's expiry
+     * never moves later than it already was. A restricted caller can rotate only keys inside its own scope. A
+     * revoked or expired key cannot be rotated.
+     *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
+     * @throws ApiException when the API answers with an error
+     * @throws ConnectionException when the API cannot be reached
+     */
+    public function rotate(
+        string $id,
+        ?int $grace_period_hours = null,
+        ?RequestOptions $requestOptions = null,
+    ): Models\ApiKeysRotateResponse {
+        $this->connection->guard(
+            'apiKeys.rotate',
+            [
+                'grace_period_hours' => $grace_period_hours,
+            ],
+            [
+                'grace_period_hours' => [
+                    'min' => 0,
+                    'max' => 168,
+                ],
+            ],
+            [],
+        );
+
+        $response = $this->connection->request(
+            'apiKeys.rotate',
+            'POST',
+            '/v1/api-keys/'.rawurlencode($id).'/rotate',
+            body: Params::body([
+                'grace_period_hours' => $grace_period_hours ?? Omit::Value,
+            ]),
+            options: $requestOptions,
+        );
+
+        return Models\ApiKeysRotateResponse::fromArray($response->json(), $response->meta());
+    }
 }

@@ -65,6 +65,19 @@ return [
         'item' => null,
     ],
     [
+        'operation' => 'apiKeys.rotate',
+        'resource' => ['apiKeys'],
+        'method' => 'rotate',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'POST',
+        'path' => '/v1/api-keys/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/rotate',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\ApiKeysRotateResponse',
+        'item' => null,
+    ],
+    [
         'operation' => 'automationRules.list',
         'resource' => ['automationRules'],
         'method' => 'list',

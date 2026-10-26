@@ -4,10 +4,11 @@ All notable changes to this package are listed here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the package follows
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - Unreleased
 
-Built from the MyComm public API and partner API `1.0.0-rc.2`. This release changes signatures and exceptions; the
-package stays on `0.x` until the API is frozen at `1.0.0`, and nothing from 0.1.0 is kept as an alias.
+The first stable release, built from the MyComm public API and partner API `1.0.0`, the frozen contract. From here the
+package follows semantic versioning against that contract: `1.x` releases only add. Against 0.1.0 this release changes
+signatures and exceptions, and nothing from 0.1.0 is kept as an alias (0.2.0 was never released; its changes are here).
 
 ### Added
 
@@ -15,6 +16,8 @@ package stays on `0.x` until the API is frozen at `1.0.0`, and nothing from 0.1.
   `to` or `contact_id`, at least one content field, `variables` with `template_id`, `category` with the bulk lane)
   are checked before a call is sent, and `InvalidArgumentException` names the field and the rule. Turn off with
   `new Client(..., validate: false)`.
+- `apiKeys->rotate($id, grace_period_hours: 24)`: a new key with the same scope; the old one keeps working for the grace
+  period (`0` revokes it at once). The result has the new `token` and `replaces`.
 - `Client::verify()` and `VerifyResult`: checks a key and, with a number, dry-runs a send. Sends nothing.
 - `ApiException::summary()`, `__toString()`, `code()` (the enum case, or `null` for a newer code), `isAnyOf()` and
   `docUrl()`; `ValidationException::summary()` lists each field and rule.

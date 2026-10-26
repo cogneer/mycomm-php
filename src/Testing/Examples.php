@@ -134,6 +134,36 @@ final class Examples
             'status' => 204,
             'body' => null,
         ],
+        'apiKeys.rotate' => [
+            'status' => 201,
+            'body' => [
+                'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'kind' => 'account',
+                'name' => 'Example name',
+                'prefix' => 'Example prefix',
+                'scope' => [
+                    'inbox_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
+                    'channel_types' => ['Example channel type'],
+                ],
+                'abilities' => ['Example ability'],
+                'allowed_ips' => ['203.0.113.10'],
+                'last_used_at' => '2026-10-01T09:15:02Z',
+                'last_used_ip' => '203.0.113.10',
+                'expires_at' => '2026-10-01T09:15:02Z',
+                'revoked_at' => '2026-10-01T09:15:02Z',
+                'actor' => [
+                    'type' => 'Example type',
+                    'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                ],
+                'created_at' => '2026-10-01T09:15:02Z',
+                'token' => 'mc_test_example',
+                'replaces' => [
+                    'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'expires_at' => '2026-10-01T09:15:02Z',
+                    'revoked_at' => '2026-10-01T09:15:02Z',
+                ],
+            ],
+        ],
         'automationRules.create' => [
             'status' => 201,
             'body' => [
@@ -5476,7 +5506,7 @@ final class Examples
         'campaign.scheduled' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'campaign.scheduled',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -5557,7 +5587,7 @@ final class Examples
         'campaign.unscheduled' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'campaign.unscheduled',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -5638,7 +5668,7 @@ final class Examples
         'campaign.started' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'campaign.started',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -5715,7 +5745,7 @@ final class Examples
         'campaign.paused' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'campaign.paused',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -5796,7 +5826,7 @@ final class Examples
         'campaign.resumed' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'campaign.resumed',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -5877,7 +5907,7 @@ final class Examples
         'campaign.completed' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'campaign.completed',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -5954,7 +5984,7 @@ final class Examples
         'campaign.cancelled' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'campaign.cancelled',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -6035,7 +6065,7 @@ final class Examples
         'contact.created' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'contact.created',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -6084,7 +6114,7 @@ final class Examples
         'contact.updated' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'contact.updated',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -6134,7 +6164,7 @@ final class Examples
         'contact.deleted' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'contact.deleted',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -6152,7 +6182,7 @@ final class Examples
         'import.completed' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'import.completed',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -6188,7 +6218,7 @@ final class Examples
         'import.failed' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'import.failed',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -6224,7 +6254,7 @@ final class Examples
         'export.completed' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'export.completed',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -6250,7 +6280,7 @@ final class Examples
         'link.clicked' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'link.clicked',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -6274,7 +6304,7 @@ final class Examples
         'channel.connected' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'channel.connected',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -6436,7 +6466,7 @@ final class Examples
         'channel.verification_failed' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'channel.verification_failed',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -6599,7 +6629,7 @@ final class Examples
         'channel.disconnected' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'channel.disconnected',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -6762,7 +6792,7 @@ final class Examples
         'channel.paused' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'channel.paused',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -6927,7 +6957,7 @@ final class Examples
         'channel.resumed' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'channel.resumed',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7089,7 +7119,7 @@ final class Examples
         'channel.health_changed' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'channel.health_changed',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7113,7 +7143,7 @@ final class Examples
         'channel.volume_warning' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'channel.volume_warning',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7133,7 +7163,7 @@ final class Examples
         'channel.qr_updated' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'channel.qr_updated',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7151,7 +7181,7 @@ final class Examples
         'device.paired' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'device.paired',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7230,7 +7260,7 @@ final class Examples
         'device.online' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'device.online',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7309,7 +7339,7 @@ final class Examples
         'device.degraded' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'device.degraded',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7388,7 +7418,7 @@ final class Examples
         'device.offline' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'device.offline',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7467,7 +7497,7 @@ final class Examples
         'device.revoked' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'device.revoked',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7546,7 +7576,7 @@ final class Examples
         'account.suspended' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'account.suspended',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7606,7 +7636,7 @@ final class Examples
         'account.reactivated' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'account.reactivated',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7666,7 +7696,7 @@ final class Examples
         'account.deletion_scheduled' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'account.deletion_scheduled',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7726,7 +7756,7 @@ final class Examples
         'message.queued' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'message.queued',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7804,7 +7834,7 @@ final class Examples
         'message.sent' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'message.sent',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7882,7 +7912,7 @@ final class Examples
         'message.delivered' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'message.delivered',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -7960,7 +7990,7 @@ final class Examples
         'message.read' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'message.read',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -8038,7 +8068,7 @@ final class Examples
         'message.failed' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'message.failed',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -8116,7 +8146,7 @@ final class Examples
         'message.expired' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'message.expired',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -8194,7 +8224,7 @@ final class Examples
         'message.cancelled' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'message.cancelled',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -8273,7 +8303,7 @@ final class Examples
         'message.received' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'message.received',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -8352,7 +8382,7 @@ final class Examples
         'conversation.read' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'conversation.read',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -8393,7 +8423,7 @@ final class Examples
         'conversation.unread' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'conversation.unread',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -8434,7 +8464,7 @@ final class Examples
         'conversation.archived' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'conversation.archived',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -8475,7 +8505,7 @@ final class Examples
         'conversation.unarchived' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'conversation.unarchived',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -8516,7 +8546,7 @@ final class Examples
         'conversation.deleted' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'conversation.deleted',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -8538,7 +8568,7 @@ final class Examples
         'contact.opted_out' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'contact.opted_out',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -8565,7 +8595,7 @@ final class Examples
         'contact.opted_in' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'contact.opted_in',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
@@ -8592,7 +8622,7 @@ final class Examples
         'ping' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'ping',
-            'api_version' => '1.0.0-rc.2',
+            'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',

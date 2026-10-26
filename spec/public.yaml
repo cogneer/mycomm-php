@@ -2,7 +2,7 @@
 openapi: 3.1.0
 info:
   title: 'MyComm API'
-  version: 1.0.0-rc.2
+  version: 1.0.0
   contact:
     name: 'MyComm developer support'
     url: 'https://mycomm.cogneer.tech/docs'
@@ -6825,7 +6825,7 @@ components:
           type: string
           description: 'The `info.version` of the API document the payload shape follows. A change tells a receiver the contract moved.'
           examples:
-            - 1.0.0-rc.2
+            - 1.0.0
         created_at:
           $ref: '#/components/schemas/Timestamp'
         account_id:
@@ -11746,6 +11746,8 @@ paths:
                       maxItems: 20
                       items:
                         type: string
+                        maxLength: 49
+                        description: 'An IPv4 or IPv6 address, or a CIDR range.'
                     -
                       type: 'null'
                   description: 'IPv4/IPv6 addresses or CIDR ranges.'
@@ -11853,6 +11855,110 @@ paths:
           lang: Shell
           label: curl
           source: "curl -X DELETE \"$MYCOMM_URL/v1/api-keys/<id>\" \\\n  -H \"Authorization: Bearer $MYCOMM_API_KEY\""
+  '/api-keys/{id}/rotate':
+    parameters:
+      -
+        name: id
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Uuid'
+    post:
+      operationId: rotateApiKey
+      tags:
+        - 'API keys'
+      summary: 'Rotate an API key'
+      description: "Requires `keys:write`. Creates a new key with the same name, scope, abilities, allowed IPs and expiry, and returns its\n`token` once. The old key keeps working for `grace_period_hours` (default 24, at most 168) so you can deploy the new\ntoken without a gap; with `0` it is revoked at once. The old key's expiry never moves later than it already was.\nA restricted caller can rotate only keys inside its own scope. A revoked or expired key cannot be rotated.\n"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                grace_period_hours:
+                  type: integer
+                  minimum: 0
+                  maximum: 168
+                  default: 24
+      responses:
+        201:
+          description: 'The new key, including its `token`, and what happened to the old key.'
+          headers:
+            MyComm-Request-Id:
+              $ref: '#/components/headers/MyComm-Request-Id'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Idempotent-Replayed:
+              $ref: '#/components/headers/Idempotent-Replayed'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  -
+                    $ref: '#/components/schemas/ApiKey'
+                  -
+                    type: object
+                    required:
+                      - token
+                      - replaces
+                    properties:
+                      token:
+                        type: string
+                        description: 'The plaintext key; returned only here.'
+                      replaces:
+                        type: object
+                        required:
+                          - id
+                          - expires_at
+                          - revoked_at
+                        description: 'The old key and when it stops working.'
+                        properties:
+                          id:
+                            $ref: '#/components/schemas/Uuid'
+                          expires_at:
+                            oneOf:
+                              -
+                                $ref: '#/components/schemas/Timestamp'
+                              -
+                                type: 'null'
+                          revoked_at:
+                            oneOf:
+                              -
+                                $ref: '#/components/schemas/Timestamp'
+                              -
+                                type: 'null'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        409:
+          $ref: '#/components/responses/Conflict'
+        413:
+          $ref: '#/components/responses/PayloadTooLarge'
+        415:
+          $ref: '#/components/responses/UnsupportedMediaType'
+        422:
+          $ref: '#/components/responses/Unprocessable'
+        429:
+          $ref: '#/components/responses/RateLimited'
+        500:
+          $ref: '#/components/responses/InternalError'
+        503:
+          $ref: '#/components/responses/ServiceUnavailable'
+      parameters:
+        -
+          $ref: '#/components/parameters/IdempotencyKey'
+        -
+          $ref: '#/components/parameters/MyCommAccount'
   '/inboxes/{id}/automation-rules':
     parameters:
       -
@@ -22076,7 +22182,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: campaign.scheduled
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -22160,7 +22266,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: campaign.unscheduled
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -22244,7 +22350,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: campaign.started
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -22325,7 +22431,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: campaign.paused
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -22409,7 +22515,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: campaign.resumed
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -22493,7 +22599,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: campaign.completed
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -22574,7 +22680,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: campaign.cancelled
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -22658,7 +22764,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: contact.created
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -22719,7 +22825,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: contact.updated
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -22782,7 +22888,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: contact.deleted
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -22816,7 +22922,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: import.completed
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -22866,7 +22972,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: import.failed
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -22916,7 +23022,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: export.completed
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -22957,7 +23063,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: link.clicked
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -22997,7 +23103,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: channel.connected
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -23149,7 +23255,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: channel.verification_failed
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -23302,7 +23408,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: channel.disconnected
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -23455,7 +23561,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: channel.paused
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -23610,7 +23716,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: channel.resumed
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -23762,7 +23868,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: channel.health_changed
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -23801,7 +23907,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: channel.volume_warning
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -23837,7 +23943,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: channel.qr_updated
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -23871,7 +23977,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: device.paired
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -23958,7 +24064,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: device.online
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -24045,7 +24151,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: device.degraded
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -24132,7 +24238,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: device.offline
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -24219,7 +24325,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: device.revoked
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -24306,7 +24412,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: account.suspended
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -24376,7 +24482,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: account.reactivated
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -24446,7 +24552,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: account.deletion_scheduled
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -24516,7 +24622,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: message.queued
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -24604,7 +24710,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: message.sent
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -24692,7 +24798,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: message.delivered
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -24780,7 +24886,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: message.read
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -24868,7 +24974,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: message.failed
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -24956,7 +25062,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: message.expired
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -25044,7 +25150,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: message.cancelled
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -25133,7 +25239,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: message.received
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -25222,7 +25328,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: conversation.read
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -25277,7 +25383,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: conversation.unread
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -25332,7 +25438,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: conversation.archived
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -25387,7 +25493,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: conversation.unarchived
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -25442,7 +25548,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: conversation.deleted
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -25479,7 +25585,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: contact.opted_out
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -25521,7 +25627,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: contact.opted_in
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example
@@ -25563,7 +25669,7 @@ webhooks:
                 value:
                   id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   type: ping
-                  api_version: 1.0.0-rc.2
+                  api_version: 1.0.0
                   created_at: '2026-10-01T09:15:02Z'
                   account_id: 0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10
                   account_external_ref: example

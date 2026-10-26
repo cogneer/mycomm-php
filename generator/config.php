@@ -139,6 +139,7 @@ return [
         'resumeDevice' => 'devices.resume',
         'retryMessage' => 'messages.retry',
         'revokeApiKey' => 'apiKeys.revoke',
+        'rotateApiKey' => 'apiKeys.rotate',
         'revokeDevice' => 'devices.revoke',
         'revokeManagedAccountKey' => 'partner.accountKeys.revoke',
         'rotateWebhookEndpointSecret' => 'webhookEndpoints.rotateSecret',

@@ -38,7 +38,7 @@ abstract class Event extends Model
      */
     public readonly ?string $account_external_ref;
 
-    public readonly ?string $inbox_id;
+    public readonly ?string $line_id;
 
     public readonly ?Models\WebhookChannelRef $channel;
 
@@ -50,7 +50,7 @@ abstract class Event extends Model
         $this->created_at = self::dateTime($data['created_at']);
         $this->account_id = $data['account_id'];
         $this->account_external_ref = $data['account_external_ref'] ?? null;
-        $this->inbox_id = $data['inbox_id'] ?? null;
+        $this->line_id = $data['line_id'] ?? null;
         $this->channel = isset($data['channel']) ? Models\WebhookChannelRef::fromArray($data['channel']) : null;
         $this->hydrateData($data);
     }

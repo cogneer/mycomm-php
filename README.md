@@ -44,6 +44,10 @@ echo $message->status->value;     // "queued"  (an enum case, MessageStatus::Que
 Create the key in the MyComm portal under **Developers → API keys**. Keep it on your server: never ship it in
 a browser or a mobile app.
 
+The example uses a key limited to one **line** (a sending identity whose senders are your connected channels), so
+the call names no sender: MyComm picks the line's healthy sender. A key that reaches several lines adds
+`line_id: '...'`; `channel_id` or `from` pin one channel.
+
 ## How the SDK maps to the API
 
 Each resource of the [API reference](https://mycomm.cogneer.tech/docs/api/public) is a property of the client and
@@ -57,6 +61,8 @@ the operations by resource, so the same call reads `messages->send()`:
 | `blockContactIdentity` | `$mycomm->contacts->identities->block($contactId, $identityId)` |
 | `rotateWebhookEndpointSecret` | `$mycomm->webhookEndpoints->rotateSecret($id)` |
 | `provisionManagedAccount` | `$mycomm->partner->accounts->provision(...)` |
+| `setLineSenders` | `$mycomm->lines->setSenders($lineId, senders: [...])` |
+| `handOverConversation` | `$mycomm->conversations->handover($id, line_id: $lineId)` |
 
 `generator/config.php` holds the full table of operation ids.
 
@@ -155,7 +161,7 @@ false)`. Values the API may add later (the enum of a response, an unknown error 
 would be accepted. It sends nothing: the second check is a dry run.
 
 ```php
-$result = $mycomm->verify(to: '+923001234567');     // add inboxId: '...' when the key can use several
+$result = $mycomm->verify(to: '+923001234567');     // add lineId: '...' when the key can use several lines
 
 if (! $result->ok()) {
     foreach ($result->problems() as $problem) {
@@ -409,6 +415,9 @@ so `$channel->status === ChannelStatus::Active` keeps working and nothing throws
 
 The SDK follows [semantic versioning](https://semver.org). It is generated from the same OpenAPI documents
 that the API is tested against; [CHANGELOG.md](CHANGELOG.md) lists what each release added.
+
+Release status: `1.0.x` is published on Packagist. `2.0.0` (lines replace inboxes, a breaking release) is not
+published yet; until it is, `composer require mycomm/mycomm-php` installs `1.0.x`.
 
 ## Contributing
 

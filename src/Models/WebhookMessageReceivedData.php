@@ -14,12 +14,18 @@ final class WebhookMessageReceivedData extends Model
 
     public readonly WebhookConversationRef $conversation;
 
+    /**
+     * The length of `message.sender_attempts`: 1 for a message that stayed on its first sender, more after a retry or a failover, 0 for inbound.
+     */
+    public readonly int $sender_attempt_count;
+
     public readonly bool $contact_created;
 
     protected function hydrate(array $data): void
     {
         $this->message = Message::fromArray($data['message']);
         $this->conversation = WebhookConversationRef::fromArray($data['conversation']);
+        $this->sender_attempt_count = $data['sender_attempt_count'];
         $this->contact_created = $data['contact_created'];
     }
 }

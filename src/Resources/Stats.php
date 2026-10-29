@@ -26,11 +26,11 @@ final class Stats
      * and `to` are inclusive and span at most 366 days (`422 RANGE_TOO_LARGE`, details `{max_days: 366}`).
      * With `group_by=none` every day is present, zeros included, and the response is not paginated. Grouped
      * results contain rows only where there was traffic, ordered by `date` then the group key, and are
-     * paginated with `cursor`. A key restricted to inboxes sees its inboxes only and may group by `none` or
-     * `inbox`; other values give `VALIDATION_FAILED`.
+     * paginated with `cursor`. A key restricted to lines sees its lines only and may group by `none` or
+     * `line`; other values give `VALIDATION_FAILED`.
      *
      * @param  ?string  $channel_type  One of: `android_sim`, `whatsapp_evolution`, `telegram_bot`.
-     * @param  ?string  $group_by  Default `none`. One of: `none`, `channel`, `inbox`, `channel_type`.
+     * @param  ?string  $group_by  Default `none`. One of: `none`, `channel`, `line`, `channel_type`.
      * @param  ?int  $limit  Grouped results only. 1 to 1,000 rows, default 200.
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      *
@@ -42,7 +42,7 @@ final class Stats
         string $from,
         string $to,
         ?string $channel_id = null,
-        ?string $inbox_id = null,
+        ?string $line_id = null,
         ?string $channel_type = null,
         ?string $group_by = null,
         ?int $limit = null,
@@ -53,14 +53,14 @@ final class Stats
             'stats.daily',
             [
                 'channel_id' => $channel_id,
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'limit' => $limit,
             ],
             [
                 'channel_id' => [
                     'uuid' => true,
                 ],
-                'inbox_id' => [
+                'line_id' => [
                     'uuid' => true,
                 ],
                 'limit' => [
@@ -79,7 +79,7 @@ final class Stats
                 'from' => $from,
                 'to' => $to,
                 'channel_id' => $channel_id,
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'channel_type' => $channel_type,
                 'group_by' => $group_by,
                 'limit' => $limit,
@@ -99,8 +99,8 @@ final class Stats
      * details `{max_days: 366}`). `delivery_rate` is delivered over sent on channels with delivery reports;
      * `read_rate` is `null` when the account has no read-capable channel; a rate is `null` when there is
      * nothing to divide by. `failures_by_code` counts outbound messages whose `failed_at` falls in the range.
-     * `queue_now`, `channels` and `devices` are current counts. A key restricted to inboxes gets figures for
-     * its inboxes, channels and devices only.
+     * `queue_now`, `channels` and `devices` are current counts. A key restricted to lines gets figures for its
+     * lines, channels and devices only.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached

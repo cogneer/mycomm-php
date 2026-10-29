@@ -22,7 +22,7 @@ final class AutomationRun extends Model
 
     public readonly string $rule_id;
 
-    public readonly string $inbox_id;
+    public readonly string $line_id;
 
     public readonly string $conversation_id;
 
@@ -41,7 +41,7 @@ final class AutomationRun extends Model
     {
         $this->id = $data['id'];
         $this->rule_id = $data['rule_id'];
-        $this->inbox_id = $data['inbox_id'];
+        $this->line_id = $data['line_id'];
         $this->conversation_id = $data['conversation_id'];
         $this->trigger_message_id = $data['trigger_message_id'];
         $this->outcome = self::enum(Enums\AutomationRunOutcome::class, $data['outcome']);

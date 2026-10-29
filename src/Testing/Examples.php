@@ -84,7 +84,7 @@ final class Examples
                 'name' => 'Example name',
                 'prefix' => 'Example prefix',
                 'scope' => [
-                    'inbox_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
+                    'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'channel_types' => ['Example channel type'],
                 ],
                 'abilities' => ['Example ability'],
@@ -111,7 +111,7 @@ final class Examples
                         'name' => 'Example name',
                         'prefix' => 'Example prefix',
                         'scope' => [
-                            'inbox_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
+                            'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                             'channel_types' => ['Example channel type'],
                         ],
                         'abilities' => ['Example ability'],
@@ -142,7 +142,7 @@ final class Examples
                 'name' => 'Example name',
                 'prefix' => 'Example prefix',
                 'scope' => [
-                    'inbox_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
+                    'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'channel_types' => ['Example channel type'],
                 ],
                 'abilities' => ['Example ability'],
@@ -168,7 +168,7 @@ final class Examples
             'status' => 201,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'keyword',
                 'name' => 'Example name',
                 'position' => 1,
@@ -203,7 +203,7 @@ final class Examples
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'keyword',
                 'name' => 'Example name',
                 'position' => 1,
@@ -236,7 +236,7 @@ final class Examples
                 'data' => [
                     [
                         'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                        'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'type' => 'keyword',
                         'name' => 'Example name',
                         'position' => 1,
@@ -271,7 +271,7 @@ final class Examples
                 'data' => [
                     [
                         'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                        'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'type' => 'keyword',
                         'name' => 'Example name',
                         'position' => 1,
@@ -323,7 +323,7 @@ final class Examples
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'keyword',
                 'name' => 'Example name',
                 'position' => 1,
@@ -357,7 +357,7 @@ final class Examples
                     [
                         'id' => 1,
                         'rule_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                        'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'conversation_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'trigger_message_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'outcome' => 'applied',
@@ -383,7 +383,7 @@ final class Examples
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'name' => 'Example name',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'status' => 'draft',
                 'body' => 'Example body',
@@ -448,7 +448,7 @@ final class Examples
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'name' => 'Example name',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'status' => 'draft',
                 'body' => 'Example body',
@@ -552,7 +552,7 @@ final class Examples
                     [
                         'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'name' => 'Example name',
-                        'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'status' => 'draft',
                         'body' => 'Example body',
@@ -620,7 +620,7 @@ final class Examples
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'name' => 'Example name',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'status' => 'draft',
                 'body' => 'Example body',
@@ -752,7 +752,7 @@ final class Examples
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'name' => 'Example name',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'status' => 'draft',
                 'body' => 'Example body',
@@ -817,7 +817,7 @@ final class Examples
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'name' => 'Example name',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'status' => 'draft',
                 'body' => 'Example body',
@@ -882,7 +882,7 @@ final class Examples
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'name' => 'Example name',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'status' => 'draft',
                 'body' => 'Example body',
@@ -947,7 +947,7 @@ final class Examples
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'name' => 'Example name',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'status' => 'draft',
                 'body' => 'Example body',
@@ -1012,7 +1012,7 @@ final class Examples
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'name' => 'Example name',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'status' => 'draft',
                 'body' => 'Example body',
@@ -1086,7 +1086,8 @@ final class Examples
                 'disconnect_reason' => 'owner',
                 'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'main_inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'capabilities' => [
                     'text_max_chars' => 1,
                     'segmented' => true,
@@ -1198,7 +1199,6 @@ final class Examples
                     'segments_1h' => 1,
                     'segments_24h' => 1,
                 ],
-                'reply_window_days' => 1,
                 'throttled_until' => '2026-10-01T09:15:02Z',
                 'verification' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1240,7 +1240,8 @@ final class Examples
                 'disconnect_reason' => 'owner',
                 'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'main_inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'capabilities' => [
                     'text_max_chars' => 1,
                     'segmented' => true,
@@ -1352,7 +1353,6 @@ final class Examples
                     'segments_1h' => 1,
                     'segments_24h' => 1,
                 ],
-                'reply_window_days' => 1,
                 'throttled_until' => '2026-10-01T09:15:02Z',
                 'verification' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1392,7 +1392,8 @@ final class Examples
                         'disconnect_reason' => 'owner',
                         'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                        'main_inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                         'capabilities' => [
                             'text_max_chars' => 1,
                             'segmented' => true,
@@ -1504,7 +1505,6 @@ final class Examples
                             'segments_1h' => 1,
                             'segments_24h' => 1,
                         ],
-                        'reply_window_days' => 1,
                         'throttled_until' => '2026-10-01T09:15:02Z',
                         'verification' => [
                             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1545,7 +1545,8 @@ final class Examples
                 'disconnect_reason' => 'owner',
                 'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'main_inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'capabilities' => [
                     'text_max_chars' => 1,
                     'segmented' => true,
@@ -1657,7 +1658,6 @@ final class Examples
                     'segments_1h' => 1,
                     'segments_24h' => 1,
                 ],
-                'reply_window_days' => 1,
                 'throttled_until' => '2026-10-01T09:15:02Z',
                 'verification' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1695,7 +1695,8 @@ final class Examples
                 'disconnect_reason' => 'owner',
                 'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'main_inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'capabilities' => [
                     'text_max_chars' => 1,
                     'segmented' => true,
@@ -1807,7 +1808,6 @@ final class Examples
                     'segments_1h' => 1,
                     'segments_24h' => 1,
                 ],
-                'reply_window_days' => 1,
                 'throttled_until' => '2026-10-01T09:15:02Z',
                 'verification' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -1886,7 +1886,8 @@ final class Examples
                 'disconnect_reason' => 'owner',
                 'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'main_inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'capabilities' => [
                     'text_max_chars' => 1,
                     'segmented' => true,
@@ -1998,7 +1999,6 @@ final class Examples
                     'segments_1h' => 1,
                     'segments_24h' => 1,
                 ],
-                'reply_window_days' => 1,
                 'throttled_until' => '2026-10-01T09:15:02Z',
                 'verification' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -2036,7 +2036,8 @@ final class Examples
                 'disconnect_reason' => 'owner',
                 'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'main_inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'capabilities' => [
                     'text_max_chars' => 1,
                     'segmented' => true,
@@ -2148,7 +2149,6 @@ final class Examples
                     'segments_1h' => 1,
                     'segments_24h' => 1,
                 ],
-                'reply_window_days' => 1,
                 'throttled_until' => '2026-10-01T09:15:02Z',
                 'verification' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -2186,7 +2186,8 @@ final class Examples
                 'disconnect_reason' => 'owner',
                 'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'main_inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'capabilities' => [
                     'text_max_chars' => 1,
                     'segmented' => true,
@@ -2298,7 +2299,6 @@ final class Examples
                     'segments_1h' => 1,
                     'segments_24h' => 1,
                 ],
-                'reply_window_days' => 1,
                 'throttled_until' => '2026-10-01T09:15:02Z',
                 'verification' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -2454,7 +2454,7 @@ final class Examples
                 'data' => [
                     [
                         'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                        'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'channel_type' => 'Example channel type',
                         'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -2747,7 +2747,7 @@ final class Examples
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_type' => 'Example channel type',
                 'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -2772,7 +2772,7 @@ final class Examples
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_type' => 'Example channel type',
                 'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -2799,13 +2799,38 @@ final class Examples
                 'status' => 'deleting',
             ],
         ],
+        'conversations.handover' => [
+            'status' => 200,
+            'body' => [
+                'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'channel_type' => 'Example channel type',
+                'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'contact_identity_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'address' => '+923001234567',
+                'contact_display_name' => 'Example contact display name',
+                'status' => 'Example status',
+                'unread_count' => 1,
+                'last_message_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'last_message_at' => '2026-10-01T09:15:02Z',
+                'last_message_preview' => 'Example last message preview',
+                'last_direction' => 'Example last direction',
+                'last_outbound_at' => '2026-10-01T09:15:02Z',
+                'last_inbound_at' => '2026-10-01T09:15:02Z',
+                'blocked_at' => '2026-10-01T09:15:02Z',
+                'suppressed' => true,
+                'channel_meta' => [],
+                'created_at' => '2026-10-01T09:15:02Z',
+            ],
+        ],
         'conversations.list' => [
             'status' => 200,
             'body' => [
                 'data' => [
                     [
                         'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                        'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'channel_type' => 'Example channel type',
                         'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -2838,7 +2863,7 @@ final class Examples
                         'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                         'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                         'channel_type' => 'android_sim',
-                        'inbox_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
+                        'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
                         'conversation_id' => '0198f3a2-7a05-7d33-9f10-2b6c8e1d5a04',
                         'contact_id' => '0198ea17-5c28-7b94-8e07-3a9d1f4c6b05',
                         'identity' => [
@@ -2870,6 +2895,16 @@ final class Examples
                         'send_after' => null,
                         'expires_at' => '2026-10-02T09:15:02Z',
                         'attempts' => 0,
+                        'sender_pinned' => false,
+                        'sender_attempts' => [
+                            [
+                                'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
+                                'outcome' => 'queued',
+                                'reason' => null,
+                                'started_at' => '2026-10-01T09:15:02Z',
+                                'ended_at' => null,
+                            ],
+                        ],
                         'failure' => null,
                         'cancel_requested_at' => null,
                         'reference_id' => 'order-1094',
@@ -2900,7 +2935,7 @@ final class Examples
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_type' => 'Example channel type',
                 'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -2928,7 +2963,7 @@ final class Examples
                 'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_type' => 'Example channel type',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'conversation_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'identity' => [
@@ -2966,6 +3001,16 @@ final class Examples
                 'send_after' => '2026-10-01T09:15:02Z',
                 'expires_at' => '2026-10-01T09:15:02Z',
                 'attempts' => 1,
+                'sender_pinned' => true,
+                'sender_attempts' => [
+                    [
+                        'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'outcome' => 'queued',
+                        'reason' => 'Example reason',
+                        'started_at' => '2026-10-01T09:15:02Z',
+                        'ended_at' => '2026-10-01T09:15:02Z',
+                    ],
+                ],
                 'failure' => [
                     'code' => 'Example code',
                     'message' => 'Example message',
@@ -3001,7 +3046,7 @@ final class Examples
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_type' => 'Example channel type',
                 'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -3026,7 +3071,7 @@ final class Examples
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_type' => 'Example channel type',
                 'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -3051,7 +3096,7 @@ final class Examples
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_type' => 'Example channel type',
                 'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -3076,7 +3121,7 @@ final class Examples
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_type' => 'Example channel type',
                 'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -3778,108 +3823,132 @@ final class Examples
                 'next_cursor' => null,
             ],
         ],
-        'inboxes.archive' => [
+        'lines.archive' => [
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'kind' => 'main',
+                'kind' => 'direct',
                 'name' => 'Example name',
-                'channel' => [
-                    'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'type' => 'android_sim',
-                    'name' => 'Example name',
-                    'address' => '+923001234567',
-                    'display_address' => '+923001234567',
-                    'status' => 'Example status',
+                'send_mode' => 'ordered',
+                'reply_window_days' => 1,
+                'on_unconfirmed' => 'fail',
+                'show_in_portal' => true,
+                'senders' => [
+                    [
+                        'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'channel_type' => 'android_sim',
+                        'address' => '+923001234567',
+                        'role' => 'primary',
+                        'position' => 1,
+                        'enabled' => true,
+                        'healthy' => true,
+                    ],
                 ],
                 'settings' => [
                     'business_hours' => [],
                     'signature' => 'Example signature',
                 ],
-                'archived_at' => '2026-10-01T09:15:02Z',
                 'open_conversations' => 1,
                 'unread_conversations' => 1,
+                'archived_at' => '2026-10-01T09:15:02Z',
                 'created_at' => '2026-10-01T09:15:02Z',
                 'updated_at' => '2026-10-01T09:15:02Z',
             ],
         ],
-        'inboxes.create' => [
+        'lines.create' => [
             'status' => 201,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'kind' => 'main',
+                'kind' => 'direct',
                 'name' => 'Example name',
-                'channel' => [
-                    'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'type' => 'android_sim',
-                    'name' => 'Example name',
-                    'address' => '+923001234567',
-                    'display_address' => '+923001234567',
-                    'status' => 'Example status',
+                'send_mode' => 'ordered',
+                'reply_window_days' => 1,
+                'on_unconfirmed' => 'fail',
+                'show_in_portal' => true,
+                'senders' => [
+                    [
+                        'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'channel_type' => 'android_sim',
+                        'address' => '+923001234567',
+                        'role' => 'primary',
+                        'position' => 1,
+                        'enabled' => true,
+                        'healthy' => true,
+                    ],
                 ],
                 'settings' => [
                     'business_hours' => [],
                     'signature' => 'Example signature',
                 ],
-                'archived_at' => '2026-10-01T09:15:02Z',
                 'open_conversations' => 1,
                 'unread_conversations' => 1,
+                'archived_at' => '2026-10-01T09:15:02Z',
                 'created_at' => '2026-10-01T09:15:02Z',
                 'updated_at' => '2026-10-01T09:15:02Z',
             ],
         ],
-        'inboxes.get' => [
+        'lines.get' => [
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'kind' => 'main',
+                'kind' => 'direct',
                 'name' => 'Example name',
-                'channel' => [
-                    'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'type' => 'android_sim',
-                    'name' => 'Example name',
-                    'address' => '+923001234567',
-                    'display_address' => '+923001234567',
-                    'status' => 'Example status',
+                'send_mode' => 'ordered',
+                'reply_window_days' => 1,
+                'on_unconfirmed' => 'fail',
+                'show_in_portal' => true,
+                'senders' => [
+                    [
+                        'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'channel_type' => 'android_sim',
+                        'address' => '+923001234567',
+                        'role' => 'primary',
+                        'position' => 1,
+                        'enabled' => true,
+                        'healthy' => true,
+                    ],
                 ],
                 'settings' => [
                     'business_hours' => [],
                     'signature' => 'Example signature',
                 ],
-                'archived_at' => '2026-10-01T09:15:02Z',
                 'open_conversations' => 1,
                 'unread_conversations' => 1,
+                'archived_at' => '2026-10-01T09:15:02Z',
                 'created_at' => '2026-10-01T09:15:02Z',
                 'updated_at' => '2026-10-01T09:15:02Z',
             ],
         ],
-        'inboxes.list' => [
+        'lines.list' => [
             'status' => 200,
             'body' => [
                 'data' => [
                     [
                         'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                        'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                        'kind' => 'main',
+                        'kind' => 'direct',
                         'name' => 'Example name',
-                        'channel' => [
-                            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                            'type' => 'android_sim',
-                            'name' => 'Example name',
-                            'address' => '+923001234567',
-                            'display_address' => '+923001234567',
-                            'status' => 'Example status',
+                        'send_mode' => 'ordered',
+                        'reply_window_days' => 1,
+                        'on_unconfirmed' => 'fail',
+                        'show_in_portal' => true,
+                        'senders' => [
+                            [
+                                'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                                'channel_type' => 'android_sim',
+                                'address' => '+923001234567',
+                                'role' => 'primary',
+                                'position' => 1,
+                                'enabled' => true,
+                                'healthy' => true,
+                            ],
                         ],
                         'settings' => [
                             'business_hours' => [],
                             'signature' => 'Example signature',
                         ],
-                        'archived_at' => '2026-10-01T09:15:02Z',
                         'open_conversations' => 1,
                         'unread_conversations' => 1,
+                        'archived_at' => '2026-10-01T09:15:02Z',
                         'created_at' => '2026-10-01T09:15:02Z',
                         'updated_at' => '2026-10-01T09:15:02Z',
                     ],
@@ -3887,54 +3956,98 @@ final class Examples
                 'next_cursor' => null,
             ],
         ],
-        'inboxes.unarchive' => [
+        'lines.listSenders' => [
+            'status' => 200,
+            'body' => [
+                'data' => [
+                    [
+                        'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'channel_type' => 'android_sim',
+                        'address' => '+923001234567',
+                        'role' => 'primary',
+                        'position' => 1,
+                        'enabled' => true,
+                        'healthy' => true,
+                    ],
+                ],
+            ],
+        ],
+        'lines.setSenders' => [
+            'status' => 200,
+            'body' => [
+                'data' => [
+                    [
+                        'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'channel_type' => 'android_sim',
+                        'address' => '+923001234567',
+                        'role' => 'primary',
+                        'position' => 1,
+                        'enabled' => true,
+                        'healthy' => true,
+                    ],
+                ],
+            ],
+        ],
+        'lines.unarchive' => [
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'kind' => 'main',
+                'kind' => 'direct',
                 'name' => 'Example name',
-                'channel' => [
-                    'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'type' => 'android_sim',
-                    'name' => 'Example name',
-                    'address' => '+923001234567',
-                    'display_address' => '+923001234567',
-                    'status' => 'Example status',
+                'send_mode' => 'ordered',
+                'reply_window_days' => 1,
+                'on_unconfirmed' => 'fail',
+                'show_in_portal' => true,
+                'senders' => [
+                    [
+                        'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'channel_type' => 'android_sim',
+                        'address' => '+923001234567',
+                        'role' => 'primary',
+                        'position' => 1,
+                        'enabled' => true,
+                        'healthy' => true,
+                    ],
                 ],
                 'settings' => [
                     'business_hours' => [],
                     'signature' => 'Example signature',
                 ],
-                'archived_at' => '2026-10-01T09:15:02Z',
                 'open_conversations' => 1,
                 'unread_conversations' => 1,
+                'archived_at' => '2026-10-01T09:15:02Z',
                 'created_at' => '2026-10-01T09:15:02Z',
                 'updated_at' => '2026-10-01T09:15:02Z',
             ],
         ],
-        'inboxes.update' => [
+        'lines.update' => [
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'kind' => 'main',
+                'kind' => 'direct',
                 'name' => 'Example name',
-                'channel' => [
-                    'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'type' => 'android_sim',
-                    'name' => 'Example name',
-                    'address' => '+923001234567',
-                    'display_address' => '+923001234567',
-                    'status' => 'Example status',
+                'send_mode' => 'ordered',
+                'reply_window_days' => 1,
+                'on_unconfirmed' => 'fail',
+                'show_in_portal' => true,
+                'senders' => [
+                    [
+                        'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'channel_type' => 'android_sim',
+                        'address' => '+923001234567',
+                        'role' => 'primary',
+                        'position' => 1,
+                        'enabled' => true,
+                        'healthy' => true,
+                    ],
                 ],
                 'settings' => [
                     'business_hours' => [],
                     'signature' => 'Example signature',
                 ],
-                'archived_at' => '2026-10-01T09:15:02Z',
                 'open_conversations' => 1,
                 'unread_conversations' => 1,
+                'archived_at' => '2026-10-01T09:15:02Z',
                 'created_at' => '2026-10-01T09:15:02Z',
                 'updated_at' => '2026-10-01T09:15:02Z',
             ],
@@ -3982,7 +4095,7 @@ final class Examples
                 'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                 'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                 'channel_type' => 'android_sim',
-                'inbox_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
+                'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
                 'conversation_id' => '0198f3a2-7a05-7d33-9f10-2b6c8e1d5a04',
                 'contact_id' => '0198ea17-5c28-7b94-8e07-3a9d1f4c6b05',
                 'identity' => [
@@ -4014,6 +4127,16 @@ final class Examples
                 'send_after' => null,
                 'expires_at' => '2026-10-02T09:15:02Z',
                 'attempts' => 0,
+                'sender_pinned' => false,
+                'sender_attempts' => [
+                    [
+                        'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
+                        'outcome' => 'queued',
+                        'reason' => null,
+                        'started_at' => '2026-10-01T09:15:02Z',
+                        'ended_at' => null,
+                    ],
+                ],
                 'failure' => null,
                 'cancel_requested_at' => null,
                 'reference_id' => 'order-1094',
@@ -4060,7 +4183,7 @@ final class Examples
                         'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                         'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                         'channel_type' => 'android_sim',
-                        'inbox_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
+                        'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
                         'conversation_id' => '0198f3a2-7a05-7d33-9f10-2b6c8e1d5a04',
                         'contact_id' => '0198ea17-5c28-7b94-8e07-3a9d1f4c6b05',
                         'identity' => [
@@ -4092,6 +4215,16 @@ final class Examples
                         'send_after' => null,
                         'expires_at' => '2026-10-02T09:15:02Z',
                         'attempts' => 0,
+                        'sender_pinned' => false,
+                        'sender_attempts' => [
+                            [
+                                'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
+                                'outcome' => 'queued',
+                                'reason' => null,
+                                'started_at' => '2026-10-01T09:15:02Z',
+                                'ended_at' => null,
+                            ],
+                        ],
                         'failure' => null,
                         'cancel_requested_at' => null,
                         'reference_id' => 'order-1094',
@@ -4125,7 +4258,7 @@ final class Examples
                 'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                 'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                 'channel_type' => 'android_sim',
-                'inbox_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
+                'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
                 'conversation_id' => '0198f3a2-7a05-7d33-9f10-2b6c8e1d5a04',
                 'contact_id' => '0198ea17-5c28-7b94-8e07-3a9d1f4c6b05',
                 'identity' => [
@@ -4157,6 +4290,16 @@ final class Examples
                 'send_after' => null,
                 'expires_at' => '2026-10-02T09:15:02Z',
                 'attempts' => 0,
+                'sender_pinned' => false,
+                'sender_attempts' => [
+                    [
+                        'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
+                        'outcome' => 'queued',
+                        'reason' => null,
+                        'started_at' => '2026-10-01T09:15:02Z',
+                        'ended_at' => null,
+                    ],
+                ],
                 'failure' => null,
                 'cancel_requested_at' => null,
                 'reference_id' => 'order-1094',
@@ -4187,7 +4330,7 @@ final class Examples
                 'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_type' => 'Example channel type',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'conversation_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'identity' => [
@@ -4225,6 +4368,16 @@ final class Examples
                 'send_after' => '2026-10-01T09:15:02Z',
                 'expires_at' => '2026-10-01T09:15:02Z',
                 'attempts' => 1,
+                'sender_pinned' => true,
+                'sender_attempts' => [
+                    [
+                        'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'outcome' => 'queued',
+                        'reason' => 'Example reason',
+                        'started_at' => '2026-10-01T09:15:02Z',
+                        'ended_at' => '2026-10-01T09:15:02Z',
+                    ],
+                ],
                 'failure' => [
                     'code' => 'Example code',
                     'message' => 'Example message',
@@ -4273,7 +4426,7 @@ final class Examples
                             'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                             'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                             'channel_type' => 'android_sim',
-                            'inbox_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
+                            'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
                             'conversation_id' => '0198f3a2-7a05-7d33-9f10-2b6c8e1d5a04',
                             'contact_id' => '0198ea17-5c28-7b94-8e07-3a9d1f4c6b05',
                             'identity' => [
@@ -4305,6 +4458,16 @@ final class Examples
                             'send_after' => null,
                             'expires_at' => '2026-10-02T09:15:02Z',
                             'attempts' => 0,
+                            'sender_pinned' => false,
+                            'sender_attempts' => [
+                                [
+                                    'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
+                                    'outcome' => 'queued',
+                                    'reason' => null,
+                                    'started_at' => '2026-10-01T09:15:02Z',
+                                    'ended_at' => null,
+                                ],
+                            ],
                             'failure' => null,
                             'cancel_requested_at' => null,
                             'reference_id' => 'order-1094',
@@ -4350,7 +4513,7 @@ final class Examples
                 'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                 'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                 'channel_type' => 'android_sim',
-                'inbox_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
+                'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
                 'conversation_id' => '0198f3a2-7a05-7d33-9f10-2b6c8e1d5a04',
                 'contact_id' => '0198ea17-5c28-7b94-8e07-3a9d1f4c6b05',
                 'identity' => [
@@ -4382,6 +4545,16 @@ final class Examples
                 'send_after' => null,
                 'expires_at' => '2026-10-02T09:15:02Z',
                 'attempts' => 0,
+                'sender_pinned' => false,
+                'sender_attempts' => [
+                    [
+                        'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
+                        'outcome' => 'queued',
+                        'reason' => null,
+                        'started_at' => '2026-10-01T09:15:02Z',
+                        'ended_at' => null,
+                    ],
+                ],
                 'failure' => null,
                 'cancel_requested_at' => null,
                 'reference_id' => 'order-1094',
@@ -4453,7 +4626,7 @@ final class Examples
                 'name' => 'Example name',
                 'prefix' => 'Example prefix',
                 'scope' => [
-                    'inbox_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
+                    'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'channel_types' => ['Example channel type'],
                 ],
                 'abilities' => ['Example ability'],
@@ -4480,7 +4653,7 @@ final class Examples
                         'name' => 'Example name',
                         'prefix' => 'Example prefix',
                         'scope' => [
-                            'inbox_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
+                            'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                             'channel_types' => ['Example channel type'],
                         ],
                         'abilities' => ['Example ability'],
@@ -5031,7 +5204,7 @@ final class Examples
                     [
                         'date' => '2026-10-01',
                         'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                        'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'channel_type' => 'android_sim',
                         'sent_messages' => 1,
                         'sent_segments' => 1,
@@ -5399,7 +5572,7 @@ final class Examples
                 'url' => 'https://example.com/mycomm',
                 'description' => 'Example description',
                 'events' => ['campaign.scheduled'],
-                'inbox_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
+                'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'channel_types' => ['Example channel type'],
                 'include_managed_accounts' => true,
                 'active' => true,
@@ -5424,7 +5597,7 @@ final class Examples
                 'url' => 'https://example.com/mycomm',
                 'description' => 'Example description',
                 'events' => ['campaign.scheduled'],
-                'inbox_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
+                'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'channel_types' => ['Example channel type'],
                 'include_managed_accounts' => true,
                 'active' => true,
@@ -5446,7 +5619,7 @@ final class Examples
                         'url' => 'https://example.com/mycomm',
                         'description' => 'Example description',
                         'events' => ['campaign.scheduled'],
-                        'inbox_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
+                        'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                         'channel_types' => ['Example channel type'],
                         'include_managed_accounts' => true,
                         'active' => true,
@@ -5486,7 +5659,7 @@ final class Examples
                 'url' => 'https://example.com/mycomm',
                 'description' => 'Example description',
                 'events' => ['campaign.scheduled'],
-                'inbox_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
+                'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'channel_types' => ['Example channel type'],
                 'include_managed_accounts' => true,
                 'active' => true,
@@ -5510,7 +5683,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -5519,7 +5692,7 @@ final class Examples
                 'campaign' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'name' => 'Example name',
-                    'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'status' => 'draft',
                     'body' => 'Example body',
@@ -5591,7 +5764,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -5600,7 +5773,7 @@ final class Examples
                 'campaign' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'name' => 'Example name',
-                    'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'status' => 'draft',
                     'body' => 'Example body',
@@ -5672,7 +5845,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -5681,7 +5854,7 @@ final class Examples
                 'campaign' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'name' => 'Example name',
-                    'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'status' => 'draft',
                     'body' => 'Example body',
@@ -5749,7 +5922,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -5758,7 +5931,7 @@ final class Examples
                 'campaign' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'name' => 'Example name',
-                    'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'status' => 'draft',
                     'body' => 'Example body',
@@ -5830,7 +6003,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -5839,7 +6012,7 @@ final class Examples
                 'campaign' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'name' => 'Example name',
-                    'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'status' => 'draft',
                     'body' => 'Example body',
@@ -5911,7 +6084,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -5920,7 +6093,7 @@ final class Examples
                 'campaign' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'name' => 'Example name',
-                    'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'status' => 'draft',
                     'body' => 'Example body',
@@ -5988,7 +6161,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -5997,7 +6170,7 @@ final class Examples
                 'campaign' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'name' => 'Example name',
-                    'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'status' => 'draft',
                     'body' => 'Example body',
@@ -6069,7 +6242,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -6118,7 +6291,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -6168,7 +6341,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -6186,7 +6359,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -6222,7 +6395,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -6258,7 +6431,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -6277,6 +6450,86 @@ final class Examples
                 ],
             ],
         ],
+        'line.sender_changed' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'type' => 'line.sender_changed',
+            'api_version' => '1.0.0',
+            'created_at' => '2026-10-01T09:15:02Z',
+            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'account_external_ref' => 'Example account external ref',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'channel' => [
+                'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'type' => 'Example type',
+            ],
+            'data' => [
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'senders' => [
+                    [
+                        'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'role' => 'primary',
+                        'position' => 1,
+                        'enabled' => true,
+                    ],
+                ],
+            ],
+        ],
+        'line.failover' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'type' => 'line.failover',
+            'api_version' => '1.0.0',
+            'created_at' => '2026-10-01T09:15:02Z',
+            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'account_external_ref' => 'Example account external ref',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'channel' => [
+                'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'type' => 'Example type',
+            ],
+            'data' => [
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'from_channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'to_channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'reason' => 'Example reason',
+                'message_count' => 1,
+                'message_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
+            ],
+        ],
+        'line.no_sender' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'type' => 'line.no_sender',
+            'api_version' => '1.0.0',
+            'created_at' => '2026-10-01T09:15:02Z',
+            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'account_external_ref' => 'Example account external ref',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'channel' => [
+                'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'type' => 'Example type',
+            ],
+            'data' => [
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'held_count' => 1,
+            ],
+        ],
+        'conversation.handed_over' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'type' => 'conversation.handed_over',
+            'api_version' => '1.0.0',
+            'created_at' => '2026-10-01T09:15:02Z',
+            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'account_external_ref' => 'Example account external ref',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'channel' => [
+                'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'type' => 'Example type',
+            ],
+            'data' => [
+                'conversation_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'from_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'to_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            ],
+        ],
         'link.clicked' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'type' => 'link.clicked',
@@ -6284,7 +6537,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -6308,7 +6561,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -6326,7 +6579,8 @@ final class Examples
                     'disconnect_reason' => 'owner',
                     'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'main_inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'capabilities' => [
                         'text_max_chars' => 1,
                         'segmented' => true,
@@ -6438,7 +6692,6 @@ final class Examples
                         'segments_1h' => 1,
                         'segments_24h' => 1,
                     ],
-                    'reply_window_days' => 1,
                     'throttled_until' => '2026-10-01T09:15:02Z',
                     'verification' => [
                         'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6470,7 +6723,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -6488,7 +6741,8 @@ final class Examples
                     'disconnect_reason' => 'owner',
                     'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'main_inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'capabilities' => [
                         'text_max_chars' => 1,
                         'segmented' => true,
@@ -6600,7 +6854,6 @@ final class Examples
                         'segments_1h' => 1,
                         'segments_24h' => 1,
                     ],
-                    'reply_window_days' => 1,
                     'throttled_until' => '2026-10-01T09:15:02Z',
                     'verification' => [
                         'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6633,7 +6886,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -6651,7 +6904,8 @@ final class Examples
                     'disconnect_reason' => 'owner',
                     'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'main_inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'capabilities' => [
                         'text_max_chars' => 1,
                         'segmented' => true,
@@ -6763,7 +7017,6 @@ final class Examples
                         'segments_1h' => 1,
                         'segments_24h' => 1,
                     ],
-                    'reply_window_days' => 1,
                     'throttled_until' => '2026-10-01T09:15:02Z',
                     'verification' => [
                         'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6796,7 +7049,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -6814,7 +7067,8 @@ final class Examples
                     'disconnect_reason' => 'owner',
                     'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'main_inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'capabilities' => [
                         'text_max_chars' => 1,
                         'segmented' => true,
@@ -6926,7 +7180,6 @@ final class Examples
                         'segments_1h' => 1,
                         'segments_24h' => 1,
                     ],
-                    'reply_window_days' => 1,
                     'throttled_until' => '2026-10-01T09:15:02Z',
                     'verification' => [
                         'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6961,7 +7214,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -6979,7 +7232,8 @@ final class Examples
                     'disconnect_reason' => 'owner',
                     'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'main_inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'capabilities' => [
                         'text_max_chars' => 1,
                         'segmented' => true,
@@ -7091,7 +7345,6 @@ final class Examples
                         'segments_1h' => 1,
                         'segments_24h' => 1,
                     ],
-                    'reply_window_days' => 1,
                     'throttled_until' => '2026-10-01T09:15:02Z',
                     'verification' => [
                         'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7123,7 +7376,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -7147,7 +7400,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -7167,7 +7420,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -7185,7 +7438,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -7264,7 +7517,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -7343,7 +7596,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -7422,7 +7675,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -7501,7 +7754,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -7580,7 +7833,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -7640,7 +7893,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -7700,7 +7953,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -7760,7 +8013,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -7771,7 +8024,7 @@ final class Examples
                     'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
-                    'inbox_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
+                    'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
                     'conversation_id' => '0198f3a2-7a05-7d33-9f10-2b6c8e1d5a04',
                     'contact_id' => '0198ea17-5c28-7b94-8e07-3a9d1f4c6b05',
                     'identity' => [
@@ -7803,6 +8056,16 @@ final class Examples
                     'send_after' => null,
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
+                    'sender_pinned' => false,
+                    'sender_attempts' => [
+                        [
+                            'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
+                            'outcome' => 'queued',
+                            'reason' => null,
+                            'started_at' => '2026-10-01T09:15:02Z',
+                            'ended_at' => null,
+                        ],
+                    ],
                     'failure' => null,
                     'cancel_requested_at' => null,
                     'reference_id' => 'order-1094',
@@ -7829,6 +8092,7 @@ final class Examples
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'created' => true,
                 ],
+                'sender_attempt_count' => 1,
             ],
         ],
         'message.sent' => [
@@ -7838,7 +8102,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -7849,7 +8113,7 @@ final class Examples
                     'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
-                    'inbox_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
+                    'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
                     'conversation_id' => '0198f3a2-7a05-7d33-9f10-2b6c8e1d5a04',
                     'contact_id' => '0198ea17-5c28-7b94-8e07-3a9d1f4c6b05',
                     'identity' => [
@@ -7881,6 +8145,16 @@ final class Examples
                     'send_after' => null,
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
+                    'sender_pinned' => false,
+                    'sender_attempts' => [
+                        [
+                            'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
+                            'outcome' => 'queued',
+                            'reason' => null,
+                            'started_at' => '2026-10-01T09:15:02Z',
+                            'ended_at' => null,
+                        ],
+                    ],
                     'failure' => null,
                     'cancel_requested_at' => null,
                     'reference_id' => 'order-1094',
@@ -7907,6 +8181,7 @@ final class Examples
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'created' => true,
                 ],
+                'sender_attempt_count' => 1,
             ],
         ],
         'message.delivered' => [
@@ -7916,7 +8191,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -7927,7 +8202,7 @@ final class Examples
                     'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
-                    'inbox_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
+                    'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
                     'conversation_id' => '0198f3a2-7a05-7d33-9f10-2b6c8e1d5a04',
                     'contact_id' => '0198ea17-5c28-7b94-8e07-3a9d1f4c6b05',
                     'identity' => [
@@ -7959,6 +8234,16 @@ final class Examples
                     'send_after' => null,
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
+                    'sender_pinned' => false,
+                    'sender_attempts' => [
+                        [
+                            'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
+                            'outcome' => 'queued',
+                            'reason' => null,
+                            'started_at' => '2026-10-01T09:15:02Z',
+                            'ended_at' => null,
+                        ],
+                    ],
                     'failure' => null,
                     'cancel_requested_at' => null,
                     'reference_id' => 'order-1094',
@@ -7985,6 +8270,7 @@ final class Examples
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'created' => true,
                 ],
+                'sender_attempt_count' => 1,
             ],
         ],
         'message.read' => [
@@ -7994,7 +8280,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -8005,7 +8291,7 @@ final class Examples
                     'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
-                    'inbox_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
+                    'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
                     'conversation_id' => '0198f3a2-7a05-7d33-9f10-2b6c8e1d5a04',
                     'contact_id' => '0198ea17-5c28-7b94-8e07-3a9d1f4c6b05',
                     'identity' => [
@@ -8037,6 +8323,16 @@ final class Examples
                     'send_after' => null,
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
+                    'sender_pinned' => false,
+                    'sender_attempts' => [
+                        [
+                            'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
+                            'outcome' => 'queued',
+                            'reason' => null,
+                            'started_at' => '2026-10-01T09:15:02Z',
+                            'ended_at' => null,
+                        ],
+                    ],
                     'failure' => null,
                     'cancel_requested_at' => null,
                     'reference_id' => 'order-1094',
@@ -8063,6 +8359,7 @@ final class Examples
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'created' => true,
                 ],
+                'sender_attempt_count' => 1,
             ],
         ],
         'message.failed' => [
@@ -8072,7 +8369,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -8083,7 +8380,7 @@ final class Examples
                     'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
-                    'inbox_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
+                    'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
                     'conversation_id' => '0198f3a2-7a05-7d33-9f10-2b6c8e1d5a04',
                     'contact_id' => '0198ea17-5c28-7b94-8e07-3a9d1f4c6b05',
                     'identity' => [
@@ -8115,6 +8412,16 @@ final class Examples
                     'send_after' => null,
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
+                    'sender_pinned' => false,
+                    'sender_attempts' => [
+                        [
+                            'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
+                            'outcome' => 'queued',
+                            'reason' => null,
+                            'started_at' => '2026-10-01T09:15:02Z',
+                            'ended_at' => null,
+                        ],
+                    ],
                     'failure' => null,
                     'cancel_requested_at' => null,
                     'reference_id' => 'order-1094',
@@ -8141,6 +8448,7 @@ final class Examples
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'created' => true,
                 ],
+                'sender_attempt_count' => 1,
             ],
         ],
         'message.expired' => [
@@ -8150,7 +8458,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -8161,7 +8469,7 @@ final class Examples
                     'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
-                    'inbox_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
+                    'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
                     'conversation_id' => '0198f3a2-7a05-7d33-9f10-2b6c8e1d5a04',
                     'contact_id' => '0198ea17-5c28-7b94-8e07-3a9d1f4c6b05',
                     'identity' => [
@@ -8193,6 +8501,16 @@ final class Examples
                     'send_after' => null,
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
+                    'sender_pinned' => false,
+                    'sender_attempts' => [
+                        [
+                            'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
+                            'outcome' => 'queued',
+                            'reason' => null,
+                            'started_at' => '2026-10-01T09:15:02Z',
+                            'ended_at' => null,
+                        ],
+                    ],
                     'failure' => null,
                     'cancel_requested_at' => null,
                     'reference_id' => 'order-1094',
@@ -8219,6 +8537,7 @@ final class Examples
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'created' => true,
                 ],
+                'sender_attempt_count' => 1,
             ],
         ],
         'message.cancelled' => [
@@ -8228,7 +8547,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -8239,7 +8558,7 @@ final class Examples
                     'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
-                    'inbox_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
+                    'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
                     'conversation_id' => '0198f3a2-7a05-7d33-9f10-2b6c8e1d5a04',
                     'contact_id' => '0198ea17-5c28-7b94-8e07-3a9d1f4c6b05',
                     'identity' => [
@@ -8271,6 +8590,16 @@ final class Examples
                     'send_after' => null,
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
+                    'sender_pinned' => false,
+                    'sender_attempts' => [
+                        [
+                            'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
+                            'outcome' => 'queued',
+                            'reason' => null,
+                            'started_at' => '2026-10-01T09:15:02Z',
+                            'ended_at' => null,
+                        ],
+                    ],
                     'failure' => null,
                     'cancel_requested_at' => null,
                     'reference_id' => 'order-1094',
@@ -8297,6 +8626,7 @@ final class Examples
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'created' => true,
                 ],
+                'sender_attempt_count' => 1,
                 'reason' => 'Example reason',
             ],
         ],
@@ -8307,7 +8637,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -8318,7 +8648,7 @@ final class Examples
                     'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
-                    'inbox_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
+                    'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
                     'conversation_id' => '0198f3a2-7a05-7d33-9f10-2b6c8e1d5a04',
                     'contact_id' => '0198ea17-5c28-7b94-8e07-3a9d1f4c6b05',
                     'identity' => [
@@ -8350,6 +8680,16 @@ final class Examples
                     'send_after' => null,
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
+                    'sender_pinned' => false,
+                    'sender_attempts' => [
+                        [
+                            'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
+                            'outcome' => 'queued',
+                            'reason' => null,
+                            'started_at' => '2026-10-01T09:15:02Z',
+                            'ended_at' => null,
+                        ],
+                    ],
                     'failure' => null,
                     'cancel_requested_at' => null,
                     'reference_id' => 'order-1094',
@@ -8376,6 +8716,7 @@ final class Examples
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'created' => true,
                 ],
+                'sender_attempt_count' => 1,
                 'contact_created' => true,
             ],
         ],
@@ -8386,7 +8727,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -8394,7 +8735,7 @@ final class Examples
             'data' => [
                 'conversation' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_type' => 'Example channel type',
                     'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8427,7 +8768,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -8435,7 +8776,7 @@ final class Examples
             'data' => [
                 'conversation' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_type' => 'Example channel type',
                     'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8468,7 +8809,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -8476,7 +8817,7 @@ final class Examples
             'data' => [
                 'conversation' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_type' => 'Example channel type',
                     'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8509,7 +8850,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -8517,7 +8858,7 @@ final class Examples
             'data' => [
                 'conversation' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'channel_type' => 'Example channel type',
                     'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8550,14 +8891,14 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
             ],
             'data' => [
                 'conversation_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'contact_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'actor' => [
                     'type' => 'Example type',
@@ -8572,7 +8913,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -8599,7 +8940,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
@@ -8626,7 +8967,7 @@ final class Examples
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'account_external_ref' => 'Example account external ref',
-            'inbox_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',

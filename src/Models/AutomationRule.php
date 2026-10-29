@@ -17,7 +17,7 @@ final class AutomationRule extends Model
 {
     public readonly string $id;
 
-    public readonly string $inbox_id;
+    public readonly string $line_id;
 
     public readonly Enums\AutomationRuleType|string $type;
 
@@ -38,7 +38,7 @@ final class AutomationRule extends Model
     public readonly array $actions;
 
     /**
-     * Always `null`; the away message follows the inbox's business hours.
+     * Always `null`; the away message follows the line's business hours.
      *
      * @var array<string, mixed>|null
      */
@@ -58,7 +58,7 @@ final class AutomationRule extends Model
     protected function hydrate(array $data): void
     {
         $this->id = $data['id'];
-        $this->inbox_id = $data['inbox_id'];
+        $this->line_id = $data['line_id'];
         $this->type = self::enum(Enums\AutomationRuleType::class, $data['type']);
         $this->name = $data['name'];
         $this->position = $data['position'];

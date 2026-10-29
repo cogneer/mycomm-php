@@ -4,6 +4,28 @@ All notable changes to this package are listed here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the package follows
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - Unreleased
+
+Built from the MyComm public API and partner API `2.0.0`, where lines replace inboxes. Nothing from 1.x is kept as an
+alias.
+
+### Changed (breaking)
+
+- `inboxes` is now `lines`: `$mycomm->lines->list()`, `all()`, `create()`, `get()`, `update()`, `archive()` (now
+  `DELETE /v1/lines/{id}`) and `unarchive()`. `Inbox`, `InboxChannel`, `InboxSettings` and `InboxKind` are gone; use
+  `Line`, `LineSender`, `LineSettings` and `LineKind`.
+- `inbox_id` is now `line_id` everywhere: `messages->send()`, `sendBatch()` items, conversations, messages and
+  webhook events (`$event->line_id`).
+- `Client::verify(?string $to, ?string $lineId)`: the second argument was `$inboxId`.
+
+### Added
+
+- `lines->listSenders($id)` and `lines->setSenders($id, senders: [...])`: the channels a line sends from, with role
+  (`primary`, `backup`, `pool`) and health.
+- `conversations->handover($id, line_id: ...)`: hand a conversation over to another line.
+- Webhook events `line.sender_changed`, `line.failover`, `line.no_sender` and `conversation.handed_over` (50 in all).
+- `Message::$sender_pinned` and `$sender_attempts`; `Channel::$line_ids`.
+
 ## [1.0.1] - 2026-10-26
 
 Built from the same API `1.0.0`, whose document now states more of the rules the server already applies.

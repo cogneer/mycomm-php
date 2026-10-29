@@ -56,11 +56,11 @@ final class Campaigns
      *
      * Requires `campaigns:read`. Campaigns of the account, newest first (`sort=-created_at`, the only sort),
      * with cursor pagination. An item carries no `audience.addresses`; read the campaign for them. A key
-     * limited to some inboxes never holds `campaigns:read` and answers `403 ABILITY_MISSING`.
+     * limited to some lines never holds `campaigns:read` and answers `403 ABILITY_MISSING`.
      *
      * @param  Enums\CampaignStatus|string|null  $status  Campaign status.
-     * @param  ?string  $inbox_id  Campaigns sent from this inbox.
-     * @param  ?string  $channel_id  Campaigns whose inbox belongs to this channel.
+     * @param  ?string  $line_id  Campaigns sent from this line.
+     * @param  ?string  $channel_id  Campaigns whose line belongs to this channel.
      * @param  DateTimeInterface|string|null  $created_after  Created at or after this time.
      * @param  DateTimeInterface|string|null  $created_before  Created before this time.
      * @param  ?string  $sort  One of: `created_at`, `-created_at`.
@@ -74,7 +74,7 @@ final class Campaigns
      */
     public function list(
         Enums\CampaignStatus|string|null $status = null,
-        ?string $inbox_id = null,
+        ?string $line_id = null,
         ?string $channel_id = null,
         DateTimeInterface|string|null $created_after = null,
         DateTimeInterface|string|null $created_before = null,
@@ -86,12 +86,12 @@ final class Campaigns
         $this->connection->guard(
             'campaigns.list',
             [
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'channel_id' => $channel_id,
                 'limit' => $limit,
             ],
             [
-                'inbox_id' => [
+                'line_id' => [
                     'uuid' => true,
                 ],
                 'channel_id' => [
@@ -111,7 +111,7 @@ final class Campaigns
             '/v1/campaigns',
             query: Params::query([
                 'status' => $status,
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'channel_id' => $channel_id,
                 'created_after' => $created_after,
                 'created_before' => $created_before,
@@ -122,7 +122,7 @@ final class Campaigns
             options: $requestOptions,
         );
 
-        return Page::fromResponse($response, static fn (array $item): Models\Campaign => Models\Campaign::fromArray($item), fn (string $next): Page => $this->list(status: $status, inbox_id: $inbox_id, channel_id: $channel_id, created_after: $created_after, created_before: $created_before, sort: $sort, limit: $limit, cursor: $next, requestOptions: $requestOptions));
+        return Page::fromResponse($response, static fn (array $item): Models\Campaign => Models\Campaign::fromArray($item), fn (string $next): Page => $this->list(status: $status, line_id: $line_id, channel_id: $channel_id, created_after: $created_after, created_before: $created_before, sort: $sort, limit: $limit, cursor: $next, requestOptions: $requestOptions));
     }
 
     /**
@@ -131,8 +131,8 @@ final class Campaigns
      * `limit` is the page size, not a cap on the items.
      *
      * @param  Enums\CampaignStatus|string|null  $status  Campaign status.
-     * @param  ?string  $inbox_id  Campaigns sent from this inbox.
-     * @param  ?string  $channel_id  Campaigns whose inbox belongs to this channel.
+     * @param  ?string  $line_id  Campaigns sent from this line.
+     * @param  ?string  $channel_id  Campaigns whose line belongs to this channel.
      * @param  DateTimeInterface|string|null  $created_after  Created at or after this time.
      * @param  DateTimeInterface|string|null  $created_before  Created before this time.
      * @param  ?string  $sort  One of: `created_at`, `-created_at`.
@@ -144,7 +144,7 @@ final class Campaigns
      */
     public function all(
         Enums\CampaignStatus|string|null $status = null,
-        ?string $inbox_id = null,
+        ?string $line_id = null,
         ?string $channel_id = null,
         DateTimeInterface|string|null $created_after = null,
         DateTimeInterface|string|null $created_before = null,
@@ -152,7 +152,7 @@ final class Campaigns
         ?int $limit = null,
         ?RequestOptions $requestOptions = null,
     ): Generator {
-        return $this->list(status: $status, inbox_id: $inbox_id, channel_id: $channel_id, created_after: $created_after, created_before: $created_before, sort: $sort, limit: $limit, requestOptions: $requestOptions)->autoPaging();
+        return $this->list(status: $status, line_id: $line_id, channel_id: $channel_id, created_after: $created_after, created_before: $created_before, sort: $sort, limit: $limit, requestOptions: $requestOptions)->autoPaging();
     }
 
     /**
@@ -163,7 +163,7 @@ final class Campaigns
      * defaults for `category` (`marketing`), `append_opt_out_text` (`true` for marketing), `shorten_links` and
      * `track_clicks` (`true`). `compliance.consent_asserted: true` stamps the assertion with the caller.
      * `channel_id` is read-only. The save-time start checks answer `422` with their own code
-     * (`CHANNEL_INACTIVE`, `INBOX_ARCHIVED`, `BODY_EMPTY`, `TEMPLATE_INVALID`, `TEMPLATE_ARCHIVED`,
+     * (`CHANNEL_INACTIVE`, `LINE_ARCHIVED`, `BODY_EMPTY`, `TEMPLATE_INVALID`, `TEMPLATE_ARCHIVED`,
      * `CHANNEL_CAPABILITY_UNSUPPORTED`, `MEDIA_TYPE_UNSUPPORTED`, `AUDIENCE_EMPTY`, `LINK_BLOCKED`,
      * `LINK_PUBLIC_SHORTENER`, `TOO_MANY_LINKS`, `CONTENT_PROHIBITED`, `CATEGORY_MISMATCH`); a malformed body
      * or an over-long list answers `VALIDATION_FAILED`. `audience.import_id` names a `contacts_csv` import
@@ -186,7 +186,7 @@ final class Campaigns
      */
     public function create(
         string $name,
-        string $inbox_id,
+        string $line_id,
         string|Omit|null $body = Omit::Value,
         string|Omit|null $template_id = Omit::Value,
         string|Omit|null $media_id = Omit::Value,
@@ -204,7 +204,7 @@ final class Campaigns
             'campaigns.create',
             [
                 'name' => $name,
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'body' => $body,
                 'template_id' => $template_id,
                 'media_id' => $media_id,
@@ -216,7 +216,7 @@ final class Campaigns
                     'minLength' => 1,
                     'maxLength' => 200,
                 ],
-                'inbox_id' => [
+                'line_id' => [
                     'uuid' => true,
                 ],
                 'body' => [
@@ -245,7 +245,7 @@ final class Campaigns
             '/v1/campaigns',
             body: Params::body([
                 'name' => $name,
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'body' => $body,
                 'template_id' => $template_id,
                 'media_id' => $media_id,
@@ -306,7 +306,7 @@ final class Campaigns
     public function update(
         string $id,
         ?string $name = null,
-        ?string $inbox_id = null,
+        ?string $line_id = null,
         string|Omit|null $body = Omit::Value,
         string|Omit|null $template_id = Omit::Value,
         string|Omit|null $media_id = Omit::Value,
@@ -324,7 +324,7 @@ final class Campaigns
             'campaigns.update',
             [
                 'name' => $name,
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'body' => $body,
                 'template_id' => $template_id,
                 'media_id' => $media_id,
@@ -336,7 +336,7 @@ final class Campaigns
                     'minLength' => 1,
                     'maxLength' => 200,
                 ],
-                'inbox_id' => [
+                'line_id' => [
                     'uuid' => true,
                 ],
                 'body' => [
@@ -365,7 +365,7 @@ final class Campaigns
             '/v1/campaigns/'.rawurlencode($id),
             body: Params::body([
                 'name' => $name ?? Omit::Value,
-                'inbox_id' => $inbox_id ?? Omit::Value,
+                'line_id' => $line_id ?? Omit::Value,
                 'body' => $body,
                 'template_id' => $template_id,
                 'media_id' => $media_id,

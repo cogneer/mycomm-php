@@ -27,8 +27,8 @@ final class ApiKeys
      *
      * Requires `keys:write`. Revoked keys are hidden unless `revoked=true`. The token is never returned here.
      *
-     * @param  ?string  $inbox_id  Keys whose scope lists this inbox.
-     * @param  ?bool  $restricted  `true` for keys limited to inboxes or channel types, `false` for unrestricted keys.
+     * @param  ?string  $line_id  Keys whose scope lists this line.
+     * @param  ?bool  $restricted  `true` for keys limited to lines or channel types, `false` for unrestricted keys.
      * @param  ?bool  $revoked  Default `false`.
      * @param  ?int  $limit  Page size, 1 to 200.
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
@@ -39,7 +39,7 @@ final class ApiKeys
      * @throws ConnectionException when the API cannot be reached
      */
     public function list(
-        ?string $inbox_id = null,
+        ?string $line_id = null,
         ?bool $restricted = null,
         ?bool $revoked = null,
         ?int $limit = null,
@@ -49,11 +49,11 @@ final class ApiKeys
         $this->connection->guard(
             'apiKeys.list',
             [
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'limit' => $limit,
             ],
             [
-                'inbox_id' => [
+                'line_id' => [
                     'uuid' => true,
                 ],
                 'limit' => [
@@ -69,7 +69,7 @@ final class ApiKeys
             'GET',
             '/v1/api-keys',
             query: Params::query([
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'restricted' => $restricted,
                 'revoked' => $revoked,
                 'limit' => $limit,
@@ -78,7 +78,7 @@ final class ApiKeys
             options: $requestOptions,
         );
 
-        return Page::fromResponse($response, static fn (array $item): Models\ApiKey => Models\ApiKey::fromArray($item), fn (string $next): Page => $this->list(inbox_id: $inbox_id, restricted: $restricted, revoked: $revoked, limit: $limit, cursor: $next, requestOptions: $requestOptions));
+        return Page::fromResponse($response, static fn (array $item): Models\ApiKey => Models\ApiKey::fromArray($item), fn (string $next): Page => $this->list(line_id: $line_id, restricted: $restricted, revoked: $revoked, limit: $limit, cursor: $next, requestOptions: $requestOptions));
     }
 
     /**
@@ -86,8 +86,8 @@ final class ApiKeys
      *
      * `limit` is the page size, not a cap on the items.
      *
-     * @param  ?string  $inbox_id  Keys whose scope lists this inbox.
-     * @param  ?bool  $restricted  `true` for keys limited to inboxes or channel types, `false` for unrestricted keys.
+     * @param  ?string  $line_id  Keys whose scope lists this line.
+     * @param  ?bool  $restricted  `true` for keys limited to lines or channel types, `false` for unrestricted keys.
      * @param  ?bool  $revoked  Default `false`.
      * @param  ?int  $limit  Page size, 1 to 200.
      * @return Generator<int, Models\ApiKey>
@@ -96,13 +96,13 @@ final class ApiKeys
      * @throws ConnectionException when the API cannot be reached
      */
     public function all(
-        ?string $inbox_id = null,
+        ?string $line_id = null,
         ?bool $restricted = null,
         ?bool $revoked = null,
         ?int $limit = null,
         ?RequestOptions $requestOptions = null,
     ): Generator {
-        return $this->list(inbox_id: $inbox_id, restricted: $restricted, revoked: $revoked, limit: $limit, requestOptions: $requestOptions)->autoPaging();
+        return $this->list(line_id: $line_id, restricted: $restricted, revoked: $revoked, limit: $limit, requestOptions: $requestOptions)->autoPaging();
     }
 
     /**
@@ -113,7 +113,7 @@ final class ApiKeys
      * caller can create keys only inside its own scope. `partner` keys are never created here. The `token` is
      * shown once, in this response.
      *
-     * @param  list<string>|Omit|null  $inbox_ids  `null` or omitted for all inboxes.
+     * @param  list<string>|Omit|null  $line_ids  `null` or omitted for all lines. A key limited to one line sends from it without naming a sender (`line_id`, `channel_id` and `from` can be left out).
      * @param  list<string>|Omit|null  $channel_types  `null` or omitted for all channel types, for example `["android_sim"]`.
      * @param  list<string>|Omit|null  $abilities
      * @param  list<string>|Omit|null  $allowed_ips  IPv4/IPv6 addresses or CIDR ranges.
@@ -124,7 +124,7 @@ final class ApiKeys
      */
     public function create(
         string $name,
-        array|Omit|null $inbox_ids = Omit::Value,
+        array|Omit|null $line_ids = Omit::Value,
         array|Omit|null $channel_types = Omit::Value,
         array|Omit|null $abilities = Omit::Value,
         array|Omit|null $allowed_ips = Omit::Value,
@@ -135,7 +135,7 @@ final class ApiKeys
             'apiKeys.create',
             [
                 'name' => $name,
-                'inbox_ids' => $inbox_ids,
+                'line_ids' => $line_ids,
                 'channel_types' => $channel_types,
                 'abilities' => $abilities,
                 'allowed_ips' => $allowed_ips,
@@ -145,7 +145,7 @@ final class ApiKeys
                     'minLength' => 1,
                     'maxLength' => 100,
                 ],
-                'inbox_ids' => [
+                'line_ids' => [
                     'minItems' => 1,
                     'maxItems' => 100,
                     'uuid' => true,
@@ -170,7 +170,7 @@ final class ApiKeys
             '/v1/api-keys',
             body: Params::body([
                 'name' => $name,
-                'inbox_ids' => $inbox_ids,
+                'line_ids' => $line_ids,
                 'channel_types' => $channel_types,
                 'abilities' => $abilities,
                 'allowed_ips' => $allowed_ips,

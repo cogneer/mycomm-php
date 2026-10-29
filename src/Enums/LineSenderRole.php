@@ -9,8 +9,9 @@ namespace MyComm\Enums;
 /**
  * The API may add values: one this SDK version does not know arrives as a plain string.
  */
-enum InboxKind: string
+enum LineSenderRole: string
 {
-    case Main = 'main';
-    case Integration = 'integration';
+    case Primary = 'primary';
+    case Backup = 'backup';
+    case Pool = 'pool';
 }

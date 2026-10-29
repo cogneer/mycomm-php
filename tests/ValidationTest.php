@@ -57,7 +57,7 @@ it('keeps numbers, lengths and formats inside the documented limits', function (
     'expires_in too large' => ['expires_in', 700000, 'OUT_OF_RANGE', 'between 60 and 604800'],
     'reference_id with a space' => ['reference_id', 'order 1', 'INVALID_FORMAT', 'expected format'],
     'reference_id too long' => ['reference_id', str_repeat('x', 101), 'TOO_LONG', 'at most 100 characters (got 101)'],
-    'not a uuid' => ['inbox_id', 'inbox-1', 'INVALID_FORMAT', 'must be a UUID'],
+    'not a uuid' => ['line_id', 'line-1', 'INVALID_FORMAT', 'must be a UUID'],
     'unknown category' => ['category', 'promo', 'INVALID_ENUM', 'must be one of transactional, marketing'],
     'too many metadata keys' => ['metadata', array_fill_keys(array_map(fn ($i) => "k{$i}", range(1, 51)), 'v'), 'TOO_LONG', 'at most 50 keys'],
     'nested metadata' => ['metadata', ['order' => ['id' => 1]], 'INVALID_TYPE', "'order' does not"],

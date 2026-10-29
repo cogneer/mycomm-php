@@ -36,7 +36,7 @@ final class SendBatchResult extends Model
     {
         $this->index = $data['index'];
         $this->status = self::enum(Enums\SendBatchResultStatus::class, $data['status']);
-        $this->message = isset($data['message']) ? self::oneOf($data['message'], [Message::class => ['id', 'account_id', 'channel_id', 'inbox_id', 'direction', 'type', 'origin', 'content_type', 'content', 'media', 'channel_meta', 'status', 'attempts', 'metadata', 'actor', 'created_at'], SendBatchPreview::class => []]) : null;
+        $this->message = isset($data['message']) ? self::oneOf($data['message'], [Message::class => ['id', 'account_id', 'channel_id', 'line_id', 'direction', 'type', 'origin', 'content_type', 'content', 'media', 'channel_meta', 'status', 'attempts', 'sender_pinned', 'sender_attempts', 'metadata', 'actor', 'created_at'], SendBatchPreview::class => []]) : null;
         $this->warnings = isset($data['warnings']) ? array_map(static fn (array $item): SendMessageWarning => SendMessageWarning::fromArray($item), array_values($data['warnings'])) : null;
         $this->error = isset($data['error']) ? SendBatchItemError::fromArray($data['error']) : null;
     }

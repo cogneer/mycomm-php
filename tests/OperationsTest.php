@@ -96,3 +96,15 @@ it('covers every operation of both specs', function () use ($operations) {
     expect(count($operations))->toBeGreaterThan(120)
         ->and(array_filter($operations, static fn (array $row): bool => $row['resource'][0] === 'partner'))->toHaveCount(11);
 });
+
+test('sends_without_a_sender_when_the_key_is_line_scoped', function () {
+    $fake = new MyCommFake;
+
+    $result = $fake->client()->messages->send(to: '+923001234567', body: 'Your code is 4821', category: 'transactional');
+
+    expect($result)->toBeInstanceOf(Model::class);
+    $fake->assertCalled('messages.send', fn ($request) => ! array_key_exists('line_id', $request->json)
+        && ! array_key_exists('channel_id', $request->json)
+        && ! array_key_exists('from', $request->json)
+        && $request->json['to'] === '+923001234567');
+});

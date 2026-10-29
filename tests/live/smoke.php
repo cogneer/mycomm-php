@@ -117,9 +117,9 @@ step('devices.list', fn () => check(count($mycomm->devices->list()) >= 1, 'has a
 step('devices.get', fn () => $mycomm->devices->get($keys['device_id']));
 step('devices.sims.list', fn () => $mycomm->devices->sims->list($keys['device_id']));
 step('devices.update', fn () => $mycomm->devices->update($keys['device_id'], name: $mycomm->devices->get($keys['device_id'])->name));
-$inboxes = step('inboxes.list', fn () => $mycomm->inboxes->list());
-$inboxId = $inboxes?->data[0]->id ?? null;
-step('inboxes.get', fn () => $mycomm->inboxes->get((string) $inboxId));
+$lines = step('lines.list', fn () => $mycomm->lines->list());
+$lineId = $lines?->data[0]->id ?? null;
+step('lines.get', fn () => $mycomm->lines->get((string) $lineId));
 step('pairingCodes create/get/delete', function () use ($mycomm) {
     $code = $mycomm->pairingCodes->create(device_name: 'Spare phone');
     $mycomm->pairingCodes->get($code->id);
@@ -195,14 +195,14 @@ step('smartLists preview/create/count/members/delete', function () use ($mycomm)
 });
 
 echo "messages\n";
-step('messages.send dry run', function () use ($mycomm, $inboxId) {
-    $preview = $mycomm->messages->send(inbox_id: $inboxId, to: num('01'), body: 'Dry run from the SDK', category: MessageCategory::Transactional, dry_run: true);
+step('messages.send dry run', function () use ($mycomm, $lineId) {
+    $preview = $mycomm->messages->send(line_id: $lineId, to: num('01'), body: 'Dry run from the SDK', category: MessageCategory::Transactional, dry_run: true);
     check($preview instanceof Models\SendMessageDryRunResponse, 'dry-run model, got '.$preview::class);
     check($preview->id === null && $preview->segments === 1, 'no id, one segment');
 });
-$message = step('messages.send', function () use ($mycomm, $inboxId) {
+$message = step('messages.send', function () use ($mycomm, $lineId) {
     $message = $mycomm->messages->send(
-        inbox_id: $inboxId, to: num('01'), body: 'Hello from the PHP SDK — سلام', category: MessageCategory::Transactional,
+        line_id: $lineId, to: num('01'), body: 'Hello from the PHP SDK — سلام', category: MessageCategory::Transactional,
         reference_id: 'smoke-'.bin2hex(random_bytes(4)), metadata: ['order' => 42, 'vip' => true],
     );
     check($message instanceof Models\SendMessageResponse, 'accepted model, got '.$message::class);
@@ -214,33 +214,33 @@ $message = step('messages.send', function () use ($mycomm, $inboxId) {
 
     return $message;
 });
-step('idempotent replay', function () use ($mycomm, $inboxId) {
+step('idempotent replay', function () use ($mycomm, $lineId) {
     $options = new RequestOptions(idempotencyKey: 'smoke-'.bin2hex(random_bytes(6)));
-    $first = $mycomm->messages->send(inbox_id: $inboxId, to: num('01'), body: 'Only once', category: 'transactional', requestOptions: $options);
-    $second = $mycomm->messages->send(inbox_id: $inboxId, to: num('01'), body: 'Only once', category: 'transactional', requestOptions: $options);
+    $first = $mycomm->messages->send(line_id: $lineId, to: num('01'), body: 'Only once', category: 'transactional', requestOptions: $options);
+    $second = $mycomm->messages->send(line_id: $lineId, to: num('01'), body: 'Only once', category: 'transactional', requestOptions: $options);
     check($first->id === $second->id, 'same message');
     check($first->meta()?->idempotentReplayed === false && $second->meta()?->idempotentReplayed === true, 'second is a replay');
-    expectThrows(ConflictException::class, fn () => $mycomm->messages->send(inbox_id: $inboxId, to: num('01'), body: 'Different body', category: 'transactional', requestOptions: $options), 'IDEMPOTENCY_KEY_REUSED');
+    expectThrows(ConflictException::class, fn () => $mycomm->messages->send(line_id: $lineId, to: num('01'), body: 'Different body', category: 'transactional', requestOptions: $options), 'IDEMPOTENCY_KEY_REUSED');
 });
-step('reference_id conflict', function () use ($mycomm, $message, $inboxId) {
-    $e = expectThrows(ConflictException::class, fn () => $mycomm->messages->send(inbox_id: $inboxId, to: num('01'), body: 'Again', category: 'transactional', reference_id: $message->reference_id), 'REFERENCE_ID_EXISTS');
+step('reference_id conflict', function () use ($mycomm, $message, $lineId) {
+    $e = expectThrows(ConflictException::class, fn () => $mycomm->messages->send(line_id: $lineId, to: num('01'), body: 'Again', category: 'transactional', reference_id: $message->reference_id), 'REFERENCE_ID_EXISTS');
     check(($e->details['message_id'] ?? null) === $message->id, 'details name the existing message');
 });
-step('validation error', function () use ($mycomm, $inboxId) {
-    $e = expectThrows(ApiException::class, fn () => $mycomm->messages->send(inbox_id: $inboxId, to: num('01'), category: 'transactional', metadata: ['nested' => ['a' => 1]]));
+step('validation error', function () use ($mycomm, $lineId) {
+    $e = expectThrows(ApiException::class, fn () => $mycomm->messages->send(line_id: $lineId, to: num('01'), category: 'transactional', metadata: ['nested' => ['a' => 1]]));
     check($e instanceof ValidationException && $e->fields() !== [], 'validation exception with fields: '.$e::class.' '.$e->errorCode);
 });
-step('messages.sendBatch', function () use ($mycomm, $inboxId) {
+step('messages.sendBatch', function () use ($mycomm, $lineId) {
     $batch = $mycomm->messages->sendBatch(
         messages: [new SendBatchItem(to: num('02'), body: 'Batch one'), ['to' => 'nonsense', 'body' => 'Batch two']],
-        defaults: ['category' => 'transactional', 'inbox_id' => $inboxId],
+        defaults: ['category' => 'transactional', 'line_id' => $lineId],
     );
     check($batch->summary->accepted === 1 && $batch->summary->rejected === 1, 'one accepted, one rejected');
     check($batch->results[0]->message instanceof Models\Message, 'accepted item is a Message');
     check($batch->results[1]->error !== null && $batch->results[1]->message === null, 'rejected item has an error: '.json_encode($batch->results[1]->raw()));
 });
-step('messages.sendBatch dry run', function () use ($mycomm, $inboxId) {
-    $batch = $mycomm->messages->sendBatch(messages: [['inbox_id' => $inboxId, 'to' => num('02'), 'body' => 'Preview', 'category' => 'transactional']], dry_run: true);
+step('messages.sendBatch dry run', function () use ($mycomm, $lineId) {
+    $batch = $mycomm->messages->sendBatch(messages: [['line_id' => $lineId, 'to' => num('02'), 'body' => 'Preview', 'category' => 'transactional']], dry_run: true);
     check($batch->results[0]->message instanceof Models\SendBatchPreview, 'preview model, got '.get_debug_type($batch->results[0]->message));
 });
 step('messages.show/list/events', function () use ($mycomm, $message) {

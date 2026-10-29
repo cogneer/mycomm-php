@@ -27,7 +27,7 @@ final class CreatedWebhookEndpoint extends Model
     /**
      * @var list<string>|null
      */
-    public readonly ?array $inbox_ids;
+    public readonly ?array $line_ids;
 
     /**
      * @var list<string>|null
@@ -63,7 +63,7 @@ final class CreatedWebhookEndpoint extends Model
         $this->url = $data['url'];
         $this->description = $data['description'] ?? null;
         $this->events = $data['events'];
-        $this->inbox_ids = $data['inbox_ids'] ?? null;
+        $this->line_ids = $data['line_ids'] ?? null;
         $this->channel_types = $data['channel_types'] ?? null;
         $this->include_managed_accounts = $data['include_managed_accounts'];
         $this->active = $data['active'];

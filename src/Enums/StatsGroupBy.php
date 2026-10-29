@@ -13,6 +13,6 @@ enum StatsGroupBy: string
 {
     case None = 'none';
     case Channel = 'channel';
-    case Inbox = 'inbox';
+    case Line = 'line';
     case ChannelType = 'channel_type';
 }

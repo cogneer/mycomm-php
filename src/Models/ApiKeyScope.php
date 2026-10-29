@@ -13,7 +13,7 @@ final class ApiKeyScope extends Model
     /**
      * @var list<string>|null
      */
-    public readonly ?array $inbox_ids;
+    public readonly ?array $line_ids;
 
     /**
      * @var list<string>|null
@@ -22,7 +22,7 @@ final class ApiKeyScope extends Model
 
     protected function hydrate(array $data): void
     {
-        $this->inbox_ids = $data['inbox_ids'] ?? null;
+        $this->line_ids = $data['line_ids'] ?? null;
         $this->channel_types = $data['channel_types'] ?? null;
     }
 }

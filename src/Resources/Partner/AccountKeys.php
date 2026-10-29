@@ -96,10 +96,10 @@ final class AccountKeys
     /**
      * Mint an account key for a managed account.
      *
-     * Same body and `201` response as `POST /v1/api-keys`, unrestricted or restricted to inboxes or channel
+     * Same body and `201` response as `POST /v1/api-keys`, unrestricted or restricted to lines or channel
      * types, with any abilities. The `token` is shown once, in this response.
      *
-     * @param  list<string>|Omit|null  $inbox_ids  `null` or omitted for all inboxes.
+     * @param  list<string>|Omit|null  $line_ids  `null` or omitted for all lines. A key limited to one line sends from it without naming a sender (`line_id`, `channel_id` and `from` can be left out).
      * @param  list<string>|Omit|null  $channel_types  `null` or omitted for all channel types, for example `["android_sim"]`.
      * @param  list<string>|Omit|null  $abilities
      * @param  list<string>|Omit|null  $allowed_ips  IPv4/IPv6 addresses or CIDR ranges.
@@ -111,7 +111,7 @@ final class AccountKeys
     public function create(
         string $id,
         string $name,
-        array|Omit|null $inbox_ids = Omit::Value,
+        array|Omit|null $line_ids = Omit::Value,
         array|Omit|null $channel_types = Omit::Value,
         array|Omit|null $abilities = Omit::Value,
         array|Omit|null $allowed_ips = Omit::Value,
@@ -122,7 +122,7 @@ final class AccountKeys
             'partner.accountKeys.create',
             [
                 'name' => $name,
-                'inbox_ids' => $inbox_ids,
+                'line_ids' => $line_ids,
                 'channel_types' => $channel_types,
                 'abilities' => $abilities,
                 'allowed_ips' => $allowed_ips,
@@ -132,7 +132,7 @@ final class AccountKeys
                     'minLength' => 1,
                     'maxLength' => 100,
                 ],
-                'inbox_ids' => [
+                'line_ids' => [
                     'minItems' => 1,
                     'maxItems' => 100,
                     'uuid' => true,
@@ -157,7 +157,7 @@ final class AccountKeys
             '/partner/v1/accounts/'.rawurlencode($id).'/api-keys',
             body: Params::body([
                 'name' => $name,
-                'inbox_ids' => $inbox_ids,
+                'line_ids' => $line_ids,
                 'channel_types' => $channel_types,
                 'abilities' => $abilities,
                 'allowed_ips' => $allowed_ips,

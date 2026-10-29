@@ -68,9 +68,9 @@ final class Client
      * own message. It does not retry, so a failure is reported at once.
      *
      * @param  string|null  $to  A number you control, to dry-run a send to.
-     * @param  string|null  $inboxId  The inbox to send from; leave out when the key has only one.
+     * @param  string|null  $lineId  The line to send from; leave out when the key has only one.
      */
-    public function verify(?string $to = null, ?string $inboxId = null): VerifyResult
+    public function verify(?string $to = null, ?string $lineId = null): VerifyResult
     {
         $once = new RequestOptions(maxRetries: 0);
         $checks = [];
@@ -89,7 +89,7 @@ final class Client
         if ($to !== null) {
             try {
                 $result = $this->messages->send(
-                    inbox_id: $inboxId,
+                    line_id: $lineId,
                     to: $to,
                     body: 'MyComm verify',
                     category: 'transactional',

@@ -11,7 +11,7 @@ use MyComm\Model;
 
 /**
  * One day. With `group_by=none` only `date` and the counters are present. Grouped rows add the group keys:
- * `channel_id` (channel, inbox), `inbox_id` (inbox) and `channel_type`; keys not part of the grouping are
+ * `channel_id` (channel, line), `line_id` (line) and `channel_type`; keys not part of the grouping are
  * `null`.
  */
 final class DailyStatsRow extends Model
@@ -20,7 +20,7 @@ final class DailyStatsRow extends Model
 
     public readonly ?string $channel_id;
 
-    public readonly ?string $inbox_id;
+    public readonly ?string $line_id;
 
     public readonly Enums\ChannelType|string|null $channel_type;
 
@@ -54,7 +54,7 @@ final class DailyStatsRow extends Model
     {
         $this->date = $data['date'];
         $this->channel_id = $data['channel_id'] ?? null;
-        $this->inbox_id = $data['inbox_id'] ?? null;
+        $this->line_id = $data['line_id'] ?? null;
         $this->channel_type = isset($data['channel_type']) ? self::enum(Enums\ChannelType::class, $data['channel_type']) : null;
         $this->sent_messages = $data['sent_messages'];
         $this->sent_segments = $data['sent_segments'];

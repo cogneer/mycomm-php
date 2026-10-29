@@ -102,11 +102,11 @@ it('reads the sparsest payload of every event', function (string $type) {
     $event = Webhook::parse((string) json_encode($minimal));
 
     expect($event)->toBeInstanceOf(EventMap::EVENTS[$type])
-        ->and($event->inbox_id)->toBeNull()
+        ->and($event->line_id)->toBeNull()
         ->and($event->channel)->toBeNull();
 })->with(array_keys(Examples::EVENTS));
 
 it('knows the ping the test action sends', function () {
     expect(Webhook::parse(FakeWebhook::make('ping')->payload))->toBeInstanceOf(Ping::class)
-        ->and(EventMap::EVENTS)->toHaveCount(46);
+        ->and(EventMap::EVENTS)->toHaveCount(50);
 });

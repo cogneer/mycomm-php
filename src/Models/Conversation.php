@@ -10,15 +10,21 @@ use DateTimeImmutable;
 use MyComm\Model;
 
 /**
- * The conversation resource: one per inbox and contact identity. `address`, `contact_display_name`,
+ * The conversation resource: one per line and contact identity. `address`, `contact_display_name`,
  * `suppressed` and `blocked_at` are denormalised from the identity; blocking is account-wide.
  */
 final class Conversation extends Model
 {
     public readonly string $id;
 
-    public readonly string $inbox_id;
+    /**
+     * The line that holds the thread. It changes only when the conversation is handed over or its line is archived.
+     */
+    public readonly string $line_id;
 
+    /**
+     * The channel the thread last talked through. A reply prefers it while it is a healthy sender of the line.
+     */
     public readonly string $channel_id;
 
     /**
@@ -79,7 +85,7 @@ final class Conversation extends Model
     protected function hydrate(array $data): void
     {
         $this->id = $data['id'];
-        $this->inbox_id = $data['inbox_id'];
+        $this->line_id = $data['line_id'];
         $this->channel_id = $data['channel_id'];
         $this->channel_type = $data['channel_type'] ?? null;
         $this->contact_id = $data['contact_id'];

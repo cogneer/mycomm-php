@@ -125,7 +125,7 @@ final class Identities
     /**
      * Block an identity account-wide.
      *
-     * Requires `contacts:write`. Sets `blocked_at` for every inbox and channel of the account. New outbound to
+     * Requires `contacts:write`. Sets `blocked_at` for every line and channel of the account. New outbound to
      * the identity is refused (`CONTACT_BLOCKED`) and its `queued` outbound is cancelled (`message.cancelled`,
      * reason `contact_blocked`). Inbound is still stored but is not counted as unread, runs no automation,
      * sends no notification and emits no `message.received` webhook; opt-out and opt-in keywords still apply.

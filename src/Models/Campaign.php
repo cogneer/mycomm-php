@@ -11,7 +11,7 @@ use MyComm\Enums;
 use MyComm\Model;
 
 /**
- * The campaign resource. `channel_id` is read-only, derived from `inbox_id`.
+ * The campaign resource. `channel_id` is read-only, derived from `line_id`.
  */
 final class Campaign extends Model
 {
@@ -19,7 +19,7 @@ final class Campaign extends Model
 
     public readonly string $name;
 
-    public readonly string $inbox_id;
+    public readonly string $line_id;
 
     public readonly ?string $channel_id;
 
@@ -77,7 +77,7 @@ final class Campaign extends Model
     {
         $this->id = $data['id'];
         $this->name = $data['name'];
-        $this->inbox_id = $data['inbox_id'];
+        $this->line_id = $data['line_id'];
         $this->channel_id = $data['channel_id'] ?? null;
         $this->status = self::enum(Enums\CampaignStatus::class, $data['status']);
         $this->body = $data['body'] ?? null;

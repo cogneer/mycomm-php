@@ -35,4 +35,5 @@ enum MessageEventName: string
     case ProviderCallStarted = 'provider_call_started';
     case Edited = 'edited';
     case DeletedRemote = 'deleted_remote';
+    case Reassigned = 'reassigned';
 }

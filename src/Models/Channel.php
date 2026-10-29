@@ -53,9 +53,16 @@ final class Channel extends Model
     public readonly ?string $device_sim_id;
 
     /**
-     * The channel's main inbox; `null` until the number is connected.
+     * The line unknown replies to this number land on (the account's Direct line unless the owner chose another); `null` until the number is connected.
      */
-    public readonly ?string $main_inbox_id;
+    public readonly ?string $default_line_id;
+
+    /**
+     * The lines that have this channel in their sender list (any role, archived lines left out), oldest first. A key restricted to lines sees only its own.
+     *
+     * @var list<string>
+     */
+    public readonly array $line_ids;
 
     public readonly ChannelCapabilities $capabilities;
 
@@ -89,8 +96,6 @@ final class Channel extends Model
 
     public readonly ChannelUsage $usage;
 
-    public readonly int $reply_window_days;
-
     /**
      * Set when a push provider asked to slow down; always `null` for SMS.
      */
@@ -122,7 +127,8 @@ final class Channel extends Model
         $this->disconnect_reason = isset($data['disconnect_reason']) ? self::enum(Enums\ChannelDisconnectReason::class, $data['disconnect_reason']) : null;
         $this->device_id = $data['device_id'] ?? null;
         $this->device_sim_id = $data['device_sim_id'] ?? null;
-        $this->main_inbox_id = $data['main_inbox_id'] ?? null;
+        $this->default_line_id = $data['default_line_id'] ?? null;
+        $this->line_ids = $data['line_ids'];
         $this->capabilities = ChannelCapabilities::fromArray($data['capabilities']);
         $this->allowed_destination_countries = $data['allowed_destination_countries'] ?? null;
         $this->skip_business_senders = $data['skip_business_senders'];
@@ -135,7 +141,6 @@ final class Channel extends Model
         $this->health = ChannelHealth::fromArray($data['health']);
         $this->queue = ChannelQueue::fromArray($data['queue']);
         $this->usage = ChannelUsage::fromArray($data['usage']);
-        $this->reply_window_days = $data['reply_window_days'];
         $this->throttled_until = isset($data['throttled_until']) ? self::dateTime($data['throttled_until']) : null;
         $this->verification = isset($data['verification']) ? ChannelVerification::fromArray($data['verification']) : null;
         $this->verified_at = isset($data['verified_at']) ? self::dateTime($data['verified_at']) : null;

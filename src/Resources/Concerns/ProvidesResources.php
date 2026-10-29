@@ -44,7 +44,7 @@ trait ProvidesResources
 
     public readonly Resources\Imports $imports;
 
-    public readonly Resources\Inboxes $inboxes;
+    public readonly Resources\Lines $lines;
 
     public readonly Resources\Media $media;
 
@@ -84,7 +84,7 @@ trait ProvidesResources
         $this->exports = new Resources\Exports($connection);
         $this->groups = new Resources\Groups($connection);
         $this->imports = new Resources\Imports($connection);
-        $this->inboxes = new Resources\Inboxes($connection);
+        $this->lines = new Resources\Lines($connection);
         $this->media = new Resources\Media($connection);
         $this->messages = new Resources\Messages($connection);
         $this->pairingCodes = new Resources\PairingCodes($connection);

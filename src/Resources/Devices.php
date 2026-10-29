@@ -30,7 +30,7 @@ final class Devices
      * List devices.
      *
      * Requires `channels:read`. Returns `active` devices unless `status` says otherwise. A key restricted to
-     * inboxes sees only the devices of its channels.
+     * lines sees only the devices of its channels.
      *
      * @param  ?string  $status  Default `active`. One of: `active`, `revoked`.
      * @param  ?string  $connection_state  One of: `online`, `degraded`, `offline`.
@@ -121,12 +121,12 @@ final class Devices
     /**
      * Rename a device or record its OS-limit raise.
      *
-     * Requires `channels:write`; a key restricted to inboxes never holds it. Changes only the keys sent.
-     * `name` is 1 to 60 characters. `os_limit_raised: true` records the owner's confirmation that the Android
-     * SMS limit was raised with ADB on this phone and needs `os_limit_value` (31 to 100,000); `false` clears
-     * the value. Either change sets `os_limit_changed_at` (the later write wins over a confirmation from the
-     * app), is audit-logged as `device.os_limit.updated` and applies to the pacing of the device's channels at
-     * once. A revoked device is `409 INVALID_STATE`. `404` when the device is outside the key's scope.
+     * Requires `channels:write`; a key restricted to lines never holds it. Changes only the keys sent. `name`
+     * is 1 to 60 characters. `os_limit_raised: true` records the owner's confirmation that the Android SMS
+     * limit was raised with ADB on this phone and needs `os_limit_value` (31 to 100,000); `false` clears the
+     * value. Either change sets `os_limit_changed_at` (the later write wins over a confirmation from the app),
+     * is audit-logged as `device.os_limit.updated` and applies to the pacing of the device's channels at once.
+     * A revoked device is `409 INVALID_STATE`. `404` when the device is outside the key's scope.
      *
      * @param  ?bool  $os_limit_raised  Required when `os_limit_value` is sent.
      * @param  int|Omit|null  $os_limit_value  Required when `os_limit_raised` is `true`; ignored and cleared when it is `false`.

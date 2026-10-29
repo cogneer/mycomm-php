@@ -43,3 +43,12 @@ it('checks only the key when no number is given', function () {
     expect($fake->client()->verify()->checks)->toHaveCount(1);
     $fake->assertNotCalled('messages.send');
 });
+
+it('dry-runs the send from the line it is given', function () {
+    $fake = new MyCommFake;
+    $fake->respond('messages.send', FakeResponse::example(['dry_run' => true, 'id' => null, 'status' => null], 200));
+
+    $fake->client()->verify(to: '+923001234567', lineId: '0b8f8a52-5f0a-4c8e-9b8e-0d2f3c4a5b6c');
+
+    $fake->assertCalled('messages.send', fn ($request) => ($request->json['line_id'] ?? null) === '0b8f8a52-5f0a-4c8e-9b8e-0d2f3c4a5b6c');
+});

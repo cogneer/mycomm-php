@@ -15,6 +15,11 @@ final class WebhookMessageCancelledData extends Model
     public readonly WebhookConversationRef $conversation;
 
     /**
+     * The length of `message.sender_attempts`: 1 for a message that stayed on its first sender, more after a retry or a failover, 0 for inbound.
+     */
+    public readonly int $sender_attempt_count;
+
+    /**
      * `api`, `portal`, `campaign_cancelled`, `opted_out`, `contact_blocked`, `account_deleted` (may gain values).
      */
     public readonly ?string $reason;
@@ -23,6 +28,7 @@ final class WebhookMessageCancelledData extends Model
     {
         $this->message = Message::fromArray($data['message']);
         $this->conversation = WebhookConversationRef::fromArray($data['conversation']);
+        $this->sender_attempt_count = $data['sender_attempt_count'];
         $this->reason = $data['reason'] ?? null;
     }
 }

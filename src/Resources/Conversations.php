@@ -27,7 +27,7 @@ final class Conversations
      * Mark a conversation read.
      *
      * Sets `unread_count` to 0 and stamps `read_at` on its unread inbound messages. Emits `conversation.read`.
-     * Requires `conversations:write`. A conversation outside the key's inbox scope answers 404.
+     * Requires `conversations:write`. A conversation outside the key's line scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -45,7 +45,7 @@ final class Conversations
      * Mark a conversation unread.
      *
      * Sets `unread_count` to 1. Emits `conversation.unread`. Requires `conversations:write`. A conversation
-     * outside the key's inbox scope answers 404.
+     * outside the key's line scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -63,7 +63,7 @@ final class Conversations
      * Archive a conversation.
      *
      * Sets `status` to `archived`; the next inbound message reopens it. Emits `conversation.archived`.
-     * Requires `conversations:write`. A conversation outside the key's inbox scope answers 404.
+     * Requires `conversations:write`. A conversation outside the key's line scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -81,7 +81,7 @@ final class Conversations
      * Unarchive a conversation.
      *
      * Sets `status` back to `open`. Emits `conversation.unarchived`. Requires `conversations:write`. A
-     * conversation outside the key's inbox scope answers 404.
+     * conversation outside the key's line scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -98,10 +98,10 @@ final class Conversations
     /**
      * Block the conversation's contact identity.
      *
-     * Convenience route: blocks the conversation's contact identity account-wide (every inbox and channel),
+     * Convenience route: blocks the conversation's contact identity account-wide (every line and channel),
      * exactly like `POST /v1/contacts/{id}/identities/{identity_id}/block`. Idempotent. Every conversation of
      * that identity shows the same `blocked_at`. Requires `conversations:write`. A conversation outside the
-     * key's inbox scope answers 404.
+     * key's line scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -119,7 +119,7 @@ final class Conversations
      * Unblock the conversation's contact identity.
      *
      * Clears `blocked_at` of the conversation's contact identity, account-wide. Nothing is replayed. Requires
-     * `conversations:write`. A conversation outside the key's inbox scope answers 404.
+     * `conversations:write`. A conversation outside the key's line scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -134,9 +134,54 @@ final class Conversations
     }
 
     /**
+     * Hand a conversation over to another line.
+     *
+     * Moves the conversation and its messages to another line of the account; the contact's next replies land
+     * on that line, also when it does not send through the conversation's channel. When the target line
+     * already has a conversation with the same contact, the two merge into it and the answer is that
+     * conversation. Emits `conversation.handed_over`. Requires `conversations:write`. The conversation and the
+     * target line must both be in the key's line scope (else 404). An archived target answers 422
+     * `LINE_ARCHIVED`; the conversation's own line answers 422 `VALIDATION_FAILED`.
+     *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
+     * @throws ApiException when the API answers with an error
+     * @throws ConnectionException when the API cannot be reached
+     */
+    public function handover(
+        string $id,
+        string $line_id,
+        ?RequestOptions $requestOptions = null,
+    ): Models\Conversation {
+        $this->connection->guard(
+            'conversations.handover',
+            [
+                'line_id' => $line_id,
+            ],
+            [
+                'line_id' => [
+                    'uuid' => true,
+                ],
+            ],
+            [],
+        );
+
+        $response = $this->connection->request(
+            'conversations.handover',
+            'POST',
+            '/v1/conversations/'.rawurlencode($id).'/handover',
+            body: Params::body([
+                'line_id' => $line_id,
+            ]),
+            options: $requestOptions,
+        );
+
+        return Models\Conversation::fromArray($response->json(), $response->meta());
+    }
+
+    /**
      * Retrieve a conversation.
      *
-     * Returns the conversation resource. Requires `conversations:read`. A conversation outside the key's inbox
+     * Returns the conversation resource. Requires `conversations:read`. A conversation outside the key's line
      * scope answers 404.
      *
      * @throws ApiException when the API answers with an error
@@ -157,7 +202,7 @@ final class Conversations
      * Permanently deletes the conversation with its messages, their events, media and short links. Requires
      * `conversations:write`. Queued outbound messages are cancelled first; the purge runs in the background
      * and emits `conversation.deleted` when it is complete. Answers `202` at once; the conversation is no
-     * longer readable. A conversation outside the key's inbox scope answers 404.
+     * longer readable. A conversation outside the key's line scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -175,9 +220,9 @@ final class Conversations
      * List conversations.
      *
      * Conversations of the account, newest `last_message_at` first, with cursor pagination. Requires
-     * `conversations:read`. A restricted key lists only the conversations of its inboxes. A conversation
-     * without messages is not listed. Comma lists match any of the values. `q` matches the contact name,
-     * address and last message preview (case-insensitive, at least 2 characters).
+     * `conversations:read`. A restricted key lists only the conversations of its lines. A conversation without
+     * messages is not listed. Comma lists match any of the values. `q` matches the contact name, address and
+     * last message preview (case-insensitive, at least 2 characters).
      *
      * @param  list<string>|string|null  $channel_type  Comma list.
      * @param  ?string  $status  `open` (default), `archived` or `all`. One of: `open`, `archived`, `all`.
@@ -196,7 +241,7 @@ final class Conversations
      * @throws ConnectionException when the API cannot be reached
      */
     public function list(
-        ?string $inbox_id = null,
+        ?string $line_id = null,
         ?string $channel_id = null,
         array|string|null $channel_type = null,
         ?string $contact_id = null,
@@ -214,14 +259,14 @@ final class Conversations
         $this->connection->guard(
             'conversations.list',
             [
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'channel_id' => $channel_id,
                 'contact_id' => $contact_id,
                 'q' => $q,
                 'limit' => $limit,
             ],
             [
-                'inbox_id' => [
+                'line_id' => [
                     'uuid' => true,
                 ],
                 'channel_id' => [
@@ -246,7 +291,7 @@ final class Conversations
             'GET',
             '/v1/conversations',
             query: Params::query([
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'channel_id' => $channel_id,
                 'channel_type' => $channel_type,
                 'contact_id' => $contact_id,
@@ -263,7 +308,7 @@ final class Conversations
             options: $requestOptions,
         );
 
-        return Page::fromResponse($response, static fn (array $item): Models\Conversation => Models\Conversation::fromArray($item), fn (string $next): Page => $this->list(inbox_id: $inbox_id, channel_id: $channel_id, channel_type: $channel_type, contact_id: $contact_id, status: $status, unread: $unread, blocked: $blocked, q: $q, last_message_after: $last_message_after, last_message_before: $last_message_before, sort: $sort, limit: $limit, cursor: $next, requestOptions: $requestOptions));
+        return Page::fromResponse($response, static fn (array $item): Models\Conversation => Models\Conversation::fromArray($item), fn (string $next): Page => $this->list(line_id: $line_id, channel_id: $channel_id, channel_type: $channel_type, contact_id: $contact_id, status: $status, unread: $unread, blocked: $blocked, q: $q, last_message_after: $last_message_after, last_message_before: $last_message_before, sort: $sort, limit: $limit, cursor: $next, requestOptions: $requestOptions));
     }
 
     /**
@@ -286,7 +331,7 @@ final class Conversations
      * @throws ConnectionException when the API cannot be reached
      */
     public function all(
-        ?string $inbox_id = null,
+        ?string $line_id = null,
         ?string $channel_id = null,
         array|string|null $channel_type = null,
         ?string $contact_id = null,
@@ -300,7 +345,7 @@ final class Conversations
         ?int $limit = null,
         ?RequestOptions $requestOptions = null,
     ): Generator {
-        return $this->list(inbox_id: $inbox_id, channel_id: $channel_id, channel_type: $channel_type, contact_id: $contact_id, status: $status, unread: $unread, blocked: $blocked, q: $q, last_message_after: $last_message_after, last_message_before: $last_message_before, sort: $sort, limit: $limit, requestOptions: $requestOptions)->autoPaging();
+        return $this->list(line_id: $line_id, channel_id: $channel_id, channel_type: $channel_type, contact_id: $contact_id, status: $status, unread: $unread, blocked: $blocked, q: $q, last_message_after: $last_message_after, last_message_before: $last_message_before, sort: $sort, limit: $limit, requestOptions: $requestOptions)->autoPaging();
     }
 
     /**
@@ -310,7 +355,7 @@ final class Conversations
      * directions use `COALESCE(phone_timestamp, created_at)`, so imported history keeps the time the phone
      * recorded; `created_after` (inclusive) and `created_before` (exclusive) use the same time. Ties break on
      * `id`. `q` is the full-text search on `body` of `GET /v1/messages` (at least 2 characters). A
-     * conversation outside the key's inbox scope answers 404.
+     * conversation outside the key's line scope answers 404.
      *
      * @param  list<string>|string|null  $direction  Comma list of `outbound`, `inbound`.
      * @param  ?string  $q  Full-text search on the body, at least 2 characters.
@@ -377,13 +422,14 @@ final class Conversations
      * Reply in a conversation.
      *
      * Sends a message in the thread. Requires `conversations:write` and `messages:send`. The body is the body
-     * of `POST /v1/messages` without `to`, `contact_id`, `inbox_id`, `channel_id`, `from` and `channel_type`;
-     * the inbox and contact identity of the conversation are used. Sending one of those fields answers `422
-     * VALIDATION_FAILED` with the field in `details.fields`.
+     * of `POST /v1/messages` without `to`, `contact_id`, `line_id`, `channel_id`, `from` and `channel_type`;
+     * the line and contact identity of the conversation are used, and the reply goes out through the
+     * conversation's channel while it is a healthy sender of the line (else the line's next healthy sender).
+     * Sending one of those fields answers `422 VALIDATION_FAILED` with the field in `details.fields`.
      *
      * Everything else behaves as on `POST /v1/messages`: `202` with the message resource plus `warnings[]`,
      * `dry_run`, `Idempotency-Key`, `reference_id` (`409 REFERENCE_ID_EXISTS`) and the `422` acceptance
-     * rejections of `POST /v1/messages`. A conversation outside the key's inbox scope answers 404.
+     * rejections of `POST /v1/messages`. A conversation outside the key's line scope answers 404.
      *
      * @param  array<string, mixed>|null  $content  The full content form. `type` is `text`, `media`, `template` or a channel-specific type refused with `CHANNEL_CAPABILITY_UNSUPPORTED`. Excludes `body`, `media_ids`, `template_id` and `variables`.
      * @param  ?string  $body  Shorthand for text content. May go with `media_ids`.

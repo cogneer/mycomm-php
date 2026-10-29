@@ -12,7 +12,7 @@ final class WebhookConversationDeletedData extends Model
 {
     public readonly string $conversation_id;
 
-    public readonly string $inbox_id;
+    public readonly string $line_id;
 
     public readonly string $contact_id;
 
@@ -21,7 +21,7 @@ final class WebhookConversationDeletedData extends Model
     protected function hydrate(array $data): void
     {
         $this->conversation_id = $data['conversation_id'];
-        $this->inbox_id = $data['inbox_id'];
+        $this->line_id = $data['line_id'];
         $this->contact_id = $data['contact_id'];
         $this->actor = WebhookActor::fromArray($data['actor']);
     }

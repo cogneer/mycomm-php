@@ -9,7 +9,7 @@ namespace MyComm\Models;
 use MyComm\Model;
 
 /**
- * All rules of an inbox ordered by position. Not paginated.
+ * All rules of a line ordered by position. Not paginated.
  */
 final class AutomationRuleList extends Model
 {

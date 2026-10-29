@@ -21,9 +21,9 @@ use MyComm\Omit;
 final class SendBatchItem extends Input
 {
     /**
-     * @param  ?string  $inbox_id  The inbox to send from. A key limited to one inbox may leave all sender fields out.
-     * @param  ?string  $channel_id  Send from this channel's main inbox.
-     * @param  ?string  $from  A channel address (for SMS, the number); resolves to that channel's main inbox.
+     * @param  ?string  $line_id  The line to send from. A key limited to one line may leave all sender fields out.
+     * @param  ?string  $channel_id  Send from this channel, on the line it is the primary sender of, else on its default line.
+     * @param  ?string  $from  A channel address (for SMS, the number); resolves like `channel_id`.
      * @param  ?string  $channel_type  Only to choose between channels of different types that share the `from` address.
      * @param  ?string  $to  Recipient address in the channel's format (a phone number in any accepted format for SMS). Not together with `contact_id`.
      * @param  ?string  $contact_id  Send to this contact's address for the channel. Not together with `to`.
@@ -43,7 +43,7 @@ final class SendBatchItem extends Input
      * @param  ?bool  $shorten_links  Replace each URL with a short link so clicks are counted.
      */
     public function __construct(
-        public readonly ?string $inbox_id = null,
+        public readonly ?string $line_id = null,
         public readonly ?string $channel_id = null,
         public readonly ?string $from = null,
         public readonly ?string $channel_type = null,
@@ -68,7 +68,7 @@ final class SendBatchItem extends Input
     public function toArray(): array
     {
         return Params::body([
-            'inbox_id' => $this->inbox_id ?? Omit::Value,
+            'line_id' => $this->line_id ?? Omit::Value,
             'channel_id' => $this->channel_id ?? Omit::Value,
             'from' => $this->from ?? Omit::Value,
             'channel_type' => $this->channel_type ?? Omit::Value,

@@ -48,7 +48,6 @@ enum ErrorCode: string
     case InvalidAddress = 'INVALID_ADDRESS';
     case NotMobile = 'NOT_MOBILE';
     case DestinationNotAllowed = 'DESTINATION_NOT_ALLOWED';
-    case RecipientIsChannel = 'RECIPIENT_IS_CHANNEL';
     case BodyTooLong = 'BODY_TOO_LONG';
     case BodyTooLongForBulk = 'BODY_TOO_LONG_FOR_BULK';
     case BodyEmpty = 'BODY_EMPTY';
@@ -64,9 +63,11 @@ enum ErrorCode: string
     case TooManyLinks = 'TOO_MANY_LINKS';
     case ContactBlocked = 'CONTACT_BLOCKED';
     case ChannelInactive = 'CHANNEL_INACTIVE';
-    case InboxArchived = 'INBOX_ARCHIVED';
-    case ChannelRequired = 'CHANNEL_REQUIRED';
-    case ChannelInboxMismatch = 'CHANNEL_INBOX_MISMATCH';
+    case LineArchived = 'LINE_ARCHIVED';
+    case LineRequired = 'LINE_REQUIRED';
+    case LineHasNoSenders = 'LINE_HAS_NO_SENDERS';
+    case LineIsDirect = 'LINE_IS_DIRECT';
+    case ChannelLineMismatch = 'CHANNEL_LINE_MISMATCH';
     case FromAmbiguous = 'FROM_AMBIGUOUS';
     case ContentConflict = 'CONTENT_CONFLICT';
     case ChannelCapabilityUnsupported = 'CHANNEL_CAPABILITY_UNSUPPORTED';

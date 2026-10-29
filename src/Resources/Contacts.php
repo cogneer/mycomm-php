@@ -570,9 +570,8 @@ final class Contacts
     /**
      * List the conversations of a contact.
      *
-     * Requires `conversations:read`. The contact's conversations across inboxes, newest `last_message_at`
-     * first (restricted keys: the conversations of their inboxes only). A conversation without messages is not
-     * listed.
+     * Requires `conversations:read`. The contact's conversations across lines, newest `last_message_at` first
+     * (restricted keys: the conversations of their lines only). A conversation without messages is not listed.
      *
      * @param  ?string  $sort  One of: `-last_message_at`, `last_message_at`.
      * @param  ?int  $limit  Page size, 1 to 200.

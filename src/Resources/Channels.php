@@ -44,7 +44,7 @@ final class Channels
     /**
      * Update the settings of a channel.
      *
-     * Requires `channels:write`; a key restricted to inboxes never holds it. Changes only the keys sent.
+     * Requires `channels:write`; a key restricted to lines never holds it. Changes only the keys sent.
      * `allowed_destination_countries` is `null` (the channel's own country only, the default) or a list of ISO
      * 3166-1 alpha-2 codes that must contain the channel's own country, else `422 VALIDATION_FAILED`; codes
      * are stored upper case. Adding another country is an explicit opt-in on the number and is audited as
@@ -61,7 +61,6 @@ final class Channels
     public function update(
         string $id,
         ?string $name = null,
-        ?int $reply_window_days = null,
         array|Omit|null $allowed_destination_countries = Omit::Value,
         ?bool $skip_business_senders = null,
         ?RequestOptions $requestOptions = null,
@@ -70,17 +69,12 @@ final class Channels
             'channels.update',
             [
                 'name' => $name,
-                'reply_window_days' => $reply_window_days,
                 'allowed_destination_countries' => $allowed_destination_countries,
             ],
             [
                 'name' => [
                     'minLength' => 1,
                     'maxLength' => 100,
-                ],
-                'reply_window_days' => [
-                    'min' => 1,
-                    'max' => 365,
                 ],
                 'allowed_destination_countries' => [
                     'minItems' => 1,
@@ -95,7 +89,6 @@ final class Channels
             '/v1/channels/'.rawurlencode($id),
             body: Params::body([
                 'name' => $name ?? Omit::Value,
-                'reply_window_days' => $reply_window_days ?? Omit::Value,
                 'allowed_destination_countries' => $allowed_destination_countries,
                 'skip_business_senders' => $skip_business_senders ?? Omit::Value,
             ]),
@@ -150,7 +143,7 @@ final class Channels
      * Disconnect a channel.
      *
      * Requires `channels:write`. → `disconnected` with `disconnect_reason: owner`; the number is released
-     * for use elsewhere, queued outbound messages fail with `CHANNEL_DISCONNECTED`, inboxes and history stay
+     * for use elsewhere, queued outbound messages fail with `CHANNEL_DISCONNECTED`, lines and history stay
      * readable and sends get `CHANNEL_INACTIVE`. Emits `channel.disconnected`. A `pending_verification`
      * channel that never connected is deleted instead (`204`). An already disconnected channel is `409
      * INVALID_STATE`.
@@ -280,7 +273,7 @@ final class Channels
      *
      * Requires `channels:read`. Every channel of the account whatever its status, oldest first, unless a
      * filter narrows the list. `health_band` filters on the stored SIM safety band, so a number that was never
-     * evaluated matches no band. A key restricted to inboxes sees only the channels of those inboxes.
+     * evaluated matches no band. A key restricted to lines sees only the channels of those lines.
      *
      * @param  ?string  $status  One of: `pending_verification`, `active`, `paused`, `disconnected`.
      * @param  ?string  $type  One of: `android_sim`, `whatsapp_evolution`, `telegram_bot`.
@@ -417,7 +410,7 @@ final class Channels
     /**
      * Update the rate policy of a channel.
      *
-     * Requires `channels:write`; a key restricted to inboxes never holds it. Sent keys are merged into the
+     * Requires `channels:write`; a key restricted to lines never holds it. Sent keys are merged into the
      * current policy (nested objects key by key; a key sent as `null` clears it where the field allows `null`)
      * and `rate_policy_source` becomes `custom`. `{"reset_to_suggested": true}` restores the suggestion
      * (`rate_policy_source: suggested`) and clears the acknowledgement; it cannot be combined with policy
@@ -492,7 +485,7 @@ final class Channels
      * do, so a partner UI adapts without hard-coding SMS. `available` is `true` when the type is enabled on
      * the platform and allowed by the account's `settings.channels.allowed_types`; a type that has not shipped
      * yet carries `available_from`. In v1 only `android_sim` is available. The list is about the account, not
-     * an inbox, so a key restricted to inboxes gets the full answer. Not paginated.
+     * a line, so a key restricted to lines gets the full answer. Not paginated.
      *
      * @return Page<Models\ChannelTypeInfo>
      *

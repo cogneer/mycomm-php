@@ -53,8 +53,8 @@ final class Media
      * Get a media with a fresh signed URL.
      *
      * Requires `media:write` or `messages:read`. Every call signs a new `url` valid for 15 minutes; inbound
-     * MMS media are fetched this way (webhooks carry ids, not URLs). A key restricted to inboxes sees only
-     * media of messages in its inboxes, or uploaded with that key; any other media answers `404 NOT_FOUND`.
+     * MMS media are fetched this way (webhooks carry ids, not URLs). A key restricted to lines sees only media
+     * of messages in its lines, or uploaded with that key; any other media answers `404 NOT_FOUND`.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached

@@ -31,7 +31,7 @@ final class Messages
      * with the message in `status: cancelled`. A `leased` message is already on the phone, so the call is a
      * best-effort cancel request: `202` with the message still `leased` and `cancel_requested_at` set; the
      * phone's later report decides the outcome. A `sent` or other terminal message answers `409
-     * NOT_CANCELLABLE` with `details.status`. A message outside the key's inbox scope answers 404.
+     * NOT_CANCELLABLE` with `details.status`. A message outside the key's line scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -55,7 +55,7 @@ final class Messages
      * `UNCONFIRMED`; it is ignored otherwise. Errors: `409 NOT_RETRYABLE` (`details.status`,
      * `details.failure_code`; not `failed` or `expired`, inbound, or `UNCONFIRMED` without acknowledgement),
      * `409 RETRY_LIMIT_REACHED` (5 manual retries), and `422` `RECIPIENT_OPTED_OUT`, `CONTACT_BLOCKED`,
-     * `CHANNEL_INACTIVE` or `INBOX_ARCHIVED`. A message outside the key's inbox scope answers 404.
+     * `CHANNEL_INACTIVE` or `LINE_ARCHIVED`. A message outside the key's line scope answers 404.
      *
      * @param  ?bool  $acknowledge_possible_duplicate  Must be `true` to retry a message that failed with `UNCONFIRMED` (it may already have been delivered).
      *
@@ -148,9 +148,9 @@ final class Messages
      * List and search messages.
      *
      * Messages of the account, newest first, with cursor pagination. Requires `messages:read`. A restricted
-     * key lists only the messages of its inboxes. Comma lists match any of the values. `q` is a full-text
-     * search on `body` (at least 2 characters, Postgres `simple` configuration, so Urdu and Roman Urdu match
-     * word by word) and always sorts newest first.
+     * key lists only the messages of its lines. Comma lists match any of the values. `q` is a full-text search
+     * on `body` (at least 2 characters, Postgres `simple` configuration, so Urdu and Roman Urdu match word by
+     * word) and always sorts newest first.
      *
      * @param  ?string  $reference_id  Exact match; returns 0 or 1 item.
      * @param  list<string>|string|null  $status  One value or a comma list. Values: `queued`, `leased`, `sent`, `delivered`, `read`, `failed`, `expired`, `cancelled`, `received`.
@@ -177,7 +177,7 @@ final class Messages
      * @throws ConnectionException when the API cannot be reached
      */
     public function list(
-        ?string $inbox_id = null,
+        ?string $line_id = null,
         ?string $channel_id = null,
         ?string $conversation_id = null,
         ?string $contact_id = null,
@@ -206,7 +206,7 @@ final class Messages
         $this->connection->guard(
             'messages.list',
             [
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'channel_id' => $channel_id,
                 'conversation_id' => $conversation_id,
                 'contact_id' => $contact_id,
@@ -215,7 +215,7 @@ final class Messages
                 'limit' => $limit,
             ],
             [
-                'inbox_id' => [
+                'line_id' => [
                     'uuid' => true,
                 ],
                 'channel_id' => [
@@ -246,7 +246,7 @@ final class Messages
             'GET',
             '/v1/messages',
             query: Params::query([
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'channel_id' => $channel_id,
                 'conversation_id' => $conversation_id,
                 'contact_id' => $contact_id,
@@ -274,7 +274,7 @@ final class Messages
             options: $requestOptions,
         );
 
-        return Page::fromResponse($response, static fn (array $item): Models\Message => Models\Message::fromArray($item), fn (string $next): Page => $this->list(inbox_id: $inbox_id, channel_id: $channel_id, conversation_id: $conversation_id, contact_id: $contact_id, campaign_id: $campaign_id, direction: $direction, reference_id: $reference_id, status: $status, type: $type, category: $category, lane: $lane, origin: $origin, failure_code: $failure_code, channel_type: $channel_type, content_type: $content_type, hold_reason: $hold_reason, to: $to, from: $from, q: $q, created_after: $created_after, created_before: $created_before, sort: $sort, limit: $limit, cursor: $next, requestOptions: $requestOptions));
+        return Page::fromResponse($response, static fn (array $item): Models\Message => Models\Message::fromArray($item), fn (string $next): Page => $this->list(line_id: $line_id, channel_id: $channel_id, conversation_id: $conversation_id, contact_id: $contact_id, campaign_id: $campaign_id, direction: $direction, reference_id: $reference_id, status: $status, type: $type, category: $category, lane: $lane, origin: $origin, failure_code: $failure_code, channel_type: $channel_type, content_type: $content_type, hold_reason: $hold_reason, to: $to, from: $from, q: $q, created_after: $created_after, created_before: $created_before, sort: $sort, limit: $limit, cursor: $next, requestOptions: $requestOptions));
     }
 
     /**
@@ -305,7 +305,7 @@ final class Messages
      * @throws ConnectionException when the API cannot be reached
      */
     public function all(
-        ?string $inbox_id = null,
+        ?string $line_id = null,
         ?string $channel_id = null,
         ?string $conversation_id = null,
         ?string $contact_id = null,
@@ -330,16 +330,15 @@ final class Messages
         ?int $limit = null,
         ?RequestOptions $requestOptions = null,
     ): Generator {
-        return $this->list(inbox_id: $inbox_id, channel_id: $channel_id, conversation_id: $conversation_id, contact_id: $contact_id, campaign_id: $campaign_id, direction: $direction, reference_id: $reference_id, status: $status, type: $type, category: $category, lane: $lane, origin: $origin, failure_code: $failure_code, channel_type: $channel_type, content_type: $content_type, hold_reason: $hold_reason, to: $to, from: $from, q: $q, created_after: $created_after, created_before: $created_before, sort: $sort, limit: $limit, requestOptions: $requestOptions)->autoPaging();
+        return $this->list(line_id: $line_id, channel_id: $channel_id, conversation_id: $conversation_id, contact_id: $contact_id, campaign_id: $campaign_id, direction: $direction, reference_id: $reference_id, status: $status, type: $type, category: $category, lane: $lane, origin: $origin, failure_code: $failure_code, channel_type: $channel_type, content_type: $content_type, hold_reason: $hold_reason, to: $to, from: $from, q: $q, created_after: $created_after, created_before: $created_before, sort: $sort, limit: $limit, requestOptions: $requestOptions)->autoPaging();
     }
 
     /**
      * Send one message.
      *
-     * Queues one message. Requires `messages:send`. The inbox decides the channel: give `inbox_id`,
-     * `channel_id` or `from` (the key's single inbox is used when it is restricted to exactly one). The
-     * recipient is `to` or `contact_id`. The content is the `content` union or one of the shorthand fields
-     * (`body`, `media_ids`).
+     * Queues one message. Requires `messages:send`. The line decides the channel: give `line_id`, `channel_id`
+     * or `from` (the key's single line is used when it is restricted to exactly one). The recipient is `to` or
+     * `contact_id`. The content is the `content` union or one of the shorthand fields (`body`, `media_ids`).
      *
      * Answers `202` with the message resource (`status: queued`) plus `warnings[]` (empty when none; for
      * example `CHANNEL_OPTIONS_IGNORED`). A message is accepted while the phone is offline or the channel is
@@ -351,7 +350,7 @@ final class Messages
      * its own code (`CATEGORY_REQUIRED`, `SEND_AFTER_TOO_FAR`, `INVALID_NUMBER`, `RECIPIENT_OPTED_OUT`,
      * `CHANNEL_INACTIVE`, ...) and the `details` listed per code in the error reference. Shape errors
      * (including `metadata` over 2 KB or 50 keys, or non-scalar values) answer `422 VALIDATION_FAILED` with
-     * `details.fields`. An inbox, channel or contact outside the key's scope answers 404.
+     * `details.fields`. A line, channel or contact outside the key's scope answers 404.
      *
      * With `dry_run: true` the same validation and acceptance errors apply, but nothing is stored, queued or
      * sent and the answer is `200` with the would-be message: `dry_run: true`, `id`, `conversation_id`,
@@ -359,9 +358,9 @@ final class Messages
      * `segments`, `type`, `hold_reason` and `expires_at`. `hold_reason` predicts compliance and scheduling
      * holds only. `Idempotency-Key` and `reference_id` are checked but not consumed.
      *
-     * @param  ?string  $inbox_id  The inbox to send from. A key limited to one inbox may leave all sender fields out.
-     * @param  ?string  $channel_id  Send from this channel's main inbox.
-     * @param  ?string  $from  A channel address (for SMS, the number); resolves to that channel's main inbox.
+     * @param  ?string  $line_id  The line to send from. A key limited to one line may leave all sender fields out.
+     * @param  ?string  $channel_id  Send from this channel, on the line it is the primary sender of, else on its default line.
+     * @param  ?string  $from  A channel address (for SMS, the number); resolves like `channel_id`.
      * @param  ?string  $channel_type  Only to choose between channels of different types that share the `from` address.
      * @param  ?string  $to  Recipient address in the channel's format (a phone number in any accepted format for SMS). Not together with `contact_id`.
      * @param  ?string  $contact_id  Send to this contact's address for the channel. Not together with `to`.
@@ -386,7 +385,7 @@ final class Messages
      * @throws ConnectionException when the API cannot be reached
      */
     public function send(
-        ?string $inbox_id = null,
+        ?string $line_id = null,
         ?string $channel_id = null,
         ?string $from = null,
         ?string $channel_type = null,
@@ -412,7 +411,7 @@ final class Messages
         $this->connection->guard(
             'messages.send',
             [
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'channel_id' => $channel_id,
                 'contact_id' => $contact_id,
                 'media_ids' => $media_ids,
@@ -428,7 +427,7 @@ final class Messages
                 'variables' => $variables,
             ],
             [
-                'inbox_id' => [
+                'line_id' => [
                     'uuid' => true,
                 ],
                 'channel_id' => [
@@ -483,7 +482,7 @@ final class Messages
             'POST',
             '/v1/messages',
             body: Params::body([
-                'inbox_id' => $inbox_id ?? Omit::Value,
+                'line_id' => $line_id ?? Omit::Value,
                 'channel_id' => $channel_id ?? Omit::Value,
                 'from' => $from ?? Omit::Value,
                 'channel_type' => $channel_type ?? Omit::Value,
@@ -518,7 +517,7 @@ final class Messages
      * Retrieve a message.
      *
      * Returns the message resource, inbound or outbound. Requires `messages:read`. A message outside the key's
-     * inbox scope answers 404.
+     * line scope answers 404.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -536,7 +535,7 @@ final class Messages
      * Message timeline.
      *
      * The message's events from `message_events`, oldest first, not paginated. Requires `messages:read`. A
-     * message outside the key's inbox scope answers 404.
+     * message outside the key's line scope answers 404.
      *
      * @return Page<Models\MessageEvent>
      *

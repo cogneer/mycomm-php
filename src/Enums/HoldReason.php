@@ -35,4 +35,5 @@ enum HoldReason: string
     case BulkHours = 'bulk_hours';
     case CarrierCooldown = 'carrier_cooldown';
     case DeviceHot = 'device_hot';
+    case NoSenderAvailable = 'no_sender_available';
 }

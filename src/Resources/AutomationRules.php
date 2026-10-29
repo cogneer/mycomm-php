@@ -23,12 +23,12 @@ final class AutomationRules
     public function __construct(private readonly Connection $connection) {}
 
     /**
-     * List the automation rules of an inbox.
+     * List the automation rules of a line.
      *
-     * Requires `automation:read`. All rules of the inbox ordered by `position`, not paginated: the away
-     * message first (position 0), then the keyword rules from 1; rules are evaluated by ascending position and
-     * the first matching keyword rule wins. A key restricted to inboxes reads only its own inboxes; another
-     * inbox, or one of another account, is `404`.
+     * Requires `automation:read`. All rules of the line ordered by `position`, not paginated: the away message
+     * first (position 0), then the keyword rules from 1; rules are evaluated by ascending position and the
+     * first matching keyword rule wins. A key restricted to lines reads only its own lines; another line, or
+     * one of another account, is `404`.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -37,7 +37,7 @@ final class AutomationRules
         string $id,
         ?RequestOptions $requestOptions = null,
     ): Models\AutomationRuleList {
-        $response = $this->connection->request('automationRules.list', 'GET', '/v1/inboxes/'.rawurlencode($id).'/automation-rules', options: $requestOptions);
+        $response = $this->connection->request('automationRules.list', 'GET', '/v1/lines/'.rawurlencode($id).'/automation-rules', options: $requestOptions);
 
         return Models\AutomationRuleList::fromArray($response->json(), $response->meta());
     }
@@ -45,10 +45,10 @@ final class AutomationRules
     /**
      * Create an automation rule.
      *
-     * Requires `automation:write`, which a key restricted to inboxes never holds (`403 ABILITY_MISSING`). A
-     * keyword rule goes to the end of the inbox's keyword rules unless `position` (1 to the number of keyword
+     * Requires `automation:write`, which a key restricted to lines never holds (`403 ABILITY_MISSING`). A
+     * keyword rule goes to the end of the line's keyword rules unless `position` (1 to the number of keyword
      * rules plus one) says otherwise; an `away` rule has no `match`, sits at position 0 and fires outside the
-     * inbox's business hours. An inbox holds at most 200 keyword rules and one away rule: a second one is `409
+     * line's business hours. A line holds at most 200 keyword rules and one away rule: a second one is `409
      * INVALID_STATE`. `422 TEMPLATE_ARCHIVED` and `LINK_PUBLIC_SHORTENER` (`details.url`) come from the
      * `reply` actions; `422 VALIDATION_FAILED` covers every field, an unknown group or template (also one of
      * another account), a reserved opt-out or opt-in keyword, and any field that is not listed here. Strings,
@@ -113,7 +113,7 @@ final class AutomationRules
         $response = $this->connection->request(
             'automationRules.create',
             'POST',
-            '/v1/inboxes/'.rawurlencode($id).'/automation-rules',
+            '/v1/lines/'.rawurlencode($id).'/automation-rules',
             body: Params::body([
                 'type' => $type,
                 'name' => $name,
@@ -130,14 +130,14 @@ final class AutomationRules
     }
 
     /**
-     * Reorder the keyword rules of an inbox.
+     * Reorder the keyword rules of a line.
      *
-     * Requires `automation:write`. `rule_ids` names every keyword rule of the inbox exactly once, in the new
+     * Requires `automation:write`. `rule_ids` names every keyword rule of the line exactly once, in the new
      * order (the away rule is not part of it); positions become 1 to n. A missing, repeated, unknown or
-     * foreign id is `422 VALIDATION_FAILED` and nothing changes. Answers with all rules of the inbox ordered
-     * by position.
+     * foreign id is `422 VALIDATION_FAILED` and nothing changes. Answers with all rules of the line ordered by
+     * position.
      *
-     * @param  list<string>  $rule_ids  Every keyword rule of the inbox exactly once, in the new order.
+     * @param  list<string>  $rule_ids  Every keyword rule of the line exactly once, in the new order.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
@@ -165,7 +165,7 @@ final class AutomationRules
         $response = $this->connection->request(
             'automationRules.reorder',
             'POST',
-            '/v1/inboxes/'.rawurlencode($id).'/automation-rules/reorder',
+            '/v1/lines/'.rawurlencode($id).'/automation-rules/reorder',
             body: Params::body([
                 'rule_ids' => $rule_ids,
             ]),
@@ -178,8 +178,8 @@ final class AutomationRules
     /**
      * Get an automation rule.
      *
-     * Requires `automation:read`. `404` for a rule of another inbox or account and for an inbox outside the
-     * key's scope.
+     * Requires `automation:read`. `404` for a rule of another line or account and for a line outside the key's
+     * scope.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -189,7 +189,7 @@ final class AutomationRules
         string $rule_id,
         ?RequestOptions $requestOptions = null,
     ): Models\AutomationRule {
-        $response = $this->connection->request('automationRules.get', 'GET', '/v1/inboxes/'.rawurlencode($id).'/automation-rules/'.rawurlencode($rule_id), options: $requestOptions);
+        $response = $this->connection->request('automationRules.get', 'GET', '/v1/lines/'.rawurlencode($id).'/automation-rules/'.rawurlencode($rule_id), options: $requestOptions);
 
         return Models\AutomationRule::fromArray($response->json(), $response->meta());
     }
@@ -197,13 +197,13 @@ final class AutomationRules
     /**
      * Update an automation rule.
      *
-     * Requires `automation:write`. Only the fields sent change; any field except `type` and `inbox_id`, which
+     * Requires `automation:write`. Only the fields sent change; any field except `type` and `line_id`, which
      * are `422 VALIDATION_FAILED` when sent, even with their current value. A `position` moves a keyword rule
-     * among the keyword rules of its inbox. The errors of the create call apply to the fields sent.
+     * among the keyword rules of its line. The errors of the create call apply to the fields sent.
      *
      * @param  Inputs\AutomationRuleMatchInput|array<string, mixed>|null  $match
      * @param  list<Inputs\AutomationReplyAction|array<string, mixed>|Inputs\AutomationGroupAction|Inputs\AutomationTagAction|Inputs\AutomationFlagAction>|null  $actions
-     * @param  ?int  $position  Moves a keyword rule to this place among the keyword rules of its inbox.
+     * @param  ?int  $position  Moves a keyword rule to this place among the keyword rules of its line.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
@@ -251,7 +251,7 @@ final class AutomationRules
         $response = $this->connection->request(
             'automationRules.update',
             'PATCH',
-            '/v1/inboxes/'.rawurlencode($id).'/automation-rules/'.rawurlencode($rule_id),
+            '/v1/lines/'.rawurlencode($id).'/automation-rules/'.rawurlencode($rule_id),
             body: Params::body([
                 'name' => $name ?? Omit::Value,
                 'active' => $active ?? Omit::Value,
@@ -280,20 +280,20 @@ final class AutomationRules
         string $rule_id,
         ?RequestOptions $requestOptions = null,
     ): void {
-        $this->connection->request('automationRules.delete', 'DELETE', '/v1/inboxes/'.rawurlencode($id).'/automation-rules/'.rawurlencode($rule_id), options: $requestOptions);
+        $this->connection->request('automationRules.delete', 'DELETE', '/v1/lines/'.rawurlencode($id).'/automation-rules/'.rawurlencode($rule_id), options: $requestOptions);
     }
 
     /**
-     * Test a message against the automation of an inbox.
+     * Test a message against the automation of a line.
      *
-     * Requires `automation:read`. A dry run: the inbox's rules and guards decide what an inbound message with
+     * Requires `automation:read`. A dry run: the line's rules and guards decide what an inbound message with
      * this `body` would do, and nothing is sent, written or logged. `at` (default now) is the instant used for
      * business hours and the guard windows. With `contact_id` the per-conversation guards (loop guard,
-     * cooldown) read that contact's conversation in the inbox; without it only the channel cap applies. A
-     * guard outcome (`skipped:*`) still names the rule and lists its actions and reply preview, and `outcome`
-     * says why nothing would be sent. `no_match` means no rule fits or the message runs no automation at all
-     * (an opt-out keyword, for example): no rule, no actions and no preview. A key restricted to inboxes tests
-     * only its own inboxes; another inbox, or one of another account, is `404`. The reply preview renders the
+     * cooldown) read that contact's conversation in the line; without it only the channel cap applies. A guard
+     * outcome (`skipped:*`) still names the rule and lists its actions and reply preview, and `outcome` says
+     * why nothing would be sent. `no_match` means no rule fits or the message runs no automation at all (an
+     * opt-out keyword, for example): no rule, no actions and no preview. A key restricted to lines tests only
+     * its own lines; another line, or one of another account, is `404`. The reply preview renders the
      * contact's fields, so a `contact_id` also needs `contacts:read` (`403 ABILITY_MISSING`, checked before
      * the contact is looked up). A `contact_id` that is not a contact of the account is `422
      * VALIDATION_FAILED`, as is any field not listed here. The body is JSON, at most 128 KB (`413
@@ -335,7 +335,7 @@ final class AutomationRules
         $response = $this->connection->request(
             'automationRules.test',
             'POST',
-            '/v1/inboxes/'.rawurlencode($id).'/automation-rules/test',
+            '/v1/lines/'.rawurlencode($id).'/automation-rules/test',
             body: Params::body([
                 'body' => $body,
                 'contact_id' => $contact_id,

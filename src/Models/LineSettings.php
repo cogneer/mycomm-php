@@ -11,7 +11,7 @@ use MyComm\Model;
 /**
  * `business_hours`, an optional `signature` and notification preferences. Missing keys read as `null`.
  */
-final class InboxSettings extends Model
+final class LineSettings extends Model
 {
     /**
      * @var array<string, mixed>|null

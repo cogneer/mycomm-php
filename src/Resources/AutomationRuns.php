@@ -25,13 +25,13 @@ final class AutomationRuns
      * List automation runs.
      *
      * Requires `automation:read`. The automation log: one run per evaluation that chose a rule, newest first
-     * (`sort=-created_at`, ties by `id`), with cursor pagination. `inbox_id` is the rule's inbox. `inbox_id`,
+     * (`sort=-created_at`, ties by `id`), with cursor pagination. `line_id` is the rule's line. `line_id`,
      * `rule_id` and `conversation_id` take one value each; `outcome` takes a comma list. `created_after` is
-     * inclusive and `created_before` exclusive. A key restricted to inboxes sees only the runs of its own
-     * inboxes; filtering on another inbox returns an empty page. A filter value that is not valid is `422
+     * inclusive and `created_before` exclusive. A key restricted to lines sees only the runs of its own lines;
+     * filtering on another line returns an empty page. A filter value that is not valid is `422
      * VALIDATION_FAILED`; a cursor from other filters is `400 INVALID_CURSOR`.
      *
-     * @param  ?string  $inbox_id  Runs of rules of this inbox.
+     * @param  ?string  $line_id  Runs of rules of this line.
      * @param  ?string  $rule_id  Runs of this rule.
      * @param  ?string  $conversation_id  Runs triggered in this conversation.
      * @param  list<string>|string|null  $outcome  One outcome or a comma list, e.g. `skipped:cooldown,skipped:channel_cap`. Values: `applied`, `skipped:cooldown`, `skipped:channel_cap`, `skipped:loop_guard`.
@@ -47,7 +47,7 @@ final class AutomationRuns
      * @throws ConnectionException when the API cannot be reached
      */
     public function list(
-        ?string $inbox_id = null,
+        ?string $line_id = null,
         ?string $rule_id = null,
         ?string $conversation_id = null,
         array|string|null $outcome = null,
@@ -61,14 +61,14 @@ final class AutomationRuns
         $this->connection->guard(
             'automationRuns.list',
             [
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'rule_id' => $rule_id,
                 'conversation_id' => $conversation_id,
                 'outcome' => $outcome,
                 'limit' => $limit,
             ],
             [
-                'inbox_id' => [
+                'line_id' => [
                     'uuid' => true,
                 ],
                 'rule_id' => [
@@ -93,7 +93,7 @@ final class AutomationRuns
             'GET',
             '/v1/automation-runs',
             query: Params::query([
-                'inbox_id' => $inbox_id,
+                'line_id' => $line_id,
                 'rule_id' => $rule_id,
                 'conversation_id' => $conversation_id,
                 'outcome' => $outcome,
@@ -106,7 +106,7 @@ final class AutomationRuns
             options: $requestOptions,
         );
 
-        return Page::fromResponse($response, static fn (array $item): Models\AutomationRun => Models\AutomationRun::fromArray($item), fn (string $next): Page => $this->list(inbox_id: $inbox_id, rule_id: $rule_id, conversation_id: $conversation_id, outcome: $outcome, created_after: $created_after, created_before: $created_before, sort: $sort, limit: $limit, cursor: $next, requestOptions: $requestOptions));
+        return Page::fromResponse($response, static fn (array $item): Models\AutomationRun => Models\AutomationRun::fromArray($item), fn (string $next): Page => $this->list(line_id: $line_id, rule_id: $rule_id, conversation_id: $conversation_id, outcome: $outcome, created_after: $created_after, created_before: $created_before, sort: $sort, limit: $limit, cursor: $next, requestOptions: $requestOptions));
     }
 
     /**
@@ -114,7 +114,7 @@ final class AutomationRuns
      *
      * `limit` is the page size, not a cap on the items.
      *
-     * @param  ?string  $inbox_id  Runs of rules of this inbox.
+     * @param  ?string  $line_id  Runs of rules of this line.
      * @param  ?string  $rule_id  Runs of this rule.
      * @param  ?string  $conversation_id  Runs triggered in this conversation.
      * @param  list<string>|string|null  $outcome  One outcome or a comma list, e.g. `skipped:cooldown,skipped:channel_cap`. Values: `applied`, `skipped:cooldown`, `skipped:channel_cap`, `skipped:loop_guard`.
@@ -128,7 +128,7 @@ final class AutomationRuns
      * @throws ConnectionException when the API cannot be reached
      */
     public function all(
-        ?string $inbox_id = null,
+        ?string $line_id = null,
         ?string $rule_id = null,
         ?string $conversation_id = null,
         array|string|null $outcome = null,
@@ -138,6 +138,6 @@ final class AutomationRuns
         ?int $limit = null,
         ?RequestOptions $requestOptions = null,
     ): Generator {
-        return $this->list(inbox_id: $inbox_id, rule_id: $rule_id, conversation_id: $conversation_id, outcome: $outcome, created_after: $created_after, created_before: $created_before, sort: $sort, limit: $limit, requestOptions: $requestOptions)->autoPaging();
+        return $this->list(line_id: $line_id, rule_id: $rule_id, conversation_id: $conversation_id, outcome: $outcome, created_after: $created_after, created_before: $created_before, sort: $sort, limit: $limit, requestOptions: $requestOptions)->autoPaging();
     }
 }

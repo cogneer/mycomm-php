@@ -101,8 +101,8 @@ final class Exports
      * The required ability depends on `type`: `messages_csv` needs `reports:read`, `contacts_csv` and
      * `contact_json` need `contacts:read`, `campaign_report` needs `campaigns:read`, `account_zip` needs
      * `account:write`. `messages_csv` takes the `GET /v1/messages` filters as `params`; `created_after` and
-     * `created_before` are required and at most 366 days apart. A key restricted to inboxes exports only its
-     * inboxes. The export is built asynchronously: poll `GET /v1/exports/{id}` or wait for the
+     * `created_before` are required and at most 366 days apart. A key restricted to lines exports only its
+     * lines. The export is built asynchronously: poll `GET /v1/exports/{id}` or wait for the
      * `export.completed` webhook.
      *
      * Errors: `422 VALIDATION_FAILED` (unknown `type` or invalid `params`), `403 ABILITY_MISSING`.

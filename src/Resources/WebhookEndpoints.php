@@ -25,7 +25,7 @@ final class WebhookEndpoints
      * List webhook endpoints.
      *
      * Requires `webhooks:write`. Secrets are never returned here. A restricted key sees only endpoints whose
-     * `inbox_ids` is set and inside its scope.
+     * `line_ids` is set and inside its scope.
      *
      * @param  ?int  $limit  Page size, 1 to 200.
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
@@ -90,15 +90,15 @@ final class WebhookEndpoints
      * Create a webhook endpoint.
      *
      * Requires `webhooks:write`. The `url` must be `https`, carry no credentials and resolve only to public
-     * addresses. `events` empty or omitted means every event except the opt-in ones. `inbox_ids` and
+     * addresses. `events` empty or omitted means every event except the opt-in ones. `line_ids` and
      * `channel_types` `null` mean all. At most 20 endpoints per account. A restricted key's endpoint defaults
-     * to (and must stay inside) its inboxes, takes the key's channel types and cannot include managed
-     * accounts. The `secret` is shown once, in this response.
+     * to (and must stay inside) its lines, takes the key's channel types and cannot include managed accounts.
+     * The `secret` is shown once, in this response.
      *
      * @param  list<string>|Omit|null  $events
-     * @param  list<string>|Omit|null  $inbox_ids
+     * @param  list<string>|Omit|null  $line_ids
      * @param  list<string>|Omit|null  $channel_types
-     * @param  ?bool  $include_managed_accounts  Also receive the events of every managed account. Only on an approved partner's own account, with `inbox_ids` `null`, and never with a restricted key.
+     * @param  ?bool  $include_managed_accounts  Also receive the events of every managed account. Only on an approved partner's own account, with `line_ids` `null`, and never with a restricted key.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
@@ -108,7 +108,7 @@ final class WebhookEndpoints
         string $url,
         string|Omit|null $description = Omit::Value,
         array|Omit|null $events = Omit::Value,
-        array|Omit|null $inbox_ids = Omit::Value,
+        array|Omit|null $line_ids = Omit::Value,
         array|Omit|null $channel_types = Omit::Value,
         ?bool $include_managed_accounts = null,
         ?RequestOptions $requestOptions = null,
@@ -118,7 +118,7 @@ final class WebhookEndpoints
             [
                 'url' => $url,
                 'description' => $description,
-                'inbox_ids' => $inbox_ids,
+                'line_ids' => $line_ids,
                 'channel_types' => $channel_types,
             ],
             [
@@ -128,7 +128,7 @@ final class WebhookEndpoints
                 'description' => [
                     'maxLength' => 255,
                 ],
-                'inbox_ids' => [
+                'line_ids' => [
                     'minItems' => 1,
                     'maxItems' => 100,
                     'uuid' => true,
@@ -148,7 +148,7 @@ final class WebhookEndpoints
                 'url' => $url,
                 'description' => $description,
                 'events' => $events,
-                'inbox_ids' => $inbox_ids,
+                'line_ids' => $line_ids,
                 'channel_types' => $channel_types,
                 'include_managed_accounts' => $include_managed_accounts ?? Omit::Value,
             ]),
@@ -179,12 +179,12 @@ final class WebhookEndpoints
      * Update a webhook endpoint.
      *
      * Requires `webhooks:write`. Only the fields sent change. `active: true` re-enables a disabled endpoint
-     * and resets its failure counters. An endpoint with `include_managed_accounts` keeps `inbox_ids` `null`.
+     * and resets its failure counters. An endpoint with `include_managed_accounts` keeps `line_ids` `null`.
      *
      * @param  list<string>|Omit|null  $events
-     * @param  list<string>|Omit|null  $inbox_ids
+     * @param  list<string>|Omit|null  $line_ids
      * @param  list<string>|Omit|null  $channel_types
-     * @param  ?bool  $include_managed_accounts  Only on an approved partner's own account, with `inbox_ids` `null`, and never with a restricted key.
+     * @param  ?bool  $include_managed_accounts  Only on an approved partner's own account, with `line_ids` `null`, and never with a restricted key.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
@@ -195,7 +195,7 @@ final class WebhookEndpoints
         ?string $url = null,
         string|Omit|null $description = Omit::Value,
         array|Omit|null $events = Omit::Value,
-        array|Omit|null $inbox_ids = Omit::Value,
+        array|Omit|null $line_ids = Omit::Value,
         array|Omit|null $channel_types = Omit::Value,
         ?bool $include_managed_accounts = null,
         ?bool $active = null,
@@ -206,7 +206,7 @@ final class WebhookEndpoints
             [
                 'url' => $url,
                 'description' => $description,
-                'inbox_ids' => $inbox_ids,
+                'line_ids' => $line_ids,
                 'channel_types' => $channel_types,
             ],
             [
@@ -216,7 +216,7 @@ final class WebhookEndpoints
                 'description' => [
                     'maxLength' => 255,
                 ],
-                'inbox_ids' => [
+                'line_ids' => [
                     'minItems' => 1,
                     'maxItems' => 100,
                     'uuid' => true,
@@ -236,7 +236,7 @@ final class WebhookEndpoints
                 'url' => $url ?? Omit::Value,
                 'description' => $description,
                 'events' => $events,
-                'inbox_ids' => $inbox_ids,
+                'line_ids' => $line_ids,
                 'channel_types' => $channel_types,
                 'include_managed_accounts' => $include_managed_accounts ?? Omit::Value,
                 'active' => $active ?? Omit::Value,

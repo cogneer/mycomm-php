@@ -24,7 +24,7 @@ final class PartnerLineStatus extends Model
     public readonly array $needs_attention_reasons;
 
     /**
-     * The line's enabled senders by channel type, for every type the line may use.
+     * The line's enabled senders by channel type, for every type the line may use. A detached line answers `not_connected` with `{}` here, no sponsorship and no times.
      *
      * @var array<string, PartnerLineStatusChannel>
      */

@@ -33,11 +33,6 @@ abstract class Event extends Model
 
     public readonly string $account_id;
 
-    /**
-     * The managed account's `external_ref`; `null` for direct accounts.
-     */
-    public readonly ?string $account_external_ref;
-
     public readonly ?string $line_id;
 
     public readonly ?Models\WebhookChannelRef $channel;
@@ -49,7 +44,6 @@ abstract class Event extends Model
         $this->api_version = $data['api_version'];
         $this->created_at = self::dateTime($data['created_at']);
         $this->account_id = $data['account_id'];
-        $this->account_external_ref = $data['account_external_ref'] ?? null;
         $this->line_id = $data['line_id'] ?? null;
         $this->channel = isset($data['channel']) ? Models\WebhookChannelRef::fromArray($data['channel']) : null;
         $this->hydrateData($data);

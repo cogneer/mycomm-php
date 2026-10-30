@@ -11,13 +11,11 @@ return [
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'type' => 'Example type',
                 'name' => 'Example name',
                 'status' => 'Example status',
                 'country_iso' => 'PK',
                 'timezone' => 'Asia/Karachi',
                 'default_locale' => 'en',
-                'external_ref' => null,
                 'settings' => [],
                 'created_at' => '2026-10-01T09:15:02Z',
             ],
@@ -27,13 +25,11 @@ return [
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'type' => 'Example type',
                 'name' => 'Example name',
                 'status' => 'Example status',
                 'country_iso' => 'PK',
                 'timezone' => 'Asia/Karachi',
                 'default_locale' => 'en',
-                'external_ref' => null,
                 'settings' => [],
                 'created_at' => '2026-10-01T09:15:02Z',
             ],
@@ -3880,7 +3876,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -3940,7 +3935,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4000,7 +3994,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4056,7 +4049,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4116,7 +4108,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4176,7 +4167,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4232,7 +4222,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4292,7 +4281,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4338,7 +4326,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4385,7 +4372,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4400,7 +4386,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4433,7 +4418,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4466,7 +4450,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4489,7 +4472,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4503,7 +4485,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4521,7 +4502,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4535,7 +4515,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4552,7 +4531,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4569,7 +4547,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4586,7 +4563,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4601,7 +4577,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4619,7 +4594,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4637,7 +4611,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4652,7 +4625,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4673,7 +4645,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4795,7 +4766,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -4918,7 +4888,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -5041,7 +5010,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -5166,7 +5134,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -5288,7 +5255,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -5309,7 +5275,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -5326,7 +5291,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -5341,7 +5305,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -5388,7 +5351,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -5435,7 +5397,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -5482,7 +5443,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -5529,7 +5489,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -5576,14 +5535,11 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
                 'account' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'type' => 'direct',
-                    'external_ref' => null,
                     'name' => 'Example name',
                     'status' => 'active',
                     'suspended_reason' => null,
@@ -5616,14 +5572,11 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
                 'account' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'type' => 'direct',
-                    'external_ref' => null,
                     'name' => 'Example name',
                     'status' => 'active',
                     'suspended_reason' => null,
@@ -5656,14 +5609,11 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
                 'account' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'type' => 'direct',
-                    'external_ref' => null,
                     'name' => 'Example name',
                     'status' => 'active',
                     'suspended_reason' => null,
@@ -5696,7 +5646,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -5782,7 +5731,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -5868,7 +5816,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -5954,7 +5901,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -6040,7 +5986,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -6126,7 +6071,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -6212,7 +6156,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -6299,7 +6242,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -6386,7 +6328,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -6424,7 +6365,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -6462,7 +6402,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -6500,7 +6439,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -6538,7 +6476,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -6557,7 +6494,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -6581,7 +6517,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [
@@ -6605,7 +6540,6 @@ return [
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => null,
             'line_id' => null,
             'channel' => null,
             'data' => [

@@ -20,13 +20,11 @@ final class Examples
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'type' => 'Example type',
                 'name' => 'Example name',
                 'status' => 'Example status',
                 'country_iso' => 'PK',
                 'timezone' => 'Asia/Karachi',
                 'default_locale' => 'en',
-                'external_ref' => 'Example external ref',
                 'settings' => [
                     'opt_out' => [],
                     'compliance' => [],
@@ -50,13 +48,11 @@ final class Examples
             'status' => 200,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'type' => 'Example type',
                 'name' => 'Example name',
                 'status' => 'Example status',
                 'country_iso' => 'PK',
                 'timezone' => 'Asia/Karachi',
                 'default_locale' => 'en',
-                'external_ref' => 'Example external ref',
                 'settings' => [
                     'opt_out' => [],
                     'compliance' => [],
@@ -5486,7 +5482,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -5567,7 +5562,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -5648,7 +5642,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -5725,7 +5718,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -5806,7 +5798,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -5887,7 +5878,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -5964,7 +5954,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6045,7 +6034,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6094,7 +6082,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6144,7 +6131,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6162,7 +6148,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6198,7 +6183,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6234,7 +6218,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6260,7 +6243,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6284,7 +6266,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6305,7 +6286,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6322,7 +6302,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6342,7 +6321,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6362,7 +6340,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6382,7 +6359,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6400,7 +6376,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6421,7 +6396,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6442,7 +6416,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6460,7 +6433,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6484,7 +6456,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6646,7 +6617,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6809,7 +6779,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6972,7 +6941,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7137,7 +7105,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7299,7 +7266,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7323,7 +7289,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7343,7 +7308,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7361,7 +7325,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7440,7 +7403,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7519,7 +7481,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7598,7 +7559,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7677,7 +7637,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7756,7 +7715,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7765,8 +7723,6 @@ final class Examples
             'data' => [
                 'account' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'type' => 'direct',
-                    'external_ref' => 'Example external ref',
                     'name' => 'Example name',
                     'status' => 'active',
                     'suspended_reason' => 'Example suspended reason',
@@ -7816,7 +7772,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7825,8 +7780,6 @@ final class Examples
             'data' => [
                 'account' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'type' => 'direct',
-                    'external_ref' => 'Example external ref',
                     'name' => 'Example name',
                     'status' => 'active',
                     'suspended_reason' => 'Example suspended reason',
@@ -7876,7 +7829,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7885,8 +7837,6 @@ final class Examples
             'data' => [
                 'account' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'type' => 'direct',
-                    'external_ref' => 'Example external ref',
                     'name' => 'Example name',
                     'status' => 'active',
                     'suspended_reason' => 'Example suspended reason',
@@ -7936,7 +7886,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8025,7 +7974,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8114,7 +8062,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8203,7 +8150,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8292,7 +8238,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8381,7 +8326,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8470,7 +8414,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8560,7 +8503,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8650,7 +8592,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8691,7 +8632,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8732,7 +8672,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8773,7 +8712,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8814,7 +8752,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8836,7 +8773,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8863,7 +8799,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8890,7 +8825,6 @@ final class Examples
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
             'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'account_external_ref' => 'Example account external ref',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',

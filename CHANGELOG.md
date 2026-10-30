@@ -28,6 +28,8 @@ line. Nothing from 1.x is kept as an alias.
   `ManagedAccountCounts` and `ManagedAccountSettings`. A partner gives each user a line instead.
 - Connect sessions: `connectSessions` (`create`, `get`, `delete`), `ConnectSession`, `ConnectSessionsCreateResponse` and
   `ConnectSessionStatus`. Hosted links replace them.
+- `Account::$type` and `$external_ref`, `WebhookAccount::$type` and `$external_ref`, the enum `AccountType`, and
+  `Event::$account_external_ref` (the webhook envelope's `account_external_ref`): the API no longer sends them.
 
 ### Added
 

@@ -17,10 +17,6 @@ final class WebhookAccount extends Model
 {
     public readonly string $id;
 
-    public readonly Enums\AccountType|string $type;
-
-    public readonly ?string $external_ref;
-
     public readonly string $name;
 
     public readonly Enums\AccountStatus|string $status;
@@ -48,8 +44,6 @@ final class WebhookAccount extends Model
     protected function hydrate(array $data): void
     {
         $this->id = $data['id'];
-        $this->type = self::enum(Enums\AccountType::class, $data['type']);
-        $this->external_ref = $data['external_ref'] ?? null;
         $this->name = $data['name'];
         $this->status = self::enum(Enums\AccountStatus::class, $data['status']);
         $this->suspended_reason = $data['suspended_reason'] ?? null;

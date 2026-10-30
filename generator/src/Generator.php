@@ -173,11 +173,24 @@ final class Generator
             $data = $types->output($spec, $flat['properties']['data'] ?? [], $class.'Data', 'webhook:'.$type.'.data');
             $this->files["src/Webhooks/Events/{$class}.php"] = $emitter->event($class, $type, $description, $data);
             $map[$type] = $class;
-            $examples[$type] = Examples::of($spec, $schema);
+            // Several events may share one schema whose `type` lists them all: the example carries its own.
+            $examples[$type] = self::typed(Examples::of($spec, $schema), $type);
         }
         $this->files['src/Webhooks/EventMap.php'] = $emitter->eventMap($map);
 
         return $examples;
+    }
+
+    /**
+     * An event example with its own type, where the schema lists the types of several events.
+     */
+    private static function typed(mixed $example, string $type): mixed
+    {
+        if (is_array($example) && array_key_exists('type', $example)) {
+            $example['type'] = $type;
+        }
+
+        return $example;
     }
 
     /**
@@ -227,7 +240,7 @@ final class Generator
         $events = [];
         foreach ($main->webhooks() as $type => $schema) {
             unset($schema['x-summary']);
-            $events[$type] = Examples::minimal($main, $schema);
+            $events[$type] = self::typed(Examples::minimal($main, $schema), $type);
         }
 
         return ['responses' => $responses, 'events' => $events];

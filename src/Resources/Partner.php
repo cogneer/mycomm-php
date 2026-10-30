@@ -10,16 +10,19 @@ use MyComm\Http\Connection;
 
 final class Partner
 {
+    public readonly Partner\Lines $lines;
+
+    public readonly Partner\Links $links;
+
+    public readonly Partner\SponsorshipDefaults $sponsorshipDefaults;
+
     public readonly Partner\Usage $usage;
-
-    public readonly Partner\Accounts $accounts;
-
-    public readonly Partner\AccountKeys $accountKeys;
 
     public function __construct(private readonly Connection $connection)
     {
+        $this->lines = new Partner\Lines($connection);
+        $this->links = new Partner\Links($connection);
+        $this->sponsorshipDefaults = new Partner\SponsorshipDefaults($connection);
         $this->usage = new Partner\Usage($connection);
-        $this->accounts = new Partner\Accounts($connection);
-        $this->accountKeys = new Partner\AccountKeys($connection);
     }
 }

@@ -6,7 +6,7 @@ it, see [development.md](development.md).
 ## Purpose
 
 Customers' developers and partners integrate MyComm from PHP without writing HTTP code: send and track
-messages, sync contacts, receive webhooks, provision managed accounts. Success means an integration that is
+messages, sync contacts, receive webhooks, give partner users their own lines. Success means an integration that is
 correct by default (no double sends, no crashes when the API grows) and that their editor can autocomplete.
 
 In scope: every operation of the public API (`/v1`) and the partner API (`/partner/v1`), and the webhook
@@ -25,9 +25,9 @@ events. Out of scope: the device API, which only the MyComm Android app uses.
 
 ## Shape of the API
 
-- **One client, both APIs.** A partner key uses the same `/v1` operations with a `MyComm-Account` header,
-  so `Client::forAccount($id)` returns a client that sends it, and the partner operations live under
-  `$client->partner`.
+- **One client, both APIs.** A partner key uses the same `/v1` operations with a `MyComm-Line` header naming
+  one of its lines, so `Client::forLine($id)` returns a client that sends it, and the partner operations live
+  under `$client->partner`.
 - **Names mirror the reference.** Operation id `contacts.identities.block` is
   `$client->contacts->identities->block()`; arguments and properties keep the API's `snake_case` names. A
   developer reading the API reference never has to translate.

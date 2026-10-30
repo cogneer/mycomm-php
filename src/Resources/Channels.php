@@ -143,10 +143,14 @@ final class Channels
      * Disconnect a channel.
      *
      * Requires `channels:write`. → `disconnected` with `disconnect_reason: owner`; the number is released
-     * for use elsewhere, queued outbound messages fail with `CHANNEL_DISCONNECTED`, lines and history stay
-     * readable and sends get `CHANNEL_INACTIVE`. Emits `channel.disconnected`. A `pending_verification`
+     * for use elsewhere and it leaves every line's senders. Its queued outbound messages move to another
+     * sender of their line of the same type (`line.failover`, reason `sender_removed`); pinned ones, and those
+     * whose line has no such sender left, fail with `CHANNEL_DISCONNECTED`. Lines and history stay readable
+     * and sends naming it get `CHANNEL_INACTIVE`. Emits `channel.disconnected`. A `pending_verification`
      * channel that never connected is deleted instead (`204`). An already disconnected channel is `409
-     * INVALID_STATE`.
+     * INVALID_STATE`. The last active or paused channel of a number the account verified as its own is `403
+     * SECOND_FACTOR_REQUIRED` (`reason: not_a_user`): only the owner can let that number go, in the portal,
+     * with a second factor.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached

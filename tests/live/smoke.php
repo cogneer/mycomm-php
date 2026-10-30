@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * Runs the SDK against a real MyComm API: every resource, uploads, paging, idempotent replays, error
  * mapping and the partner flow. Not part of the test suite: run it before a release, against a test
- * account (it creates contacts, groups, messages and a managed account, and tidies up most of them).
+ * account (it creates contacts, groups, messages and a partner line, and tidies up most of them).
  *
  *   MYCOMM_API_KEY=mc_live_... MYCOMM_PARTNER_KEY=mc_partner_... MYCOMM_BASE_URL=https://staging.mycomm.cogneer.tech \
  *       php tests/live/smoke.php
@@ -18,10 +18,11 @@ declare(strict_types=1);
 require dirname(__DIR__, 2).'/vendor/autoload.php';
 
 use MyComm\Client;
-use MyComm\Enums\AccountStatus;
 use MyComm\Enums\ContactFieldType;
 use MyComm\Enums\ExportStatus;
 use MyComm\Enums\ExportType;
+use MyComm\Enums\HostedLinkStatus;
+use MyComm\Enums\LineState;
 use MyComm\Enums\MessageCategory;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\AuthenticationException;
@@ -120,6 +121,11 @@ step('devices.update', fn () => $mycomm->devices->update($keys['device_id'], nam
 $lines = step('lines.list', fn () => $mycomm->lines->list());
 $lineId = $lines?->data[0]->id ?? null;
 step('lines.get', fn () => $mycomm->lines->get((string) $lineId));
+step('lines.links create, links get/revoke', function () use ($mycomm, $lineId) {
+    $link = $mycomm->lines->links->create((string) $lineId, purpose: 'add_channel', ttl: 300);
+    check($mycomm->links->get($link->id)->status === HostedLinkStatus::Open, 'open');
+    $mycomm->links->revoke($link->id);
+});
 step('pairingCodes create/get/delete', function () use ($mycomm) {
     $code = $mycomm->pairingCodes->create(device_name: 'Spare phone');
     $mycomm->pairingCodes->get($code->id);
@@ -337,43 +343,35 @@ step('contacts.delete', fn () => $mycomm->contacts->delete($contact->id));
 if ($partnerKey !== null) {
     echo "partner\n";
     $partner = new Client($partnerKey, $base, maxRetries: 0);
-    $managed = step('partner.accounts.provision', function () use ($partner) {
-        $ref = 'erp-'.bin2hex(random_bytes(4));
-        $account = $partner->partner->accounts->provision(external_ref: $ref, name: 'Acme Traders', country_iso: 'PK', timezone: 'Asia/Karachi');
-        $again = $partner->partner->accounts->provision(external_ref: $ref, name: 'Acme Traders', country_iso: 'PK', timezone: 'Asia/Karachi');
-        check($account->id === $again->id, 'provisioning is idempotent by external_ref');
-
-        return $account;
+    $partnerLine = step('partner.lines.create', function () use ($partner) {
+        return $partner->partner->lines->create(external_ref: 'erp-'.bin2hex(random_bytes(4)), name: 'Acme Traders');
     });
-    step('partner.accounts get/list/update', function () use ($partner, $managed) {
-        $partner->partner->accounts->get($managed->id);
-        check(count($partner->partner->accounts->list(external_ref: $managed->external_ref)) === 1, 'filter by external_ref');
-        check(iterator_count($partner->partner->accounts->all()) >= 1, 'all()');
-        check($partner->partner->accounts->update($managed->id, name: 'Acme Traders Ltd')->name === 'Acme Traders Ltd', 'renamed');
+    step('partner.lines get/list/all/update/status', function () use ($partner, $partnerLine) {
+        $partner->partner->lines->get($partnerLine->id);
+        check(count($partner->partner->lines->list(external_ref: $partnerLine->external_ref)) === 1, 'filter by external_ref');
+        check(iterator_count($partner->partner->lines->all()) >= 1, 'all()');
+        check($partner->partner->lines->update($partnerLine->id, name: 'Acme Traders Ltd')->name === 'Acme Traders Ltd', 'renamed');
+        check($partner->partner->lines->status($partnerLine->id)->state === LineState::NotConnected, 'a new line is not connected');
     });
-    step('acting as the managed account', function () use ($partner, $managed) {
-        $acme = $partner->forAccount($managed->id);
-        check($acme->account->get()->id === $managed->id, 'account.get answers for the managed account');
-        $c = $acme->contacts->create(identities: [['type' => 'phone', 'address' => num('77')]], first_name: 'Managed');
-        check($acme->contacts->show($c->id)->first_name === 'Managed', 'contact lives in the managed account');
-        expectThrows(BadRequestException::class, fn () => $partner->account->get(), 'ACCOUNT_CONTEXT_REQUIRED');
+    step('partner.lines.links create, partner.links get/revoke', function () use ($partner, $partnerLine) {
+        $link = $partner->partner->lines->links->create($partnerLine->id, purpose: 'connect', ttl: 300);
+        check($partner->partner->links->get($link->id)->line_id === $partnerLine->id, 'link of the line');
+        $partner->partner->links->revoke($link->id);
     });
-    step('partner.accountKeys create/list/revoke', function () use ($partner, $managed, $base) {
-        $key = $partner->partner->accountKeys->create($managed->id, name: 'ERP integration');
-        check((new Client($key->token, $base, maxRetries: 0))->account->get()->id === $managed->id, 'minted key works for the managed account');
-        check(count($partner->partner->accountKeys->list($managed->id)) >= 1, 'listed');
-        $partner->partner->accountKeys->revoke($managed->id, $key->id);
+    step('acting on the partner line', function () use ($partner, $partnerLine) {
+        $acme = $partner->forLine($partnerLine->id);
+        check($acme->lines->get($partnerLine->id)->id === $partnerLine->id, 'lines.get answers for the line');
+        expectThrows(BadRequestException::class, fn () => $partner->messages->list(), 'LINE_CONTEXT_REQUIRED');
+    });
+    step('partner.sponsorshipDefaults get/put', function () use ($partner) {
+        $current = $partner->partner->sponsorshipDefaults->get()->default_sponsorship;
+        $partner->partner->sponsorshipDefaults->put($current?->raw());
     });
     step('partner.usage.get', function () use ($partner) {
         $today = (new DateTimeImmutable('now', new DateTimeZone('Asia/Karachi')))->format('Y-m-d');
         $partner->partner->usage->get(from: $today, to: $today);
     });
-    step('partner.accounts suspend/reactivate/delete', function () use ($partner, $managed) {
-        check($partner->partner->accounts->suspend($managed->id, reason: 'Subscription lapsed')->status === AccountStatus::Suspended, 'suspended');
-        $partner->partner->accounts->reactivate($managed->id);
-        $deleted = $partner->partner->accounts->delete($managed->id);
-        check($deleted->status === AccountStatus::PendingDeletion, 'scheduled for deletion');
-    });
+    step('partner.lines.detach', fn () => $partner->partner->lines->detach($partnerLine->id));
 }
 
 echo "\n{$results['ok']} ok, ".count($results['api']).' refused by the API, '.count($results['sdk'])." SDK failures\n";

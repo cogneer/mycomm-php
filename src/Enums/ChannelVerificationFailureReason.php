@@ -23,4 +23,6 @@ enum ChannelVerificationFailureReason: string
     case TokenInvalid = 'token_invalid';
     case DeviceSimLimit = 'device_sim_limit';
     case CountryNotEnabled = 'country_not_enabled';
+    case NumberDisputed = 'number_disputed';
+    case NumberHasAccount = 'number_has_account';
 }

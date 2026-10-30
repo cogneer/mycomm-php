@@ -17,13 +17,14 @@ enum ErrorCode: string
 {
     case MalformedRequest = 'MALFORMED_REQUEST';
     case InvalidHeader = 'INVALID_HEADER';
-    case AccountContextRequired = 'ACCOUNT_CONTEXT_REQUIRED';
+    case LineContextRequired = 'LINE_CONTEXT_REQUIRED';
     case InvalidCursor = 'INVALID_CURSOR';
     case Unauthenticated = 'UNAUTHENTICATED';
     case WrongKeyKind = 'WRONG_KEY_KIND';
     case AbilityMissing = 'ABILITY_MISSING';
     case IpNotAllowed = 'IP_NOT_ALLOWED';
-    case AccountContextInvalid = 'ACCOUNT_CONTEXT_INVALID';
+    case LineContextInvalid = 'LINE_CONTEXT_INVALID';
+    case PartnerRouteNotAllowed = 'PARTNER_ROUTE_NOT_ALLOWED';
     case AccountSuspended = 'ACCOUNT_SUSPENDED';
     case AccountPendingDeletion = 'ACCOUNT_PENDING_DELETION';
     case PartnerAccessRevoked = 'PARTNER_ACCESS_REVOKED';
@@ -101,6 +102,7 @@ enum ErrorCode: string
     case PairingCodeLimitReached = 'PAIRING_CODE_LIMIT_REACHED';
     case ConnectSessionLimitReached = 'CONNECT_SESSION_LIMIT_REACHED';
     case PairingCodeExpired = 'PAIRING_CODE_EXPIRED';
+    case SecondFactorRequired = 'SECOND_FACTOR_REQUIRED';
     case BatchTooLarge = 'BATCH_TOO_LARGE';
     case AudienceEmpty = 'AUDIENCE_EMPTY';
     case RangeTooLarge = 'RANGE_TOO_LARGE';

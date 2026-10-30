@@ -34,7 +34,10 @@ final class CreatedWebhookEndpoint extends Model
      */
     public readonly ?array $channel_types;
 
-    public readonly bool $include_managed_accounts;
+    /**
+     * Also receives the events of the lines you made with the partner API.
+     */
+    public readonly bool $partner_lines;
 
     public readonly bool $active;
 
@@ -65,7 +68,7 @@ final class CreatedWebhookEndpoint extends Model
         $this->events = $data['events'];
         $this->line_ids = $data['line_ids'] ?? null;
         $this->channel_types = $data['channel_types'] ?? null;
-        $this->include_managed_accounts = $data['include_managed_accounts'];
+        $this->partner_lines = $data['partner_lines'];
         $this->active = $data['active'];
         $this->disabled_at = isset($data['disabled_at']) ? self::dateTime($data['disabled_at']) : null;
         $this->disabled_reason = $data['disabled_reason'] ?? null;

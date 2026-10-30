@@ -36,8 +36,13 @@ final class UsageRow extends Model
 
     public readonly int $opt_ins;
 
+    public readonly string $line_id;
+
     public readonly string $account_id;
 
+    /**
+     * Your own reference for the line.
+     */
     public readonly string $external_ref;
 
     public readonly string $name;
@@ -47,9 +52,10 @@ final class UsageRow extends Model
      */
     public readonly array $by_channel_type;
 
+    /**
+     * The line's senders that are switched on and active now.
+     */
     public readonly int $channels_active;
-
-    public readonly ?int $max_daily_segments;
 
     protected function hydrate(array $data): void
     {
@@ -66,11 +72,11 @@ final class UsageRow extends Model
         $this->clicks = $data['clicks'];
         $this->opt_outs = $data['opt_outs'];
         $this->opt_ins = $data['opt_ins'];
+        $this->line_id = $data['line_id'];
         $this->account_id = $data['account_id'];
         $this->external_ref = $data['external_ref'];
         $this->name = $data['name'];
         $this->by_channel_type = $data['by_channel_type'];
         $this->channels_active = $data['channels_active'];
-        $this->max_daily_segments = $data['max_daily_segments'] ?? null;
     }
 }

@@ -28,8 +28,6 @@ trait ProvidesResources
 
     public readonly Resources\Channels $channels;
 
-    public readonly Resources\ConnectSessions $connectSessions;
-
     public readonly Resources\ContactFields $contactFields;
 
     public readonly Resources\Contacts $contacts;
@@ -45,6 +43,8 @@ trait ProvidesResources
     public readonly Resources\Imports $imports;
 
     public readonly Resources\Lines $lines;
+
+    public readonly Resources\Links $links;
 
     public readonly Resources\Media $media;
 
@@ -76,7 +76,6 @@ trait ProvidesResources
         $this->automationRuns = new Resources\AutomationRuns($connection);
         $this->campaigns = new Resources\Campaigns($connection);
         $this->channels = new Resources\Channels($connection);
-        $this->connectSessions = new Resources\ConnectSessions($connection);
         $this->contactFields = new Resources\ContactFields($connection);
         $this->contacts = new Resources\Contacts($connection);
         $this->conversations = new Resources\Conversations($connection);
@@ -85,6 +84,7 @@ trait ProvidesResources
         $this->groups = new Resources\Groups($connection);
         $this->imports = new Resources\Imports($connection);
         $this->lines = new Resources\Lines($connection);
+        $this->links = new Resources\Links($connection);
         $this->media = new Resources\Media($connection);
         $this->messages = new Resources\Messages($connection);
         $this->pairingCodes = new Resources\PairingCodes($connection);

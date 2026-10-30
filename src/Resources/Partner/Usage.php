@@ -20,11 +20,13 @@ final class Usage
     public function __construct(private readonly Connection $connection) {}
 
     /**
-     * Usage across managed accounts.
+     * Usage per line.
      *
-     * Dates are interpreted in each account's own time zone (as stored in `usage_daily`). Paginated over
-     * accounts, sorted by `sent_segments` descending. Counters match the usage reports in the portal; rows and
-     * totals add `by_channel_type`. Per-day detail for one account: `GET /v1/stats/daily` acting as it.
+     * One row per line of yours, detached lines included (their history stays), sorted by `sent_segments`
+     * descending. Counters come from the line's own traffic only, never from the rest of the user's account.
+     * Dates are interpreted in each line's account time zone. Counters match the usage reports in the portal;
+     * rows and totals add `by_channel_type`. `line_id` narrows the report to one of your lines (`404
+     * NOT_FOUND` for any other id).
      *
      * @param  ?int  $limit  Page size, 1 to 200.
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
@@ -36,7 +38,7 @@ final class Usage
     public function get(
         string $from,
         string $to,
-        ?string $account_id = null,
+        ?string $line_id = null,
         ?int $limit = null,
         ?string $cursor = null,
         ?RequestOptions $requestOptions = null,
@@ -44,11 +46,11 @@ final class Usage
         $this->connection->guard(
             'partner.usage.get',
             [
-                'account_id' => $account_id,
+                'line_id' => $line_id,
                 'limit' => $limit,
             ],
             [
-                'account_id' => [
+                'line_id' => [
                     'uuid' => true,
                 ],
                 'limit' => [
@@ -66,7 +68,7 @@ final class Usage
             query: Params::query([
                 'from' => $from,
                 'to' => $to,
-                'account_id' => $account_id,
+                'line_id' => $line_id,
                 'limit' => $limit,
                 'cursor' => $cursor,
             ]),

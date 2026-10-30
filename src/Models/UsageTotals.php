@@ -36,7 +36,10 @@ final class UsageTotals extends Model
 
     public readonly int $opt_ins;
 
-    public readonly int $accounts;
+    /**
+     * How many lines the report covers.
+     */
+    public readonly int $lines;
 
     /**
      * @var array<string, array<string, mixed>>
@@ -58,7 +61,7 @@ final class UsageTotals extends Model
         $this->clicks = $data['clicks'];
         $this->opt_outs = $data['opt_outs'];
         $this->opt_ins = $data['opt_ins'];
-        $this->accounts = $data['accounts'];
+        $this->lines = $data['lines'];
         $this->by_channel_type = $data['by_channel_type'];
     }
 }

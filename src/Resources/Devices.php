@@ -226,7 +226,12 @@ final class Devices
      * are not re-queued: their leases are orphaned and the phone may still report them until `drain_until` (=
      * `revoked_at` + 24 h); any still unresolved then fail with `UNCONFIRMED`. The phone gets no further
      * leases, its next heartbeat carries an `unpair` action, and after `drain_until` every device call gets
-     * `410 DEVICE_REVOKED`. Emits `device.revoked`. Revoking a revoked device returns it unchanged.
+     * `410 DEVICE_REVOKED`. Emits `device.revoked`. Revoking a revoked device returns it unchanged. A device
+     * that carries the last active or paused channel of a number the account verified as its own is `403
+     * SECOND_FACTOR_REQUIRED` (`reason: not_a_user`): only the owner can let that number go, in the portal,
+     * with a second factor. `revoked_reason` is also `replaced` (the numbers moved to a phone paired with a
+     * Replace code) or `stolen` (removed as stolen in the portal); both skip the drain, so `drain_until` is
+     * null.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached

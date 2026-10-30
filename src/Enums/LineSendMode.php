@@ -7,8 +7,8 @@ declare(strict_types=1);
 namespace MyComm\Enums;
 
 /**
- * `ordered`: the first healthy sender by position sends. `pool` is reserved for spreading sends over
- * several senders.
+ * `ordered`: the first healthy sender by position sends; the primary is always at position 0. `pool` is
+ * reserved for spreading sends over several senders.
  *
  * The API may add values: one this SDK version does not know arrives as a plain string.
  */

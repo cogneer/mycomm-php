@@ -91,14 +91,15 @@ it('uses the idempotency key and headers of the request options', function () {
         ->and($transport->requests[0]->header('X-Trace'))->toBe('abc');
 });
 
-it('acts as a managed account on /v1 only', function () {
-    [$connection, $transport] = scripted(accountId: 'acc-1');
+it('sends the line header on /v1 only', function () {
+    [$connection, $transport] = scripted(lineId: 'line-1');
 
-    $connection->request('x', 'GET', '/v1/account');
-    $connection->request('y', 'GET', '/partner/v1/accounts');
+    $connection->request('x', 'GET', '/v1/messages');
+    $connection->request('y', 'GET', '/partner/v1/lines');
 
-    expect($transport->requests[0]->header('MyComm-Account'))->toBe('acc-1')
-        ->and($transport->requests[1]->header('MyComm-Account'))->toBeNull();
+    expect($transport->requests[0]->header('MyComm-Line'))->toBe('line-1')
+        ->and($transport->requests[1]->header('MyComm-Line'))->toBeNull()
+        ->and($transport->requests[0]->header('MyComm-Account'))->toBeNull();
 });
 
 it('waits as long as Retry-After says on a 429', function () {

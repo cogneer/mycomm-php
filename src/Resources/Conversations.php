@@ -141,7 +141,10 @@ final class Conversations
      * already has a conversation with the same contact, the two merge into it and the answer is that
      * conversation. Emits `conversation.handed_over`. Requires `conversations:write`. The conversation and the
      * target line must both be in the key's line scope (else 404). An archived target answers 422
-     * `LINE_ARCHIVED`; the conversation's own line answers 422 `VALIDATION_FAILED`.
+     * `LINE_ARCHIVED`; the conversation's own line answers 422 `VALIDATION_FAILED`. Queued outbound messages
+     * move with the conversation: an unpinned one then sends from the target line's senders (when its channel
+     * is not one of them, the next failover run hands it to the target line's first healthy sender,
+     * `line.failover` with reason `sender_removed`); a `sender_pinned` one keeps its channel.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error

@@ -10,11 +10,15 @@ use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request as GuzzleRequest;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use MyComm\Client;
+use MyComm\Enums\HostedLinkPurpose;
 use MyComm\Enums\MessageCategory;
 use MyComm\Exceptions\ConnectionException;
 use MyComm\Exceptions\MyCommException;
 use MyComm\Exceptions\NotFoundException;
 use MyComm\FileUpload;
+use MyComm\Models\CreatedHostedLink;
+use MyComm\Models\PartnerLine;
+use MyComm\Models\PartnerLineStatus;
 use MyComm\Models\SendMessageDryRunResponse;
 use MyComm\Models\SendMessageResponse;
 use MyComm\RequestOptions;
@@ -97,22 +101,56 @@ it('turns a transport failure into a connection exception after its retries', fu
     expect($history)->toHaveCount(2);
 })->skip(fn () => getenv('MYCOMM_SKIP_SLOW') === '1', 'waits out one backoff');
 
-it('acts as a managed account on /v1 and as the partner on /partner/v1', function () {
+test('sends_with_the_line_header_for_a_partner_key', function () {
     $fake = new MyCommFake('mc_partner_fake');
     $partner = $fake->client();
 
-    $account = $partner->partner->accounts->provision(external_ref: 'erp-20418', name: 'Acme', country_iso: 'PK', timezone: 'Asia/Karachi');
-    $acme = $partner->forAccount($account->id);
+    $line = $partner->partner->lines->create(external_ref: 'erp-tenant-20418', name: 'Acme Traders');
+    $acme = $partner->forLine($line->id);
     $acme->messages->send(to: '+923001234567', body: 'Hi');
     $acme->partner->usage->get(from: '2026-10-01', to: '2026-10-31');
 
-    $provision = $fake->calls('partner.accounts.provision')[0];
-    expect($provision->path)->toBe('/partner/v1/accounts')
-        ->and($provision->header('MyComm-Account'))->toBeNull()
-        ->and($provision->header('Authorization'))->toBe('Bearer mc_partner_fake')
-        ->and($fake->calls('messages.send')[0]->header('MyComm-Account'))->toBe($account->id)
-        ->and($fake->calls('partner.usage.get')[0]->header('MyComm-Account'))->toBeNull()
+    $create = $fake->calls('partner.lines.create')[0];
+    $send = $fake->calls('messages.send')[0];
+    expect($create->path)->toBe('/partner/v1/lines')
+        ->and($create->header('MyComm-Line'))->toBeNull()
+        ->and($create->header('Authorization'))->toBe('Bearer mc_partner_fake')
+        ->and($send->header('MyComm-Line'))->toBe($line->id)
+        ->and($send->header('MyComm-Account'))->toBeNull()
+        ->and($fake->calls('partner.usage.get')[0]->header('MyComm-Line'))->toBeNull()
         ->and($fake->calls('partner.usage.get')[0]->query)->toBe(['from' => '2026-10-01', 'to' => '2026-10-31']);
+
+    $preset = new MyCommFake('mc_partner_fake', lineId: 'line-1');
+    $preset->client()->messages->list();
+    expect($preset->calls('messages.list')[0]->header('MyComm-Line'))->toBe('line-1');
+});
+
+test('creates_a_partner_line_and_a_connect_link', function () {
+    $fake = new MyCommFake('mc_partner_fake');
+    $partner = $fake->client();
+
+    $line = $partner->partner->lines->create(external_ref: 'erp-tenant-20418', name: 'Acme Traders', user_number: '+923001234567');
+    $link = $partner->partner->lines->links->create(
+        $line->id,
+        purpose: HostedLinkPurpose::Connect,
+        return_url: 'https://erp.example.com/settings/messaging',
+        allowed_origins: ['https://erp.example.com'],
+    );
+    $status = $partner->partner->lines->status($line->id);
+
+    $create = $fake->calls('partner.lines.create')[0];
+    $mint = $fake->calls('partner.lines.links.create')[0];
+    expect($line)->toBeInstanceOf(PartnerLine::class)
+        ->and($create->method)->toBe('POST')
+        ->and($create->json)->toBe(['external_ref' => 'erp-tenant-20418', 'name' => 'Acme Traders', 'user_number' => '+923001234567'])
+        ->and($mint->method)->toBe('POST')
+        ->and($mint->path)->toBe('/partner/v1/lines/'.$line->id.'/links')
+        ->and($mint->json)->toBe(['purpose' => 'connect', 'return_url' => 'https://erp.example.com/settings/messaging', 'allowed_origins' => ['https://erp.example.com']])
+        ->and($link)->toBeInstanceOf(CreatedHostedLink::class)
+        ->and($link->url)->toBe(Examples::RESPONSES['partner.lines.links.create']['body']['url'])
+        ->and($link->purpose)->toBe(HostedLinkPurpose::Connect)
+        ->and($status)->toBeInstanceOf(PartnerLineStatus::class)
+        ->and($fake->calls('partner.lines.status')[0]->path)->toBe('/partner/v1/lines/'.$line->id.'/status');
 });
 
 it('accepts a base URL with or without the version path', function (string $baseUrl) {

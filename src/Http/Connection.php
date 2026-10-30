@@ -37,7 +37,7 @@ final class Connection
         private readonly Transport $transport,
         #[SensitiveParameter] private readonly string $apiKey,
         private readonly string $baseUrl,
-        private readonly ?string $accountId = null,
+        private readonly ?string $lineId = null,
         private readonly int $maxRetries = 2,
         ?Closure $sleep = null,
         private readonly bool $validate = true,
@@ -122,9 +122,9 @@ final class Connection
             'Accept' => 'application/json',
             'User-Agent' => 'mycomm-php/'.Version::SDK.' php/'.PHP_VERSION,
         ];
-        // Acting as a managed account applies to /v1 only; /partner/v1 is the partner's own context.
-        if ($this->accountId !== null && str_starts_with($path, '/v1/')) {
-            $headers['MyComm-Account'] = $this->accountId;
+        // A partner key acts on its line on /v1 only; /partner/v1 is the partner's own context.
+        if ($this->lineId !== null && str_starts_with($path, '/v1/')) {
+            $headers['MyComm-Line'] = $this->lineId;
         }
 
         $json = null;

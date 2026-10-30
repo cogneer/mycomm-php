@@ -39,10 +39,10 @@ final class ScriptedTransport implements Transport
  * @param  list<Response|Throwable>  $answers
  * @return array{Connection, ScriptedTransport}
  */
-function scripted(array $answers = [], int $maxRetries = 2, ?string $accountId = null): array
+function scripted(array $answers = [], int $maxRetries = 2, ?string $lineId = null): array
 {
     $transport = new ScriptedTransport($answers);
-    $connection = new Connection($transport, 'mc_live_test', 'https://api.test', $accountId, $maxRetries, function (float $seconds) use ($transport): void {
+    $connection = new Connection($transport, 'mc_live_test', 'https://api.test', $lineId, $maxRetries, function (float $seconds) use ($transport): void {
         $transport->slept[] = $seconds;
     });
 

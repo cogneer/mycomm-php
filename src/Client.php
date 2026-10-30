@@ -36,7 +36,7 @@ final class Client
      * @param  ClientInterface|Transport|null  $httpClient  Your own PSR-18 client. By default Guzzle is used when installed, else the client discovery finds.
      * @param  int  $maxRetries  Retries after a network error, a 429 or a 5xx. POSTs carry an `Idempotency-Key`, so a retry never repeats their effect.
      * @param  float  $timeout  Seconds per attempt; applies to the default HTTP client only.
-     * @param  string|null  $accountId  With a partner key: the managed account to act as on `/v1`. See `forAccount()`.
+     * @param  string|null  $lineId  With a partner key: the line (its id) every `/v1` call acts on. See `forLine()`.
      * @param  bool  $validate  Check the arguments of each call against the API's documented rules before sending, and throw `InvalidArgumentException` when one breaks a rule. Turn off only if the API has relaxed a rule this SDK version does not know yet.
      */
     public function __construct(
@@ -45,7 +45,7 @@ final class Client
         ClientInterface|Transport|null $httpClient = null,
         private readonly int $maxRetries = 2,
         private readonly float $timeout = 30.0,
-        private readonly ?string $accountId = null,
+        private readonly ?string $lineId = null,
         private readonly bool $validate = true,
     ) {
         if (trim($apiKey) === '') {
@@ -55,7 +55,7 @@ final class Client
         // The paths carry /v1 and /partner/v1 themselves; forgive a base URL that already ends in one.
         $this->baseUrl = (string) preg_replace('#/(partner/)?v1$#', '', rtrim($baseUrl, '/'));
         $this->transport = $httpClient instanceof Transport ? $httpClient : TransportFactory::make($httpClient, $timeout);
-        $this->bootResources(new Connection($this->transport, $apiKey, $this->baseUrl, $accountId, $maxRetries, validate: $validate));
+        $this->bootResources(new Connection($this->transport, $apiKey, $this->baseUrl, $lineId, $maxRetries, validate: $validate));
     }
 
     /**
@@ -107,11 +107,11 @@ final class Client
     }
 
     /**
-     * A client that acts as one managed account: every `/v1` call carries `MyComm-Account`.
-     * For partner keys.
+     * A client that acts on one of your lines: every `/v1` call carries `MyComm-Line`. For partner keys, which reach
+     * `/v1` only through a line they made (`$client->partner->lines->create(...)`); `/partner/v1` calls never carry it.
      */
-    public function forAccount(string $accountId): self
+    public function forLine(string $lineId): self
     {
-        return new self($this->apiKey, $this->baseUrl, $this->transport, $this->maxRetries, $this->timeout, $accountId, $this->validate);
+        return new self($this->apiKey, $this->baseUrl, $this->transport, $this->maxRetries, $this->timeout, $lineId, $this->validate);
     }
 }

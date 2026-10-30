@@ -21,7 +21,12 @@ use MyComm\RequestOptions;
 
 final class Lines
 {
-    public function __construct(private readonly Connection $connection) {}
+    public readonly Lines\Links $links;
+
+    public function __construct(private readonly Connection $connection)
+    {
+        $this->links = new Lines\Links($connection);
+    }
 
     /**
      * List lines.
@@ -114,8 +119,9 @@ final class Lines
      * Create an app line.
      *
      * Requires `channels:write`, which a key restricted to lines never holds. Adds an `app` line that sends
-     * through `senders` in order: the first entry is the primary unless one is marked `primary`, the others
-     * are backups. Every channel must be one of the account's, connected and verified, and appear once (`422
+     * through `senders` in order: the first entry is the primary unless one is marked `primary`, which is then
+     * placed first (the others keep their order), so the primary always sends first; the others are backups.
+     * Every channel must be one of the account's, connected and verified, and appear once (`422
      * VALIDATION_FAILED` on `senders`; a channel still pending verification or disconnected answers `422
      * CHANNEL_INACTIVE`). `409 NAME_TAKEN` `{field: "name"}` when another line of the account has the name
      * (case-insensitive, the Direct line's included). A line without senders is allowed; it can send once it
@@ -187,7 +193,9 @@ final class Lines
      * Requires `channels:write`. Every field is optional. `reply_window_days` (1 to 365) is how long a reply
      * on a channel this line wrote from comes back to this line. `settings` keys are merged into the stored
      * settings (a key set to `null` is removed). `409 NAME_TAKEN` `{field: "name"}` when another line of the
-     * account has the name (case-insensitive). The sender list changes with `PUT /lines/{id}/senders`.
+     * account has the name (case-insensitive). The Direct line keeps its name: a different `name` answers `422
+     * LINE_IS_DIRECT` `{line_id}`, while its other fields change as usual. The sender list changes with `PUT
+     * /lines/{id}/senders`.
      *
      * @param  array<string, mixed>|null  $settings  Merged key by key into the line settings; `null` removes a key.
      *
@@ -261,7 +269,8 @@ final class Lines
     /**
      * Unarchive a line.
      *
-     * Requires `channels:write`. Does nothing when the line is not archived. Takes no body.
+     * Requires `channels:write`. Does nothing when the line is not archived. Takes no body. A partner line
+     * that was detached stays archived: `409 INVALID_STATE` `{line_id}`.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -296,7 +305,8 @@ final class Lines
      * Replace a line's senders.
      *
      * Requires `channels:write`. Replaces the whole list; the order is the position (0 first). At most one
-     * entry is `primary`; with none marked the first entry is. An entry without a role is a `backup`. Every
+     * entry is `primary`; with none marked the first entry is. A marked primary is placed first and the others
+     * keep their order, so role and position always agree. An entry without a role is a `backup`. Every
      * channel must be one of the account's, not disconnected, and appear once (`422 VALIDATION_FAILED` on
      * `senders`). An empty list leaves the line without senders: sends from it are held
      * (`no_sender_available`). Fires `line.sender_changed`. Queued messages on a sender that left the list

@@ -9,10 +9,9 @@ namespace MyComm\Enums;
 /**
  * The API may add values: one this SDK version does not know arrives as a plain string.
  */
-enum ConnectSessionStatus: string
+enum LineState: string
 {
-    case Open = 'open';
-    case Completed = 'completed';
-    case Revoked = 'revoked';
-    case Expired = 'expired';
+    case Connected = 'connected';
+    case NeedsAttention = 'needs_attention';
+    case NotConnected = 'not_connected';
 }

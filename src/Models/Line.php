@@ -22,7 +22,7 @@ final class Line extends Model
     public readonly string $name;
 
     /**
-     * `ordered`: the first healthy sender by position sends. `pool` is reserved for spreading sends over several senders.
+     * `ordered`: the first healthy sender by position sends; the primary is always at position 0. `pool` is reserved for spreading sends over several senders.
      */
     public readonly Enums\LineSendMode|string $send_mode;
 

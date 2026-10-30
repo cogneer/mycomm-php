@@ -92,13 +92,13 @@ final class WebhookEndpoints
      * Requires `webhooks:write`. The `url` must be `https`, carry no credentials and resolve only to public
      * addresses. `events` empty or omitted means every event except the opt-in ones. `line_ids` and
      * `channel_types` `null` mean all. At most 20 endpoints per account. A restricted key's endpoint defaults
-     * to (and must stay inside) its lines, takes the key's channel types and cannot include managed accounts.
-     * The `secret` is shown once, in this response.
+     * to (and must stay inside) its lines, takes the key's channel types and cannot set `partner_lines`. The
+     * `secret` is shown once, in this response.
      *
      * @param  list<string>|Omit|null  $events
      * @param  list<string>|Omit|null  $line_ids
      * @param  list<string>|Omit|null  $channel_types
-     * @param  ?bool  $include_managed_accounts  Also receive the events of every managed account. Only on an approved partner's own account, with `line_ids` `null`, and never with a restricted key.
+     * @param  ?bool  $partner_lines  Also receive the events of the lines you made for your users with the partner API (events whose `line_id` is one of your partner lines), and nothing else of their accounts. `line_ids` may then name partner lines too, to…
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
@@ -110,7 +110,7 @@ final class WebhookEndpoints
         array|Omit|null $events = Omit::Value,
         array|Omit|null $line_ids = Omit::Value,
         array|Omit|null $channel_types = Omit::Value,
-        ?bool $include_managed_accounts = null,
+        ?bool $partner_lines = null,
         ?RequestOptions $requestOptions = null,
     ): Models\CreatedWebhookEndpoint {
         $this->connection->guard(
@@ -150,7 +150,7 @@ final class WebhookEndpoints
                 'events' => $events,
                 'line_ids' => $line_ids,
                 'channel_types' => $channel_types,
-                'include_managed_accounts' => $include_managed_accounts ?? Omit::Value,
+                'partner_lines' => $partner_lines ?? Omit::Value,
             ]),
             options: $requestOptions,
         );
@@ -179,12 +179,13 @@ final class WebhookEndpoints
      * Update a webhook endpoint.
      *
      * Requires `webhooks:write`. Only the fields sent change. `active: true` re-enables a disabled endpoint
-     * and resets its failure counters. An endpoint with `include_managed_accounts` keeps `line_ids` `null`.
+     * and resets its failure counters. `line_ids` may name partner lines only while the endpoint has
+     * `partner_lines`.
      *
      * @param  list<string>|Omit|null  $events
      * @param  list<string>|Omit|null  $line_ids
      * @param  list<string>|Omit|null  $channel_types
-     * @param  ?bool  $include_managed_accounts  Only on an approved partner's own account, with `line_ids` `null`, and never with a restricted key.
+     * @param  ?bool  $partner_lines  Only on an approved partner's own account, never with a restricted key. Turning it off while `line_ids` names partner lines is refused.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
@@ -197,7 +198,7 @@ final class WebhookEndpoints
         array|Omit|null $events = Omit::Value,
         array|Omit|null $line_ids = Omit::Value,
         array|Omit|null $channel_types = Omit::Value,
-        ?bool $include_managed_accounts = null,
+        ?bool $partner_lines = null,
         ?bool $active = null,
         ?RequestOptions $requestOptions = null,
     ): Models\WebhookEndpoint {
@@ -238,7 +239,7 @@ final class WebhookEndpoints
                 'events' => $events,
                 'line_ids' => $line_ids,
                 'channel_types' => $channel_types,
-                'include_managed_accounts' => $include_managed_accounts ?? Omit::Value,
+                'partner_lines' => $partner_lines ?? Omit::Value,
                 'active' => $active ?? Omit::Value,
             ]),
             options: $requestOptions,

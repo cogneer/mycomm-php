@@ -10,11 +10,15 @@ use DateTimeImmutable;
 use MyComm\Enums;
 use MyComm\Model;
 
-final class ConnectSession extends Model
+final class HostedLink extends Model
 {
     public readonly string $id;
 
-    public readonly Enums\ConnectSessionStatus|string $status;
+    public readonly Enums\HostedLinkPurpose|string $purpose;
+
+    public readonly string $line_id;
+
+    public readonly Enums\HostedLinkStatus|string $status;
 
     public readonly DateTimeImmutable $expires_at;
 
@@ -27,13 +31,15 @@ final class ConnectSession extends Model
 
     public readonly ?string $locale;
 
+    public readonly ?string $replaces_device_id;
+
     /**
-     * Set when the session paired a device.
+     * Set when the link paired a phone.
      */
     public readonly ?string $device_id;
 
     /**
-     * Set when the session connected a channel.
+     * Set when the link connected a channel.
      */
     public readonly ?string $channel_id;
 
@@ -46,11 +52,14 @@ final class ConnectSession extends Model
     protected function hydrate(array $data): void
     {
         $this->id = $data['id'];
-        $this->status = self::enum(Enums\ConnectSessionStatus::class, $data['status']);
+        $this->purpose = self::enum(Enums\HostedLinkPurpose::class, $data['purpose']);
+        $this->line_id = $data['line_id'];
+        $this->status = self::enum(Enums\HostedLinkStatus::class, $data['status']);
         $this->expires_at = self::dateTime($data['expires_at']);
         $this->return_url = $data['return_url'] ?? null;
         $this->allowed_origins = $data['allowed_origins'] ?? null;
         $this->locale = $data['locale'] ?? null;
+        $this->replaces_device_id = $data['replaces_device_id'] ?? null;
         $this->device_id = $data['device_id'] ?? null;
         $this->channel_id = $data['channel_id'] ?? null;
         $this->completed_at = isset($data['completed_at']) ? self::dateTime($data['completed_at']) : null;

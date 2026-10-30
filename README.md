@@ -374,9 +374,11 @@ $status->needs_attention_reasons;   // e.g. [LineNeedsAttentionReason::DeviceOff
 ...or take the `line.*` webhooks (`line.connected`, `line.needs_attention`, `line.recovered`, `line.detached`,
 `line.quota_low`, `line.quota_exhausted`) on an endpoint created with `partner_lines: true`; see [Webhooks](#webhooks).
 
-A partner key reaches `/v1` only through a line it made: without `forLine()` (or the constructor option `lineId`) a
-`/v1` call answers `400 LINE_CONTEXT_REQUIRED`, and only sending, messages, conversations and `lines->get()` of that
-line are open to it. `/partner/v1` calls never carry the header.
+A partner key reaches `/v1` only through a line it made, and only a few routes: sending, messages, conversations and
+`lines->get()` of that line. Any other `/v1` route answers `403 PARTNER_ROUTE_NOT_ALLOWED`, with or without a line; one
+of those routes called without `forLine()` (or the constructor option `lineId`) answers `400 LINE_CONTEXT_REQUIRED`.
+`/partner/v1` calls never carry the header. `verify()` works for a partner key too: it checks the key on the partner API
+and dry-runs the send through the line (`$partner->forLine($lineId)->verify(to: ...)`).
 
 | Call | |
 |---|---|
@@ -389,8 +391,6 @@ line are open to it. `/partner/v1` calls never carry the header.
 
 An account key mints the same links for its own lines with `$mycomm->lines->links->create($lineId, purpose: ...)` and
 follows them with `$mycomm->links->get($id)` and `revoke($id)`.
-
-Or mint a key for the customer's own integration: `$partner->partner->accountKeys->create($account->id, name: 'ERP')`.
 
 ## Uploading files
 

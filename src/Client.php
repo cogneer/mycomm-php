@@ -67,18 +67,27 @@ final class Client
      * Never throws for a problem with the key or the request: each problem is a failed check in the result, with the API's
      * own message. It does not retry, so a failure is reported at once.
      *
+     * A partner key is checked on the partner API (it reaches no account of its own on `/v1`, so `account` stays null)
+     * and its send is dry-run through a line: the one of `forLine()`, else `$lineId`.
+     *
      * @param  string|null  $to  A number you control, to dry-run a send to.
-     * @param  string|null  $lineId  The line to send from; leave out when the key has only one.
+     * @param  string|null  $lineId  The line to send from; leave out when the key has only one. A partner key needs it unless the client came from `forLine()`.
      */
     public function verify(?string $to = null, ?string $lineId = null): VerifyResult
     {
         $once = new RequestOptions(maxRetries: 0);
         $checks = [];
         $account = null;
+        $partner = $this->isPartnerKey();
 
         try {
-            $account = $this->account->get(requestOptions: $once);
-            $checks[] = ['name' => 'key', 'ok' => true, 'message' => 'The key works for account '.$account->id.'.'];
+            if ($partner) {
+                $this->partner->lines->list(limit: 1, requestOptions: $once);
+                $checks[] = ['name' => 'key', 'ok' => true, 'message' => 'The partner key works.'];
+            } else {
+                $account = $this->account->get(requestOptions: $once);
+                $checks[] = ['name' => 'key', 'ok' => true, 'message' => 'The key works for account '.$account->id.'.'];
+            }
         } catch (Exceptions\MyCommException $e) {
             $checks[] = ['name' => 'key', 'ok' => false, 'message' => $e->getMessage()];
 
@@ -86,9 +95,21 @@ final class Client
         }
 
         $holdReason = null;
+        $sender = $this;
+        if ($partner && $to !== null) {
+            $line = $this->lineId ?? $lineId;
+            if ($line === null) {
+                $checks[] = ['name' => 'send', 'ok' => false, 'message' => 'A partner key sends through one of its lines: pass the line id (or use forLine()).'];
+
+                return new VerifyResult($checks);
+            }
+            // The line goes in the MyComm-Line header; the body names no line.
+            $sender = $this->lineId === $line ? $this : $this->forLine($line);
+            $lineId = null;
+        }
         if ($to !== null) {
             try {
-                $result = $this->messages->send(
+                $result = $sender->messages->send(
                     line_id: $lineId,
                     to: $to,
                     body: 'MyComm verify',
@@ -113,5 +134,14 @@ final class Client
     public function forLine(string $lineId): self
     {
         return new self($this->apiKey, $this->baseUrl, $this->transport, $this->maxRetries, $this->timeout, $lineId, $this->validate);
+    }
+
+    /**
+     * Whether the client holds a partner key (`mc_partner_...`), which uses the partner API and reaches `/v1` only
+     * through `forLine()`.
+     */
+    public function isPartnerKey(): bool
+    {
+        return str_starts_with($this->apiKey, 'mc_partner_');
     }
 }

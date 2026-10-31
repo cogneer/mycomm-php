@@ -21,10 +21,18 @@ final class Line extends Model
 
     public readonly string $name;
 
-    /**
-     * `ordered`: the first healthy sender by position sends; the primary is always at position 0. `pool` is reserved for spreading sends over several senders.
-     */
     public readonly Enums\LineSendMode|string $send_mode;
+
+    /**
+     * Keep each contact on the sender that first sent to it while that sender is healthy (default `true`). While it is not, the contact's messages go through the line's normal order and return to it once it is healthy again.
+     */
+    public readonly bool $sticky_sender;
+
+    public readonly LineFailoverSeconds $failover_seconds;
+
+    public readonly Enums\LinePrefer|string $prefer;
+
+    public readonly LineCrossTypeFallback $cross_type_fallback;
 
     /**
      * How long a reply on a channel this line wrote from comes back to this line.
@@ -35,6 +43,8 @@ final class Line extends Model
      * What happens to a message a revoked phone may or may not have sent: `fail` (default) or `resend` through the next sender, accepting a possible duplicate.
      */
     public readonly Enums\LineOnUnconfirmed|string $on_unconfirmed;
+
+    public readonly LineAlarmThresholds $alarm_thresholds;
 
     /**
      * Whether the line's conversations show in the portal's conversation view.
@@ -67,8 +77,13 @@ final class Line extends Model
         $this->kind = self::enum(Enums\LineKind::class, $data['kind']);
         $this->name = $data['name'];
         $this->send_mode = self::enum(Enums\LineSendMode::class, $data['send_mode']);
+        $this->sticky_sender = $data['sticky_sender'];
+        $this->failover_seconds = LineFailoverSeconds::fromArray($data['failover_seconds']);
+        $this->prefer = self::enum(Enums\LinePrefer::class, $data['prefer']);
+        $this->cross_type_fallback = LineCrossTypeFallback::fromArray($data['cross_type_fallback']);
         $this->reply_window_days = $data['reply_window_days'];
         $this->on_unconfirmed = self::enum(Enums\LineOnUnconfirmed::class, $data['on_unconfirmed']);
+        $this->alarm_thresholds = LineAlarmThresholds::fromArray($data['alarm_thresholds']);
         $this->show_in_portal = $data['show_in_portal'];
         $this->senders = array_map(static fn (array $item): LineSender => LineSender::fromArray($item), array_values($data['senders']));
         $this->settings = LineSettings::fromArray($data['settings']);

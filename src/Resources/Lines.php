@@ -194,10 +194,19 @@ final class Lines
      * on a channel this line wrote from comes back to this line. `settings` keys are merged into the stored
      * settings (a key set to `null` is removed). `409 NAME_TAKEN` `{field: "name"}` when another line of the
      * account has the name (case-insensitive). The Direct line keeps its name: a different `name` answers `422
-     * LINE_IS_DIRECT` `{line_id}`, while its other fields change as usual. The sender list changes with `PUT
+     * LINE_IS_DIRECT` `{line_id}`, while its other fields change as usual. `send_mode`, `sticky_sender` and
+     * `failover_seconds` set how the line picks its sender; `failover_seconds` is merged lane by lane into the
+     * stored hold times (`null` restores the defaults). `prefer` sets the channel type the line sends with
+     * first and `cross_type_fallback` (merged into the stored value) resends an undelivered message through
+     * the next type; a fallback may double the cost of a message. `on_unconfirmed` decides what happens to a
+     * message an unpaired phone never confirmed, and `alarm_thresholds` (merged into the stored values, `null`
+     * restores the defaults) when the line's `line.alarm` fires. The sender list changes with `PUT
      * /lines/{id}/senders`.
      *
-     * @param  array<string, mixed>|null  $settings  Merged key by key into the line settings; `null` removes a key.
+     * @param  array{enabled?: bool, after_seconds?: int}|null  $cross_type_fallback  The fallback fields to change; fields left out keep theirs.
+     * @param  array{high?: int, normal?: int, bulk?: int}|Omit|null  $failover_seconds  Hold times to change, by lane (30 to 7200 seconds each); lanes left out keep theirs. `null` restores the defaults.
+     * @param  array{budget_percent?: int, self_loop_per_hour?: int}|Omit|null  $alarm_thresholds  Alarm thresholds to change; fields left out keep theirs. `null` restores the defaults.
+     * @param  array<string, mixed>|null  $settings  Merged key by key into the line settings; `null` removes a key. The hold times change through `failover_seconds` and the alarm thresholds through `alarm_thresholds`, not here.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
@@ -208,6 +217,13 @@ final class Lines
         ?string $name = null,
         ?int $reply_window_days = null,
         ?bool $show_in_portal = null,
+        Enums\LineSendMode|string|null $send_mode = null,
+        ?bool $sticky_sender = null,
+        Enums\LinePrefer|string|null $prefer = null,
+        ?array $cross_type_fallback = null,
+        array|Omit|null $failover_seconds = Omit::Value,
+        Enums\LineOnUnconfirmed|string|null $on_unconfirmed = null,
+        array|Omit|null $alarm_thresholds = Omit::Value,
         ?array $settings = null,
         ?RequestOptions $requestOptions = null,
     ): Models\Line {
@@ -216,6 +232,9 @@ final class Lines
             [
                 'name' => $name,
                 'reply_window_days' => $reply_window_days,
+                'send_mode' => $send_mode,
+                'prefer' => $prefer,
+                'on_unconfirmed' => $on_unconfirmed,
             ],
             [
                 'name' => [
@@ -225,6 +244,15 @@ final class Lines
                 'reply_window_days' => [
                     'min' => 1,
                     'max' => 365,
+                ],
+                'send_mode' => [
+                    'enum' => ['ordered', 'pool'],
+                ],
+                'prefer' => [
+                    'enum' => ['auto', 'sms', 'whatsapp'],
+                ],
+                'on_unconfirmed' => [
+                    'enum' => ['fail', 'resend'],
                 ],
             ],
             [],
@@ -238,6 +266,13 @@ final class Lines
                 'name' => $name ?? Omit::Value,
                 'reply_window_days' => $reply_window_days ?? Omit::Value,
                 'show_in_portal' => $show_in_portal ?? Omit::Value,
+                'send_mode' => $send_mode ?? Omit::Value,
+                'sticky_sender' => $sticky_sender ?? Omit::Value,
+                'prefer' => $prefer ?? Omit::Value,
+                'cross_type_fallback' => Params::object($cross_type_fallback ?? Omit::Value),
+                'failover_seconds' => Params::object($failover_seconds),
+                'on_unconfirmed' => $on_unconfirmed ?? Omit::Value,
+                'alarm_thresholds' => Params::object($alarm_thresholds),
                 'settings' => Params::object($settings ?? Omit::Value),
             ]),
             options: $requestOptions,

@@ -217,6 +217,10 @@ return [
         'SponsorshipTerms.on_exhausted' => 'SponsorshipOnExhausted',
         'PartnerLineStatusSponsorship.on_exhausted' => 'SponsorshipOnExhausted',
         'WebhookLineDetachedData.by' => 'LineDetachedBy',
+        'LineUpdate.on_unconfirmed' => 'LineOnUnconfirmed',
+        'SendMessageRequest.prefer' => 'MessagePrefer',
+        'SendBatchItem.prefer' => 'MessagePrefer',
+        'WebhookLineAlarmData.kind' => 'AlarmKind',
     ],
 
     // An answer described inline in the spec becomes a model named after its operation

@@ -108,5 +108,5 @@ it('reads the sparsest payload of every event', function (string $type) {
 
 it('knows the ping the test action sends', function () {
     expect(Webhook::parse(FakeWebhook::make('ping')->payload))->toBeInstanceOf(Ping::class)
-        ->and(EventMap::EVENTS)->toHaveCount(56);
+        ->and(EventMap::EVENTS)->toHaveCount(57);
 });

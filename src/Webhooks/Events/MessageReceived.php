@@ -10,8 +10,10 @@ use MyComm\Models;
 use MyComm\Webhooks\Event;
 
 /**
- * `message.received`: An inbound message was stored. `data` adds `contact_created`; `conversation.created`
- * is true when this message created the conversation.
+ * `message.received`: An inbound message was stored. `data` adds `contact_created` and `mirrored`;
+ * `conversation.created` is true when this message created the conversation. A line that mirrors the
+ * channel gets a copy marked `mirrored`. An endpoint for all lines receives both events, so filter on
+ * `mirrored`.
  */
 final class MessageReceived extends Event
 {

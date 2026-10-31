@@ -2172,6 +2172,7 @@ return [
                 'expires_at' => null,
                 'attempts' => 1,
                 'sender_pinned' => true,
+                'fallback_of' => null,
                 'sender_attempts' => [],
                 'failure' => null,
                 'cancel_requested_at' => null,
@@ -2672,8 +2673,23 @@ return [
                 'kind' => 'direct',
                 'name' => 'Example name',
                 'send_mode' => 'ordered',
+                'sticky_sender' => true,
+                'failover_seconds' => [
+                    'high' => 30,
+                    'normal' => 30,
+                    'bulk' => 30,
+                ],
+                'prefer' => 'auto',
+                'cross_type_fallback' => [
+                    'enabled' => true,
+                    'after_seconds' => 60,
+                ],
                 'reply_window_days' => 1,
                 'on_unconfirmed' => 'fail',
+                'alarm_thresholds' => [
+                    'budget_percent' => 50,
+                    'self_loop_per_hour' => 5,
+                ],
                 'show_in_portal' => true,
                 'senders' => [],
                 'settings' => [
@@ -2695,8 +2711,23 @@ return [
                 'kind' => 'direct',
                 'name' => 'Example name',
                 'send_mode' => 'ordered',
+                'sticky_sender' => true,
+                'failover_seconds' => [
+                    'high' => 30,
+                    'normal' => 30,
+                    'bulk' => 30,
+                ],
+                'prefer' => 'auto',
+                'cross_type_fallback' => [
+                    'enabled' => true,
+                    'after_seconds' => 60,
+                ],
                 'reply_window_days' => 1,
                 'on_unconfirmed' => 'fail',
+                'alarm_thresholds' => [
+                    'budget_percent' => 50,
+                    'self_loop_per_hour' => 5,
+                ],
                 'show_in_portal' => true,
                 'senders' => [],
                 'settings' => [
@@ -2718,8 +2749,23 @@ return [
                 'kind' => 'direct',
                 'name' => 'Example name',
                 'send_mode' => 'ordered',
+                'sticky_sender' => true,
+                'failover_seconds' => [
+                    'high' => 30,
+                    'normal' => 30,
+                    'bulk' => 30,
+                ],
+                'prefer' => 'auto',
+                'cross_type_fallback' => [
+                    'enabled' => true,
+                    'after_seconds' => 60,
+                ],
                 'reply_window_days' => 1,
                 'on_unconfirmed' => 'fail',
+                'alarm_thresholds' => [
+                    'budget_percent' => 50,
+                    'self_loop_per_hour' => 5,
+                ],
                 'show_in_portal' => true,
                 'senders' => [],
                 'settings' => [
@@ -2741,8 +2787,23 @@ return [
                 'kind' => 'direct',
                 'name' => 'Example name',
                 'send_mode' => 'ordered',
+                'sticky_sender' => true,
+                'failover_seconds' => [
+                    'high' => 30,
+                    'normal' => 30,
+                    'bulk' => 30,
+                ],
+                'prefer' => 'auto',
+                'cross_type_fallback' => [
+                    'enabled' => true,
+                    'after_seconds' => 60,
+                ],
                 'reply_window_days' => 1,
                 'on_unconfirmed' => 'fail',
+                'alarm_thresholds' => [
+                    'budget_percent' => 50,
+                    'self_loop_per_hour' => 5,
+                ],
                 'show_in_portal' => true,
                 'senders' => [],
                 'settings' => [
@@ -2764,8 +2825,23 @@ return [
                 'kind' => 'direct',
                 'name' => 'Example name',
                 'send_mode' => 'ordered',
+                'sticky_sender' => true,
+                'failover_seconds' => [
+                    'high' => 30,
+                    'normal' => 30,
+                    'bulk' => 30,
+                ],
+                'prefer' => 'auto',
+                'cross_type_fallback' => [
+                    'enabled' => true,
+                    'after_seconds' => 60,
+                ],
                 'reply_window_days' => 1,
                 'on_unconfirmed' => 'fail',
+                'alarm_thresholds' => [
+                    'budget_percent' => 50,
+                    'self_loop_per_hour' => 5,
+                ],
                 'show_in_portal' => true,
                 'senders' => [],
                 'settings' => [
@@ -2872,6 +2948,7 @@ return [
                 'expires_at' => '2026-10-02T09:15:02Z',
                 'attempts' => 0,
                 'sender_pinned' => false,
+                'fallback_of' => null,
                 'sender_attempts' => [
                     [
                         'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
@@ -2945,6 +3022,7 @@ return [
                 'expires_at' => '2026-10-02T09:15:02Z',
                 'attempts' => 0,
                 'sender_pinned' => false,
+                'fallback_of' => null,
                 'sender_attempts' => [
                     [
                         'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
@@ -3018,6 +3096,7 @@ return [
                 'expires_at' => '2026-10-02T09:15:02Z',
                 'attempts' => 0,
                 'sender_pinned' => false,
+                'fallback_of' => null,
                 'sender_attempts' => [
                     [
                         'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
@@ -3112,6 +3191,7 @@ return [
                 'expires_at' => null,
                 'attempts' => 1,
                 'sender_pinned' => true,
+                'fallback_of' => null,
                 'sender_attempts' => [],
                 'failure' => null,
                 'cancel_requested_at' => null,
@@ -3176,6 +3256,7 @@ return [
                 'expires_at' => '2026-10-02T09:15:02Z',
                 'attempts' => 0,
                 'sender_pinned' => false,
+                'fallback_of' => null,
                 'sender_attempts' => [
                     [
                         'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
@@ -4477,6 +4558,7 @@ return [
             'data' => [
                 'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'senders' => [],
+                'sticky_cleared_count' => 1,
             ],
         ],
         'line.failover' => [
@@ -4603,6 +4685,24 @@ return [
                 'allowance' => 1,
                 'used' => 1,
                 'cycle_ends_at' => '2026-10-01T09:15:02Z',
+            ],
+        ],
+        'line.alarm' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'type' => 'line.alarm',
+            'api_version' => '1.0.0',
+            'created_at' => '2026-10-01T09:15:02Z',
+            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => null,
+            'channel' => null,
+            'data' => [
+                'alarm_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'kind' => 'failover',
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'channel_id' => null,
+                'count' => 1,
+                'first_at' => '2026-10-01T09:15:02Z',
+                'data' => [],
             ],
         ],
         'conversation.handed_over' => [
@@ -5687,6 +5787,7 @@ return [
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
                     'sender_pinned' => false,
+                    'fallback_of' => null,
                     'sender_attempts' => [
                         [
                             'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
@@ -5772,6 +5873,7 @@ return [
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
                     'sender_pinned' => false,
+                    'fallback_of' => null,
                     'sender_attempts' => [
                         [
                             'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
@@ -5857,6 +5959,7 @@ return [
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
                     'sender_pinned' => false,
+                    'fallback_of' => null,
                     'sender_attempts' => [
                         [
                             'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
@@ -5942,6 +6045,7 @@ return [
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
                     'sender_pinned' => false,
+                    'fallback_of' => null,
                     'sender_attempts' => [
                         [
                             'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
@@ -6027,6 +6131,7 @@ return [
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
                     'sender_pinned' => false,
+                    'fallback_of' => null,
                     'sender_attempts' => [
                         [
                             'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
@@ -6112,6 +6217,7 @@ return [
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
                     'sender_pinned' => false,
+                    'fallback_of' => null,
                     'sender_attempts' => [
                         [
                             'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
@@ -6197,6 +6303,7 @@ return [
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
                     'sender_pinned' => false,
+                    'fallback_of' => null,
                     'sender_attempts' => [
                         [
                             'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
@@ -6283,6 +6390,7 @@ return [
                     'expires_at' => '2026-10-02T09:15:02Z',
                     'attempts' => 0,
                     'sender_pinned' => false,
+                    'fallback_of' => null,
                     'sender_attempts' => [
                         [
                             'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
@@ -6320,6 +6428,7 @@ return [
                 ],
                 'sender_attempt_count' => 1,
                 'contact_created' => true,
+                'mirrored' => true,
             ],
         ],
         'conversation.read' => [

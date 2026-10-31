@@ -36,6 +36,11 @@ final class LineSender extends Model
     public readonly bool $enabled;
 
     /**
+     * The line gets a read-only copy of every new inbound on this channel that lands on another line: one more `message.received` with the envelope `line_id` of this line and `data.mirrored: true`. No conversation or message…
+     */
+    public readonly bool $mirror_inbound;
+
+    /**
      * Active, its phone online, not throttled, and with hourly and daily budget left. Changes from moment to moment.
      */
     public readonly bool $healthy;
@@ -48,6 +53,7 @@ final class LineSender extends Model
         $this->role = self::enum(Enums\LineSenderRole::class, $data['role']);
         $this->position = $data['position'];
         $this->enabled = $data['enabled'];
+        $this->mirror_inbound = $data['mirror_inbound'];
         $this->healthy = $data['healthy'];
     }
 }

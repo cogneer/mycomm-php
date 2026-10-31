@@ -100,6 +100,11 @@ final class Message extends Model
     public readonly bool $sender_pinned;
 
     /**
+     * The message this one resends through another channel type (the line's cross-type fallback), else `null`.
+     */
+    public readonly ?string $fallback_of;
+
+    /**
      * The senders the message has been on, oldest first (outbound only, else empty). A new entry opens on a retry and when the message fails over to another sender of its line.
      *
      * @var list<MessageSenderAttempt>
@@ -172,6 +177,7 @@ final class Message extends Model
         $this->expires_at = isset($data['expires_at']) ? self::dateTime($data['expires_at']) : null;
         $this->attempts = $data['attempts'];
         $this->sender_pinned = $data['sender_pinned'];
+        $this->fallback_of = $data['fallback_of'] ?? null;
         $this->sender_attempts = array_map(static fn (array $item): MessageSenderAttempt => MessageSenderAttempt::fromArray($item), array_values($data['sender_attempts']));
         $this->failure = isset($data['failure']) ? MessageFailure::fromArray($data['failure']) : null;
         $this->cancel_requested_at = isset($data['cancel_requested_at']) ? self::dateTime($data['cancel_requested_at']) : null;

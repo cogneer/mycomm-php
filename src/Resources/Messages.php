@@ -362,6 +362,7 @@ final class Messages
      * @param  ?string  $channel_id  Send from this channel, on the line it is the primary sender of, else on its default line.
      * @param  ?string  $from  A channel address (for SMS, the number); resolves like `channel_id`.
      * @param  ?string  $channel_type  Only to choose between channels of different types that share the `from` address.
+     * @param  Enums\MessagePrefer|string|null  $prefer  The channel type to try first when the line picks the sender; beats the line's `prefer`. When that type has no healthy sender or cannot reach the recipient, the line's next type sends.
      * @param  ?string  $to  Recipient address in the channel's format (a phone number in any accepted format for SMS). Not together with `contact_id`.
      * @param  ?string  $contact_id  Send to this contact's address for the channel. Not together with `to`.
      * @param  array<string, mixed>|null  $content  The full content form. `type` is `text`, `media`, `template` or a channel-specific type refused with `CHANNEL_CAPABILITY_UNSUPPORTED`. Excludes `body`, `media_ids`, `template_id` and `variables`.
@@ -389,6 +390,7 @@ final class Messages
         ?string $channel_id = null,
         ?string $from = null,
         ?string $channel_type = null,
+        Enums\MessagePrefer|string|null $prefer = null,
         ?string $to = null,
         ?string $contact_id = null,
         ?array $content = null,
@@ -413,6 +415,7 @@ final class Messages
             [
                 'line_id' => $line_id,
                 'channel_id' => $channel_id,
+                'prefer' => $prefer,
                 'contact_id' => $contact_id,
                 'media_ids' => $media_ids,
                 'template_id' => $template_id,
@@ -432,6 +435,9 @@ final class Messages
                 ],
                 'channel_id' => [
                     'uuid' => true,
+                ],
+                'prefer' => [
+                    'enum' => ['sms', 'whatsapp'],
                 ],
                 'contact_id' => [
                     'uuid' => true,
@@ -486,6 +492,7 @@ final class Messages
                 'channel_id' => $channel_id ?? Omit::Value,
                 'from' => $from ?? Omit::Value,
                 'channel_type' => $channel_type ?? Omit::Value,
+                'prefer' => $prefer ?? Omit::Value,
                 'to' => $to ?? Omit::Value,
                 'contact_id' => $contact_id ?? Omit::Value,
                 'content' => Params::object($content ?? Omit::Value),

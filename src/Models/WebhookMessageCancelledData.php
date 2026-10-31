@@ -20,7 +20,7 @@ final class WebhookMessageCancelledData extends Model
     public readonly int $sender_attempt_count;
 
     /**
-     * `api`, `portal`, `campaign_cancelled`, `opted_out`, `contact_blocked`, `account_deleted` (may gain values).
+     * `api`, `portal`, `campaign_cancelled`, `opted_out`, `contact_blocked`, `account_deleted`, `cross_type_fallback` (may gain values).
      */
     public readonly ?string $reason;
 

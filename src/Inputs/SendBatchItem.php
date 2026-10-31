@@ -25,6 +25,7 @@ final class SendBatchItem extends Input
      * @param  ?string  $channel_id  Send from this channel, on the line it is the primary sender of, else on its default line.
      * @param  ?string  $from  A channel address (for SMS, the number); resolves like `channel_id`.
      * @param  ?string  $channel_type  Only to choose between channels of different types that share the `from` address.
+     * @param  Enums\MessagePrefer|string|null  $prefer  The channel type to try first when the line picks the sender; beats the line's `prefer`. When that type has no healthy sender or cannot reach the recipient, the line's next type sends.
      * @param  ?string  $to  Recipient address in the channel's format (a phone number in any accepted format for SMS). Not together with `contact_id`.
      * @param  ?string  $contact_id  Send to this contact's address for the channel. Not together with `to`.
      * @param  array<string, mixed>|null  $content  The full content form. `type` is `text`, `media`, `template` or a channel-specific type refused with `CHANNEL_CAPABILITY_UNSUPPORTED`. Excludes `body`, `media_ids`, `template_id` and `variables`.
@@ -47,6 +48,7 @@ final class SendBatchItem extends Input
         public readonly ?string $channel_id = null,
         public readonly ?string $from = null,
         public readonly ?string $channel_type = null,
+        public readonly Enums\MessagePrefer|string|null $prefer = null,
         public readonly ?string $to = null,
         public readonly ?string $contact_id = null,
         public readonly ?array $content = null,
@@ -72,6 +74,7 @@ final class SendBatchItem extends Input
             'channel_id' => $this->channel_id ?? Omit::Value,
             'from' => $this->from ?? Omit::Value,
             'channel_type' => $this->channel_type ?? Omit::Value,
+            'prefer' => $this->prefer ?? Omit::Value,
             'to' => $this->to ?? Omit::Value,
             'contact_id' => $this->contact_id ?? Omit::Value,
             'content' => Params::object($this->content ?? Omit::Value),

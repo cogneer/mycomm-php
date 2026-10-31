@@ -21,11 +21,17 @@ final class WebhookMessageReceivedData extends Model
 
     public readonly bool $contact_created;
 
+    /**
+     * `true` on the copy a mirror line gets (a sender entry with `mirror_inbound`): the envelope `line_id` is the mirror line, while `message.line_id` and `conversation` stay those of the line the message landed on. `false` o…
+     */
+    public readonly bool $mirrored;
+
     protected function hydrate(array $data): void
     {
         $this->message = Message::fromArray($data['message']);
         $this->conversation = WebhookConversationRef::fromArray($data['conversation']);
         $this->sender_attempt_count = $data['sender_attempt_count'];
         $this->contact_created = $data['contact_created'];
+        $this->mirrored = $data['mirrored'];
     }
 }

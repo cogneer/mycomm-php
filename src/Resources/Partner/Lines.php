@@ -284,4 +284,48 @@ final class Lines
     ): void {
         $this->connection->request('partner.lines.detach', 'DELETE', '/partner/v1/lines/'.rawurlencode($id), options: $requestOptions);
     }
+
+    /**
+     * Vouch for a recovery request.
+     *
+     * Requires `lines:write`. Someone asked to recover the account of your line (`line.recovery_requested`),
+     * and you know this person. MyComm staff see your answer when they decide. It is never required and never
+     * enough alone: nothing changes before the 7-day wait is over and staff approve. A repeat changes nothing
+     * and answers `200` with the first `vouched_at`. A line that is not your live line in that request's
+     * account, or no such request, is `404 NOT_FOUND`; a request already decided is `409 INVALID_STATE`.
+     *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
+     * @throws ApiException when the API answers with an error
+     * @throws ConnectionException when the API cannot be reached
+     */
+    public function vouch(
+        string $id,
+        string $recovery_request_id,
+        ?RequestOptions $requestOptions = null,
+    ): Models\RecoveryVouch {
+        $this->connection->guard(
+            'partner.lines.vouch',
+            [
+                'recovery_request_id' => $recovery_request_id,
+            ],
+            [
+                'recovery_request_id' => [
+                    'uuid' => true,
+                ],
+            ],
+            [],
+        );
+
+        $response = $this->connection->request(
+            'partner.lines.vouch',
+            'POST',
+            '/partner/v1/lines/'.rawurlencode($id).'/vouch',
+            body: Params::body([
+                'recovery_request_id' => $recovery_request_id,
+            ]),
+            options: $requestOptions,
+        );
+
+        return Models\RecoveryVouch::fromArray($response->json(), $response->meta());
+    }
 }

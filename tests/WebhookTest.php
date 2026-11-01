@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
+use MyComm\Enums\ChannelDisconnectReason;
 use MyComm\Enums\MessageStatus;
 use MyComm\Exceptions\WebhookSignatureException;
 use MyComm\Models\Message;
+use MyComm\Models\WebhookLineRecoveryRequestedData;
 use MyComm\Testing\Examples;
 use MyComm\Testing\FakeWebhook;
 use MyComm\Webhooks\Event;
 use MyComm\Webhooks\EventMap;
+use MyComm\Webhooks\Events\LineRecoveryRequested;
 use MyComm\Webhooks\Events\MessageDelivered;
 use MyComm\Webhooks\Events\Ping;
 use MyComm\Webhooks\UnknownEvent;
@@ -108,5 +111,18 @@ it('reads the sparsest payload of every event', function (string $type) {
 
 it('knows the ping the test action sends', function () {
     expect(Webhook::parse(FakeWebhook::make('ping')->payload))->toBeInstanceOf(Ping::class)
-        ->and(EventMap::EVENTS)->toHaveCount(57);
+        ->and(EventMap::EVENTS)->toHaveCount(58);
+});
+
+it('reads a recovery request and the released number reason', function () {
+    $raw = Examples::EVENTS['line.recovery_requested'];
+
+    $event = Webhook::parse((string) json_encode($raw));
+
+    expect($event)->toBeInstanceOf(LineRecoveryRequested::class)
+        ->and($event->data)->toBeInstanceOf(WebhookLineRecoveryRequestedData::class)
+        ->and($event->data->recovery_request_id)->toBe($raw['data']['recovery_request_id'])
+        ->and($event->data->contact_number)->toBe($raw['data']['contact_number'])
+        ->and($event->data->waiting_until)->toEqual(new DateTimeImmutable($raw['data']['waiting_until']))
+        ->and(ChannelDisconnectReason::from('number_released'))->toBe(ChannelDisconnectReason::NumberReleased);
 });

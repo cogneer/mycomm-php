@@ -94,7 +94,7 @@ it('reads the sparsest answer the reference allows', function (array $case) use 
 
 it('covers every operation of both specs', function () use ($operations) {
     expect(count($operations))->toBeGreaterThan(120)
-        ->and(array_filter($operations, static fn (array $row): bool => $row['resource'][0] === 'partner'))->toHaveCount(12);
+        ->and(array_filter($operations, static fn (array $row): bool => $row['resource'][0] === 'partner'))->toHaveCount(13);
 });
 
 test('sends_without_a_sender_when_the_key_is_line_scoped', function () {

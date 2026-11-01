@@ -38,6 +38,7 @@ final class EventMap
         'line.quota_low' => Events\LineQuotaLow::class,
         'line.quota_exhausted' => Events\LineQuotaExhausted::class,
         'line.alarm' => Events\LineAlarm::class,
+        'line.recovery_requested' => Events\LineRecoveryRequested::class,
         'conversation.handed_over' => Events\ConversationHandedOver::class,
         'link.clicked' => Events\LinkClicked::class,
         'channel.connected' => Events\ChannelConnected::class,

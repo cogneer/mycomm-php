@@ -3868,6 +3868,14 @@ return [
             ],
         ],
         [
+            'operation' => 'partner.lines.vouch',
+            'status' => 200,
+            'body' => [
+                'recovery_request_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'vouched_at' => '2026-10-01T09:15:02Z',
+            ],
+        ],
+        [
             'operation' => 'partner.lines.links.create',
             'status' => 201,
             'body' => [
@@ -4703,6 +4711,23 @@ return [
                 'count' => 1,
                 'first_at' => '2026-10-01T09:15:02Z',
                 'data' => [],
+            ],
+        ],
+        'line.recovery_requested' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'type' => 'line.recovery_requested',
+            'api_version' => '1.0.0',
+            'created_at' => '2026-10-01T09:15:02Z',
+            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'line_id' => null,
+            'channel' => null,
+            'data' => [
+                'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'recovery_request_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'contact_name' => 'Example contact name',
+                'contact_number' => 'Example contact number',
+                'requested_at' => '2026-10-01T09:15:02Z',
+                'waiting_until' => '2026-10-01T09:15:02Z',
             ],
         ],
         'conversation.handed_over' => [

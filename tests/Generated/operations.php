@@ -2088,6 +2088,20 @@ return [
         'item' => null,
     ],
     [
+        'operation' => 'partner.lines.vouch',
+        'resource' => ['partner', 'lines'],
+        'method' => 'vouch',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'recovery_request_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+        ],
+        'http' => 'POST',
+        'path' => '/partner/v1/lines/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/vouch',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\RecoveryVouch',
+        'item' => null,
+    ],
+    [
         'operation' => 'partner.lines.links.create',
         'resource' => ['partner', 'lines', 'links'],
         'method' => 'create',

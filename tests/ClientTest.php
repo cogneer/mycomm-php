@@ -19,6 +19,7 @@ use MyComm\FileUpload;
 use MyComm\Models\CreatedHostedLink;
 use MyComm\Models\PartnerLine;
 use MyComm\Models\PartnerLineStatus;
+use MyComm\Models\RecoveryVouch;
 use MyComm\Models\SendMessageDryRunResponse;
 use MyComm\Models\SendMessageResponse;
 use MyComm\RequestOptions;
@@ -123,6 +124,20 @@ test('sends_with_the_line_header_for_a_partner_key', function () {
     $preset = new MyCommFake('mc_partner_fake', lineId: 'line-1');
     $preset->client()->messages->list();
     expect($preset->calls('messages.list')[0]->header('MyComm-Line'))->toBe('line-1');
+});
+
+test('vouches_for_a_recovery_request_on_a_partner_line', function () {
+    $fake = new MyCommFake('mc_partner_fake');
+    $requestId = '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10';
+
+    $vouch = $fake->client()->partner->lines->vouch('line-1', recovery_request_id: $requestId);
+
+    $call = $fake->calls('partner.lines.vouch')[0];
+    expect($call->method)->toBe('POST')
+        ->and($call->path)->toBe('/partner/v1/lines/line-1/vouch')
+        ->and($call->json)->toBe(['recovery_request_id' => $requestId])
+        ->and($vouch)->toBeInstanceOf(RecoveryVouch::class)
+        ->and($vouch->vouched_at)->toEqual(new DateTimeImmutable(Examples::RESPONSES['partner.lines.vouch']['body']['vouched_at']));
 });
 
 test('creates_a_partner_line_and_a_connect_link', function () {

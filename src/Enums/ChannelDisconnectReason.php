@@ -23,4 +23,5 @@ enum ChannelDisconnectReason: string
     case SessionLost = 'session_lost';
     case ProviderBanned = 'provider_banned';
     case CredentialsInvalid = 'credentials_invalid';
+    case NumberReleased = 'number_released';
 }

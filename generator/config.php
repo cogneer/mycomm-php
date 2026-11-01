@@ -176,6 +176,7 @@ return [
         'uploadMedia' => 'media.upload',
         'upsertContactByIdentity' => 'contacts.upsertByIdentity',
         'verifyChannel' => 'channels.verify',
+        'vouchForRecovery' => 'partner.lines.vouch',
     ],
 
     // An inline list of values becomes an enum named after its schema and property. Where several

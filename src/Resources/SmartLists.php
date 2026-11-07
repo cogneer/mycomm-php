@@ -30,8 +30,8 @@ final class SmartLists
     /**
      * List smart lists.
      *
-     * Requires `contacts:read`. Smart lists of the account sorted by `name` (default) with cursor pagination.
-     * `q` matches the name, case-insensitively.
+     * Requires `contacts:read`. Smart lists of the user sorted by `name` (default) with cursor pagination. `q`
+     * matches the name, case-insensitively.
      *
      * @param  ?string  $q  Name contains, at least 2 characters.
      * @param  ?string  $sort  One of: `name`, `-name`.
@@ -111,7 +111,7 @@ final class SmartLists
      *
      * Requires `groups:write`. `filter` is the smart list filter language; a filter that breaks it answers
      * `422 FILTER_INVALID` with `details.pointer`, a JSON pointer to the bad node. The name is unique per
-     * account, ignoring case (`409 NAME_TAKEN`).
+     * user, ignoring case (`409 NAME_TAKEN`).
      *
      * @param  Inputs\SmartListFilter|array<string, mixed>  $filter
      *

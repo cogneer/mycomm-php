@@ -37,7 +37,7 @@ final class Contacts
      * marketing is cancelled. Identities already suppressed, for any reason, are left unchanged and counted in
      * `already_suppressed`, so repeating the call writes nothing new. All identities are suppressed in one
      * transaction. Undo is per identity with `POST /v1/suppressions/{id}/remove`. A contact that is deleted,
-     * unknown or in another account is `404`.
+     * unknown or of another user is `404`.
      *
      * @param  string|Omit|null  $note  Why the contact was opted out, kept on each suppression and consent event.
      *
@@ -80,7 +80,7 @@ final class Contacts
      * Upsert a contact by phone number.
      *
      * Requires `contacts:write`. Finds the contact holding `identity` (the address is normalised to E.164 with
-     * the account country), including a soft-deleted one, which is restored. When found, the sent fields are
+     * the user's country), including a soft-deleted one, which is restored. When found, the sent fields are
      * merged as in `PATCH /v1/contacts/{id}` (top-level fields replace, `null` empties one; `custom_fields`
      * merges key by key, a `null` value removes a key) and the answer is `200`; otherwise a contact is created
      * with that identity as primary and the answer is `201`. `add_to_group_ids` only adds memberships. An
@@ -218,7 +218,7 @@ final class Contacts
     /**
      * List contacts.
      *
-     * Requires `contacts:read`. Live (not soft-deleted) contacts of the account with cursor pagination. Comma
+     * Requires `contacts:read`. Live (not soft-deleted) contacts of the user with cursor pagination. Comma
      * lists match any of the values. `q` matches the name, email and any address (case-insensitive, at least 2
      * characters; a phone-like search is also matched against the digits of the stored number, so `3451234`
      * finds `+923451234567`). `display_name` sorts with ICU collation; contacts without a name sort first and
@@ -228,7 +228,7 @@ final class Contacts
      * @param  list<string>|string|null  $address  Matches any identity address (comma list).
      * @param  list<string>|string|null  $identity_type  Comma list.
      * @param  list<string>|string|null  $group_id  Members of any of these groups (comma list).
-     * @param  ?string  $smart_list_id  Members of this smart list, evaluated live; an id that is not a smart list of the account answers `422`.
+     * @param  ?string  $smart_list_id  Members of this smart list, evaluated live; an id that is not a smart list of the user answers `422`.
      * @param  list<string>|string|null  $source  Comma list.
      * @param  list<string>|string|null  $language  Comma list.
      * @param  ?bool  $blocked  `true` = any identity is blocked.
@@ -318,7 +318,7 @@ final class Contacts
      * @param  list<string>|string|null  $address  Matches any identity address (comma list).
      * @param  list<string>|string|null  $identity_type  Comma list.
      * @param  list<string>|string|null  $group_id  Members of any of these groups (comma list).
-     * @param  ?string  $smart_list_id  Members of this smart list, evaluated live; an id that is not a smart list of the account answers `422`.
+     * @param  ?string  $smart_list_id  Members of this smart list, evaluated live; an id that is not a smart list of the user answers `422`.
      * @param  list<string>|string|null  $source  Comma list.
      * @param  list<string>|string|null  $language  Comma list.
      * @param  ?bool  $blocked  `true` = any identity is blocked.
@@ -355,7 +355,7 @@ final class Contacts
      * Create a contact.
      *
      * Requires `contacts:write`. At least one identity; `phone` is the only type in v1 (`422
-     * IDENTITY_TYPE_UNAVAILABLE` for the others) and the address is normalised to E.164 using the account
+     * IDENTITY_TYPE_UNAVAILABLE` for the others) and the address is normalised to E.164 using the user's
      * country (`422 INVALID_NUMBER`). A number held by another contact answers `409 IDENTITY_TAKEN` with
      * `details.contact_id`. `custom_fields` keys must be defined contact fields. `group_ids` adds the
      * memberships. Emits `contact.created`.

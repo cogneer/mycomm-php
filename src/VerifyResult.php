@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MyComm;
 
-use MyComm\Models\Account;
+use MyComm\Models\User;
 
 /**
  * What `Client::verify()` found: which checks passed and what each said.
@@ -13,12 +13,12 @@ final class VerifyResult
 {
     /**
      * @param  list<array{name: string, ok: bool, message: string}>  $checks
-     * @param  Account|null  $account  The account the key acts on, when the key works.
+     * @param  User|null  $user  The user the key acts on, when the key works.
      * @param  string|null  $holdReason  What would hold a message to the number you tested, when the dry run predicts a hold.
      */
     public function __construct(
         public readonly array $checks,
-        public readonly ?Account $account = null,
+        public readonly ?User $user = null,
         public readonly ?string $holdReason = null,
     ) {}
 

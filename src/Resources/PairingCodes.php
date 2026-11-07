@@ -23,7 +23,7 @@ final class PairingCodes
      * Create a pairing code.
      *
      * Requires `channels:write`. The code is 8 Crockford base32 characters, single use and valid for 10
-     * minutes. At most 20 codes are pending and 60 are created per account per hour (`429
+     * minutes. At most 20 codes are pending and 60 are created per user per hour (`429
      * PAIRING_CODE_LIMIT_REACHED` with `retry_after_seconds` and a `Retry-After` header). Render `qr_payload`
      * as-is as a QR code.
      *

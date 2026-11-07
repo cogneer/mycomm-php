@@ -54,9 +54,9 @@ final class Campaigns
     /**
      * List campaigns.
      *
-     * Requires `campaigns:read`. Campaigns of the account, newest first (`sort=-created_at`, the only sort),
-     * with cursor pagination. An item carries no `audience.addresses`; read the campaign for them. A key
-     * limited to some lines never holds `campaigns:read` and answers `403 ABILITY_MISSING`.
+     * Requires `campaigns:read`. Campaigns of the user, newest first (`sort=-created_at`, the only sort), with
+     * cursor pagination. An item carries no `audience.addresses`; read the campaign for them. A key limited to
+     * some lines never holds `campaigns:read` and answers `403 ABILITY_MISSING`.
      *
      * @param  Enums\CampaignStatus|string|null  $status  Campaign status.
      * @param  ?string  $line_id  Campaigns sent from this line.
@@ -169,7 +169,7 @@ final class Campaigns
      * or an over-long list answers `VALIDATION_FAILED`. `audience.import_id` names a `contacts_csv` import
      * uploaded through `/imports`: the campaign gets its own campaign CSV import over the same file, queued at
      * once, whose rows become the campaign's recipients, and `audience.import_id` then holds that import's id.
-     * An import of another account, of another type, `failed` or `cancelled`, or a second CSV answers `422
+     * An import of another user, of another type, `failed` or `cancelled`, or a second CSV answers `422
      * VALIDATION_FAILED`; an import already the CSV of another campaign answers `409 INVALID_STATE`.
      *
      * @param  string|Omit|null  $body  The message text; exclusive with `template_id`.
@@ -430,8 +430,8 @@ final class Campaigns
      * `CHANNEL_CAPABILITY_UNSUPPORTED`, `MEDIA_TYPE_UNSUPPORTED`, `SEND_AFTER_TOO_FAR`, `AUDIENCE_EMPTY`,
      * `LINK_BLOCKED`, `LINK_PUBLIC_SHORTENER`, `TOO_MANY_LINKS`, `CONTENT_PROHIBITED`,
      * `CONSENT_ASSERTION_REQUIRED`, `CONSENT_PROVENANCE_MISSING`, `MARKETING_NOT_ALLOWED`,
-     * `CATEGORY_MISMATCH`, `ACCOUNT_THROTTLED`, `NEW_ACCOUNT_LIMIT` or `VALIDATION_FAILED`. Any other status
-     * answers `409 INVALID_STATE`.
+     * `CATEGORY_MISMATCH`, `USER_THROTTLED`, `NEW_USER_LIMIT` or `VALIDATION_FAILED`. Any other status answers
+     * `409 INVALID_STATE`.
      *
      * @param  DateTimeInterface|string|Omit|null  $scheduled_at  A time 5 minutes to 30 days ahead schedules (or reschedules) the campaign; absent, past or null starts it now.
      *
@@ -497,8 +497,8 @@ final class Campaigns
      * Resume a campaign.
      *
      * Requires `campaigns:write`. `paused` to `running`; held messages are released. `409 INVALID_STATE` from
-     * any other status. While the account is frozen the campaign stays paused and the call answers `422
-     * ACCOUNT_THROTTLED` with `details.risk_state: frozen`.
+     * any other status. While the user is frozen the campaign stays paused and the call answers `422
+     * USER_THROTTLED` with `details.risk_state: frozen`.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached

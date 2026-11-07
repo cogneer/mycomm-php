@@ -8,7 +8,7 @@ namespace MyComm\Models;
 
 use MyComm\Model;
 
-final class WebhookAccountCounts extends Model
+final class WebhookUserCounts extends Model
 {
     public readonly int $devices_active;
 

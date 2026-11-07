@@ -100,15 +100,15 @@ it('records what was sent', function () {
 
 it('fails its assertions with a readable message', function (Closure $assertion, string $message) {
     $fake = new MyCommFake;
-    $fake->client()->account->get();
+    $fake->client()->me->get();
 
     expect(fn () => $assertion($fake))->toThrow(AssertionFailedError::class, $message);
 })->with([
     [fn (MyCommFake $fake) => $fake->assertCalled('messages.send'), 'Expected a call of messages.send, but none was made.'],
-    [fn (MyCommFake $fake) => $fake->assertCalled('account.get', fn () => false), 'Expected a matching call of account.get, but none of its 1 call(s) matched.'],
-    [fn (MyCommFake $fake) => $fake->assertCalledTimes('account.get', 2), 'Expected 2 call(s) of account.get, but 1 were made.'],
-    [fn (MyCommFake $fake) => $fake->assertNotCalled('account.get'), 'Expected no call of account.get, but 1 were made.'],
-    [fn (MyCommFake $fake) => $fake->assertNothingCalled(), 'Expected no API call, but these were made: account.get.'],
+    [fn (MyCommFake $fake) => $fake->assertCalled('me.get', fn () => false), 'Expected a matching call of me.get, but none of its 1 call(s) matched.'],
+    [fn (MyCommFake $fake) => $fake->assertCalledTimes('me.get', 2), 'Expected 2 call(s) of me.get, but 1 were made.'],
+    [fn (MyCommFake $fake) => $fake->assertNotCalled('me.get'), 'Expected no call of me.get, but 1 were made.'],
+    [fn (MyCommFake $fake) => $fake->assertNothingCalled(), 'Expected no API call, but these were made: me.get.'],
 ]);
 
 it('passes assertNothingCalled on an untouched fake', function () {

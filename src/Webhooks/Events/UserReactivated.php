@@ -10,16 +10,16 @@ use MyComm\Models;
 use MyComm\Webhooks\Event;
 
 /**
- * `account.reactivated`: A suspended account is `active` again.
+ * `user.reactivated`: A suspended user is `active` again.
  */
-final class AccountReactivated extends Event
+final class UserReactivated extends Event
 {
-    public const TYPE = 'account.reactivated';
+    public const TYPE = 'user.reactivated';
 
-    public readonly Models\WebhookAccountData $data;
+    public readonly Models\WebhookUserData $data;
 
     protected function hydrateData(array $data): void
     {
-        $this->data = Models\WebhookAccountData::fromArray($data['data']);
+        $this->data = Models\WebhookUserData::fromArray($data['data']);
     }
 }

@@ -24,10 +24,10 @@ use MyComm\Version;
 it('authenticates and identifies itself', function () {
     [$connection, $transport] = scripted();
 
-    $connection->request('account.get', 'GET', '/v1/account');
+    $connection->request('me.get', 'GET', '/v1/me');
 
     $request = $transport->requests[0];
-    expect($request->url)->toBe('https://api.test/v1/account')
+    expect($request->url)->toBe('https://api.test/v1/me')
         ->and($request->header('Authorization'))->toBe('Bearer mc_live_test')
         ->and($request->header('Accept'))->toBe('application/json')
         ->and($request->header('User-Agent'))->toBe('mycomm-php/'.Version::SDK.' php/'.PHP_VERSION)
@@ -160,7 +160,7 @@ it('never retries an answer that would be the same again', function (int $status
 })->with([
     [400, 'MALFORMED_REQUEST'],
     [401, 'UNAUTHENTICATED'],
-    [403, 'ACCOUNT_SUSPENDED'],
+    [403, 'USER_SUSPENDED'],
     [404, 'NOT_FOUND'],
     [409, 'REFERENCE_ID_EXISTS'],
     [409, 'IDEMPOTENCY_KEY_REUSED'],

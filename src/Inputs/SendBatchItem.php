@@ -39,7 +39,7 @@ final class SendBatchItem extends Input
      * @param  Enums\MessageLane|string|null  $lane  How urgently the message is sent. `bulk` is paced behind other traffic and needs `category`.
      * @param  DateTimeInterface|string|null  $send_after  At most 30 days ahead (`SEND_AFTER_TOO_FAR`). A time in the past means now.
      * @param  ?int  $expires_in  Seconds after which an unsent message is dropped, 60 to 604800 (7 days).
-     * @param  ?string  $reference_id  Your own id for this message, 1 to 100 characters without spaces. Unique per account forever (`REFERENCE_ID_EXISTS`).
+     * @param  ?string  $reference_id  Your own id for this message, 1 to 100 characters without spaces. Unique per user forever (`REFERENCE_ID_EXISTS`).
      * @param  array<string, mixed>|null  $metadata  Up to 50 keys, 2 KB as JSON, scalar values only. Returned on the message and in webhooks.
      * @param  ?bool  $shorten_links  Replace each URL with a short link so clicks are counted.
      */

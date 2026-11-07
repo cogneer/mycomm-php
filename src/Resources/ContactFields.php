@@ -24,7 +24,7 @@ final class ContactFields
     /**
      * List custom contact field definitions.
      *
-     * Requires `contacts:read`. All definitions of the account ordered by `position`; not paginated.
+     * Requires `contacts:read`. All definitions of the user ordered by `position`; not paginated.
      *
      * @return Page<Models\ContactField>
      *
@@ -44,7 +44,7 @@ final class ContactFields
      *
      * Requires `contacts:write`. `key` matches `^[a-z][a-z0-9_]{0,39}$` and is not reserved (`first_name`,
      * `last_name`, `full_name`, `email`, `phone`, `language`, `group`); `key` and `type` cannot change later.
-     * `options` is required for `select` and refused for other types. An account has at most 100 fields.
+     * `options` is required for `select` and refused for other types. A user has at most 100 fields.
      * `position` defaults to after the last field.
      *
      * @param  list<string>|null  $options

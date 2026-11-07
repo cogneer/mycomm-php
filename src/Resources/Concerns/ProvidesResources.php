@@ -16,8 +16,6 @@ use MyComm\Resources;
  */
 trait ProvidesResources
 {
-    public readonly Resources\Account $account;
-
     public readonly Resources\ApiKeys $apiKeys;
 
     public readonly Resources\AutomationRules $automationRules;
@@ -46,6 +44,8 @@ trait ProvidesResources
 
     public readonly Resources\Links $links;
 
+    public readonly Resources\Me $me;
+
     public readonly Resources\Media $media;
 
     public readonly Resources\Messages $messages;
@@ -70,7 +70,6 @@ trait ProvidesResources
 
     private function bootResources(Connection $connection): void
     {
-        $this->account = new Resources\Account($connection);
         $this->apiKeys = new Resources\ApiKeys($connection);
         $this->automationRules = new Resources\AutomationRules($connection);
         $this->automationRuns = new Resources\AutomationRuns($connection);
@@ -85,6 +84,7 @@ trait ProvidesResources
         $this->imports = new Resources\Imports($connection);
         $this->lines = new Resources\Lines($connection);
         $this->links = new Resources\Links($connection);
+        $this->me = new Resources\Me($connection);
         $this->media = new Resources\Media($connection);
         $this->messages = new Resources\Messages($connection);
         $this->pairingCodes = new Resources\PairingCodes($connection);

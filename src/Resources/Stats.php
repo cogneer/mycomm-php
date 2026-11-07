@@ -22,7 +22,7 @@ final class Stats
     /**
      * Daily counters.
      *
-     * Requires `reports:read`. Counters per calendar day in the account time zone, from `usage_daily`. `from`
+     * Requires `reports:read`. Counters per calendar day in the user's time zone, from `usage_daily`. `from`
      * and `to` are inclusive and span at most 366 days (`422 RANGE_TOO_LARGE`, details `{max_days: 366}`).
      * With `group_by=none` every day is present, zeros included, and the response is not paginated. Grouped
      * results contain rows only where there was traffic, ordered by `date` then the group key, and are
@@ -95,10 +95,10 @@ final class Stats
      * Period summary and live state.
      *
      * Requires `reports:read`. One call for a dashboard header. `totals` are sums of `usage_daily` over the
-     * inclusive range (calendar days in the account time zone, at most 366 days: `422 RANGE_TOO_LARGE`,
-     * details `{max_days: 366}`). `delivery_rate` is delivered over sent on channels with delivery reports;
-     * `read_rate` is `null` when the account has no read-capable channel; a rate is `null` when there is
-     * nothing to divide by. `failures_by_code` counts outbound messages whose `failed_at` falls in the range.
+     * inclusive range (calendar days in the user's time zone, at most 366 days: `422 RANGE_TOO_LARGE`, details
+     * `{max_days: 366}`). `delivery_rate` is delivered over sent on channels with delivery reports;
+     * `read_rate` is `null` when the user has no read-capable channel; a rate is `null` when there is nothing
+     * to divide by. `failures_by_code` counts outbound messages whose `failed_at` falls in the range.
      * `queue_now`, `channels` and `devices` are current counts. A key restricted to lines gets figures for its
      * lines, channels and devices only.
      *

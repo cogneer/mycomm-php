@@ -17,9 +17,20 @@ line. Nothing from 1.x is kept as an alias.
 - `inbox_id` is now `line_id` everywhere: `messages->send()`, `sendBatch()` items, conversations, messages and
   webhook events (`$event->line_id`).
 - `Client::verify(?string $to, ?string $lineId)`: the second argument was `$inboxId`.
-- Partner keys act on a line, not an account: `Client::forLine(string $lineId)` replaces `forAccount()` and every `/v1`
+- Partner keys act on a line: `Client::forLine(string $lineId)` replaces `forAccount()` and every `/v1`
   call of that client carries `MyComm-Line` (was `MyComm-Account`); the constructor option `lineId` replaces
   `accountId`, and `MyCommFake` takes `lineId` too.
+
+- The API speaks of the user, not an account: `$mycomm->account` is now `$mycomm->me` (`get()` and `update()` on
+  `GET`/`PATCH /v1/me`, ability `me:write`), `Account` and `AccountSettings` are `User` and `UserSettings`, and
+  `VerifyResult::$account` is `$user`. `account_id` is `user_id` everywhere.
+- Webhook events `account.suspended`, `account.reactivated` and `account.deletion_scheduled` are `user.suspended`,
+  `user.reactivated` and `user.deletion_scheduled` (`UserSuspended`, `UserReactivated`, `UserDeletionScheduled`,
+  with `WebhookUser`, `WebhookUserData`, `WebhookUserCounts` and the enum `UserStatus`).
+- Error and reason codes: `ACCOUNT_SUSPENDED`, `ACCOUNT_PENDING_DELETION`, `ACCOUNT_THROTTLED` and `NEW_ACCOUNT_LIMIT`
+  are `USER_SUSPENDED`, `USER_PENDING_DELETION`, `USER_THROTTLED` and `NEW_USER_LIMIT`; pause reasons
+  `account_suspended` and `account_deleted` are `user_suspended` and `user_deleted`; `number_has_account` is
+  `number_has_user`, the hold reason `account_limit` is `user_limit` and the export type `account_zip` is `user_zip`.
 
 ### Removed (breaking)
 
@@ -36,7 +47,7 @@ line. Nothing from 1.x is kept as an alias.
 - Partner lines: `partner->lines->list()`, `all()`, `create()`, `get()`, `update()` and `detach()`, and
   `partner->lines->status($id)` (`PartnerLineStatus`: `state`, `needs_attention_reasons`, channels and sponsorship).
 - Hosted links: `partner->lines->links->create($lineId, purpose: ...)` and `partner->links->get()` / `revoke()` for
-  partner keys, `lines->links->create()` and `links->get()` / `revoke()` for account keys (`CreatedHostedLink`, with
+  partner keys, `lines->links->create()` and `links->get()` / `revoke()` for user keys (`CreatedHostedLink`, with
   the one-time `url`, and `HostedLink`; purposes `connect`, `add_channel`, `replace_device`, `manage`, `claim`).
 - `partner->sponsorshipDefaults->get()` and `put()`, and `sponsorship` on partner lines (`SponsorshipTerms`).
 - `partner->usage->get()` reports one row per partner line (`line_id`, `external_ref`); its filter is `line_id`.

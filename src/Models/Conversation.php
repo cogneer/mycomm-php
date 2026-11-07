@@ -11,7 +11,7 @@ use MyComm\Model;
 
 /**
  * The conversation resource: one per line and contact identity. `address`, `contact_display_name`,
- * `suppressed` and `blocked_at` are denormalised from the identity; blocking is account-wide.
+ * `suppressed` and `blocked_at` are denormalised from the identity; blocking is user-wide.
  */
 final class Conversation extends Model
 {

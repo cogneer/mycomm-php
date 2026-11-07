@@ -66,7 +66,7 @@ that share an enum name drift apart, or when two parameters of a method would sh
 
 ## Before a release
 
-Run the live check against a test account (see the header of the script for what it does):
+Run the live check against a test user (see the header of the script for what it does):
 
 ```bash
 MYCOMM_API_KEY=mc_live_... MYCOMM_PARTNER_KEY=mc_partner_... \

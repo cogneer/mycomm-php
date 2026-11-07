@@ -10,9 +10,9 @@ use MyComm\Models;
 use MyComm\Webhooks\Event;
 
 /**
- * `line.recovery_requested`: Someone who says they lost their number asked to recover the account of this
- * line; sent once per partner, on its oldest live line of the account. Nothing has changed on the account.
- * If you know this person, answer with `POST /partner/v1/lines/{id}/vouch`. It is never required and never
+ * `line.recovery_requested`: Someone who says they lost their number asked to recover the user of this
+ * line; sent once per partner, on its oldest live line of the user. Nothing has changed on the user. If
+ * you know this person, answer with `POST /partner/v1/lines/{id}/vouch`. It is never required and never
  * enough alone: MyComm staff decide, no earlier than `waiting_until`.
  */
 final class LineRecoveryRequested extends Event

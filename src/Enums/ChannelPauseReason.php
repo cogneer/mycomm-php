@@ -15,7 +15,7 @@ enum ChannelPauseReason: string
 {
     case Owner = 'owner';
     case Admin = 'admin';
-    case AccountSuspended = 'account_suspended';
+    case UserSuspended = 'user_suspended';
     case AutoHealthCritical = 'auto:health_critical';
     case AutoQuarantine = 'auto:quarantine';
     case AutoQuota = 'auto:quota';

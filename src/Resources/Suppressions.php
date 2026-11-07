@@ -26,9 +26,9 @@ final class Suppressions
     /**
      * List suppressions.
      *
-     * Requires `suppressions:read`. The account's suppressed identities, newest first, with cursor pagination.
-     * Suppressions belong to the account, not to a line: a restricted key sees the whole list. Comma lists
-     * match any of the values. A phone number in `address` written without country code is read in the account
+     * Requires `suppressions:read`. The user's suppressed identities, newest first, with cursor pagination.
+     * Suppressions belong to the user, not to a line: a restricted key sees the whole list. Comma lists match
+     * any of the values. A phone number in `address` written without country code is read in the user's
      * country. Only `marketing` traffic is blocked by a suppression.
      *
      * @param  list<string>|string|null  $address  Suppressed address, E.164 for phone numbers (comma list).
@@ -120,15 +120,15 @@ final class Suppressions
      *
      * Requires `suppressions:write` (never held by a restricted key). `identity_type` defaults to `phone` (the
      * only type in v1) and `reason` to `api`; the API may write `api`, `complaint` or `dnc`. The address is
-     * stored in E.164 (a number without country code is read in the account country; one that is not a valid
+     * stored in E.164 (a number without country code is read in the user's country; one that is not a valid
      * number is `422 VALIDATION_FAILED` with `INVALID_NUMBER` on `address`). A new suppression answers `201`,
      * writes a `consent_events` `opt_out` (method `api`) and emits `contact.opted_out`; the identity's queued
      * marketing is cancelled. A number that is already suppressed, for any reason, answers `200` with the
-     * existing row unchanged. With the account setting `opt_out.scope: contact`, a number that belongs to a
+     * existing row unchanged. With the user's setting `opt_out.scope: contact`, a number that belongs to a
      * contact suppresses every identity of that contact not suppressed yet, each with its own consent event
      * and `contact.opted_out`, as a STOP reply does; the answer is still the row of the number given.
      *
-     * @param  string  $address  E.164 number, e.g. `+923451234567`; a number without country code is read in the account country.
+     * @param  string  $address  E.164 number, e.g. `+923451234567`; a number without country code is read in the user's country.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
@@ -189,7 +189,7 @@ final class Suppressions
      * `api`, the note) and emits `contact.opted_in`; the `opt_out` consent event stays (the consent trail is
      * append-only). `consent_note` is required when the suppression's `reason` is `keyword`: without it the
      * answer is `422 CONSENT_NOTE_REQUIRED` and the number stays suppressed. `204`. A suppression that is
-     * absent or in another account is `404`.
+     * absent or of another user is `404`.
      *
      * @param  string|Omit|null  $consent_note  How the contact agreed to receive marketing again. Required to remove a `keyword` suppression.
      *
@@ -230,7 +230,7 @@ final class Suppressions
      * Check whether an address is suppressed.
      *
      * Requires `suppressions:read`. `address` is the E.164 number (a number without country code is read in
-     * the account country; one that is not a valid number is `422 VALIDATION_FAILED` with `INVALID_NUMBER` on
+     * the user's country; one that is not a valid number is `422 VALIDATION_FAILED` with `INVALID_NUMBER` on
      * `address`). `identity_type` defaults to `phone`. The answer echoes the normalised address.
      *
      * @param  string  $address  The address to check, e.g. `+923451234567`.

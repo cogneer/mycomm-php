@@ -38,7 +38,7 @@ final class UsageRow extends Model
 
     public readonly string $line_id;
 
-    public readonly string $account_id;
+    public readonly string $user_id;
 
     /**
      * Your own reference for the line.
@@ -73,7 +73,7 @@ final class UsageRow extends Model
         $this->opt_outs = $data['opt_outs'];
         $this->opt_ins = $data['opt_ins'];
         $this->line_id = $data['line_id'];
-        $this->account_id = $data['account_id'];
+        $this->user_id = $data['user_id'];
         $this->external_ref = $data['external_ref'];
         $this->name = $data['name'];
         $this->by_channel_type = $data['by_channel_type'];

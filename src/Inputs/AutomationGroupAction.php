@@ -11,7 +11,7 @@ use MyComm\Http\Params;
 use MyComm\Input;
 
 /**
- * Adds the contact to, or removes it from, a group of the account.
+ * Adds the contact to, or removes it from, a group of the user.
  */
 final class AutomationGroupAction extends Input
 {

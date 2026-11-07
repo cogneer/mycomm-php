@@ -9,7 +9,7 @@ namespace MyComm\Models;
 use DateTimeImmutable;
 use MyComm\Model;
 
-final class Account extends Model
+final class User extends Model
 {
     public readonly string $id;
 
@@ -29,7 +29,7 @@ final class Account extends Model
      */
     public readonly string $default_locale;
 
-    public readonly AccountSettings $settings;
+    public readonly UserSettings $settings;
 
     public readonly DateTimeImmutable $created_at;
 
@@ -41,7 +41,7 @@ final class Account extends Model
         $this->country_iso = $data['country_iso'];
         $this->timezone = $data['timezone'];
         $this->default_locale = $data['default_locale'];
-        $this->settings = AccountSettings::fromArray($data['settings']);
+        $this->settings = UserSettings::fromArray($data['settings']);
         $this->created_at = self::dateTime($data['created_at']);
     }
 }

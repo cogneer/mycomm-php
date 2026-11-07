@@ -24,7 +24,7 @@ final class Media
      * Requires `media:write`. `multipart/form-data` with one part `file` of at most 10 MB. The type is sniffed
      * from the content (`image/jpeg`, `image/png`, `image/gif`, `image/webp`), never taken from the header or
      * the file name. The upload is stored with `purpose: message`; reference its `id` from a message. An
-     * upload still unattached after 24 hours is deleted. Rate limit: 60 requests per minute per account.
+     * upload still unattached after 24 hours is deleted. Rate limit: 60 requests per minute per user.
      *
      * Errors: `413 PAYLOAD_TOO_LARGE` (over 10 MB), `422 MEDIA_TYPE_UNSUPPORTED`, `422 VALIDATION_FAILED` (no
      * `file` part).

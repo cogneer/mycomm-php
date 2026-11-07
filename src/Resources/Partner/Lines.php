@@ -128,13 +128,12 @@ final class Lines
     /**
      * Create a line.
      *
-     * Requires `lines:write`. Makes a line for one of your users in a new, empty MyComm account that becomes
-     * the user's account when they connect a phone through a hosted link. `user_number` is only a hint for
-     * that page: it never joins the line to an account that already has the number (that needs a code sent to
-     * the number), and the answer is the same whether or not the number has an account. `external_ref` is
-     * unique among your live lines: a taken one answers `409 EXTERNAL_REF_TAKEN` with the line in
-     * `details.line_id`. Detaching a line frees its `external_ref`. A `name` the account's Direct line has
-     * ("Direct") answers `409 NAME_TAKEN`.
+     * Requires `lines:write`. Makes a line for one of your users for a new MyComm user that becomes your user
+     * when they connect a phone through a hosted link. `user_number` is only a hint for that page: it never
+     * joins the line to a user that already has the number (that needs a code sent to the number), and the
+     * answer is the same whether or not the number has a user. `external_ref` is unique among your live lines:
+     * a taken one answers `409 EXTERNAL_REF_TAKEN` with the line in `details.line_id`. Detaching a line frees
+     * its `external_ref`. A `name` the user's Direct line has ("Direct") answers `409 NAME_TAKEN`.
      *
      * @param  string|Omit|null  $user_number  The user's number in E.164, if you know it; only a hint for the connect page.
      * @param  list<string>|Omit|null  $allowed_channel_types
@@ -217,7 +216,7 @@ final class Lines
      * Change a line.
      *
      * Requires `lines:write`. Changes `name` and `allowed_channel_types`; a field left out or `null` stays as
-     * it is. `external_ref` never changes (`422`). A name another line of the account has answers `409
+     * it is. `external_ref` never changes (`422`). A name another line of the user has answers `409
      * NAME_TAKEN`.
      *
      * @param  list<string>|Omit|null  $allowed_channel_types
@@ -270,10 +269,9 @@ final class Lines
     /**
      * Detach a line.
      *
-     * Requires `lines:write`. Archives the line: its open conversations move to the account's Direct line, and
-     * the user keeps the account, its channels, phones and history. `line.detached` is emitted once; detaching
-     * an archived line again changes nothing. The line header stops working for it (`403
-     * LINE_CONTEXT_INVALID`).
+     * Requires `lines:write`. Archives the line: its open conversations move to the user's Direct line, and
+     * the user keeps the user, its channels, phones and history. `line.detached` is emitted once; detaching an
+     * archived line again changes nothing. The line header stops working for it (`403 LINE_CONTEXT_INVALID`).
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -288,11 +286,11 @@ final class Lines
     /**
      * Vouch for a recovery request.
      *
-     * Requires `lines:write`. Someone asked to recover the account of your line (`line.recovery_requested`),
-     * and you know this person. MyComm staff see your answer when they decide. It is never required and never
+     * Requires `lines:write`. Someone asked to recover the user of your line (`line.recovery_requested`), and
+     * you know this person. MyComm staff see your answer when they decide. It is never required and never
      * enough alone: nothing changes before the 7-day wait is over and staff approve. A repeat changes nothing
-     * and answers `200` with the first `vouched_at`. A line that is not your live line in that request's
-     * account, or no such request, is `404 NOT_FOUND`; a request already decided is `409 INVALID_STATE`.
+     * and answers `200` with the first `vouched_at`. A line that is not your live line of that request's user,
+     * or no such request, is `404 NOT_FOUND`; a request already decided is `409 INVALID_STATE`.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error

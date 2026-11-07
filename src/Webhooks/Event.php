@@ -31,7 +31,7 @@ abstract class Event extends Model
 
     public readonly DateTimeImmutable $created_at;
 
-    public readonly string $account_id;
+    public readonly string $user_id;
 
     public readonly ?string $line_id;
 
@@ -43,7 +43,7 @@ abstract class Event extends Model
         $this->type = $data['type'];
         $this->api_version = $data['api_version'];
         $this->created_at = self::dateTime($data['created_at']);
-        $this->account_id = $data['account_id'];
+        $this->user_id = $data['user_id'];
         $this->line_id = $data['line_id'] ?? null;
         $this->channel = isset($data['channel']) ? Models\WebhookChannelRef::fromArray($data['channel']) : null;
         $this->hydrateData($data);

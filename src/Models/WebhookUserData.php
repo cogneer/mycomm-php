@@ -8,9 +8,9 @@ namespace MyComm\Models;
 
 use MyComm\Model;
 
-final class WebhookAccountData extends Model
+final class WebhookUserData extends Model
 {
-    public readonly WebhookAccount $account;
+    public readonly WebhookUser $user;
 
     public readonly WebhookActor $actor;
 
@@ -21,7 +21,7 @@ final class WebhookAccountData extends Model
 
     protected function hydrate(array $data): void
     {
-        $this->account = WebhookAccount::fromArray($data['account']);
+        $this->user = WebhookUser::fromArray($data['user']);
         $this->actor = WebhookActor::fromArray($data['actor']);
         $this->reason = $data['reason'] ?? null;
     }

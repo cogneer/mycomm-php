@@ -16,67 +16,11 @@ final class Examples
 {
     /** @var array<string, array{status: int, body: array<string, mixed>|null}> */
     public const RESPONSES = [
-        'account.get' => [
-            'status' => 200,
-            'body' => [
-                'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'name' => 'Example name',
-                'status' => 'Example status',
-                'country_iso' => 'PK',
-                'timezone' => 'Asia/Karachi',
-                'default_locale' => 'en',
-                'settings' => [
-                    'opt_out' => [],
-                    'compliance' => [],
-                    'quiet_hours' => [],
-                    'frequency_cap' => [],
-                    'links' => [],
-                    'default_expiry_minutes' => [],
-                    'sms' => [],
-                    'channels' => [],
-                    'whatsapp' => [],
-                    'retention' => [],
-                    'automation' => [],
-                    'alerts' => [],
-                    'limits' => [],
-                    'support' => [],
-                ],
-                'created_at' => '2026-10-01T09:15:02Z',
-            ],
-        ],
-        'account.update' => [
-            'status' => 200,
-            'body' => [
-                'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'name' => 'Example name',
-                'status' => 'Example status',
-                'country_iso' => 'PK',
-                'timezone' => 'Asia/Karachi',
-                'default_locale' => 'en',
-                'settings' => [
-                    'opt_out' => [],
-                    'compliance' => [],
-                    'quiet_hours' => [],
-                    'frequency_cap' => [],
-                    'links' => [],
-                    'default_expiry_minutes' => [],
-                    'sms' => [],
-                    'channels' => [],
-                    'whatsapp' => [],
-                    'retention' => [],
-                    'automation' => [],
-                    'alerts' => [],
-                    'limits' => [],
-                    'support' => [],
-                ],
-                'created_at' => '2026-10-01T09:15:02Z',
-            ],
-        ],
         'apiKeys.create' => [
             'status' => 201,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'kind' => 'account',
+                'kind' => 'user',
                 'name' => 'Example name',
                 'prefix' => 'Example prefix',
                 'scope' => [
@@ -103,7 +47,7 @@ final class Examples
                 'data' => [
                     [
                         'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                        'kind' => 'account',
+                        'kind' => 'user',
                         'name' => 'Example name',
                         'prefix' => 'Example prefix',
                         'scope' => [
@@ -134,7 +78,7 @@ final class Examples
             'status' => 201,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'kind' => 'account',
+                'kind' => 'user',
                 'name' => 'Example name',
                 'prefix' => 'Example prefix',
                 'scope' => [
@@ -2819,7 +2763,7 @@ final class Examples
                 'data' => [
                     [
                         'id' => '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10',
-                        'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
+                        'user_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                         'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                         'channel_type' => 'android_sim',
                         'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
@@ -2920,7 +2864,7 @@ final class Examples
             'status' => 202,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_type' => 'Example channel type',
                 'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -4154,6 +4098,62 @@ final class Examples
             'status' => 204,
             'body' => null,
         ],
+        'me.get' => [
+            'status' => 200,
+            'body' => [
+                'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'name' => 'Example name',
+                'status' => 'Example status',
+                'country_iso' => 'PK',
+                'timezone' => 'Asia/Karachi',
+                'default_locale' => 'en',
+                'settings' => [
+                    'opt_out' => [],
+                    'compliance' => [],
+                    'quiet_hours' => [],
+                    'frequency_cap' => [],
+                    'links' => [],
+                    'default_expiry_minutes' => [],
+                    'sms' => [],
+                    'channels' => [],
+                    'whatsapp' => [],
+                    'retention' => [],
+                    'automation' => [],
+                    'alerts' => [],
+                    'limits' => [],
+                    'support' => [],
+                ],
+                'created_at' => '2026-10-01T09:15:02Z',
+            ],
+        ],
+        'me.update' => [
+            'status' => 200,
+            'body' => [
+                'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'name' => 'Example name',
+                'status' => 'Example status',
+                'country_iso' => 'PK',
+                'timezone' => 'Asia/Karachi',
+                'default_locale' => 'en',
+                'settings' => [
+                    'opt_out' => [],
+                    'compliance' => [],
+                    'quiet_hours' => [],
+                    'frequency_cap' => [],
+                    'links' => [],
+                    'default_expiry_minutes' => [],
+                    'sms' => [],
+                    'channels' => [],
+                    'whatsapp' => [],
+                    'retention' => [],
+                    'automation' => [],
+                    'alerts' => [],
+                    'limits' => [],
+                    'support' => [],
+                ],
+                'created_at' => '2026-10-01T09:15:02Z',
+            ],
+        ],
         'media.get' => [
             'status' => 200,
             'body' => [
@@ -4194,7 +4194,7 @@ final class Examples
             'status' => 202,
             'body' => [
                 'id' => '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10',
-                'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
+                'user_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                 'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                 'channel_type' => 'android_sim',
                 'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
@@ -4283,7 +4283,7 @@ final class Examples
                 'data' => [
                     [
                         'id' => '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10',
-                        'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
+                        'user_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                         'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                         'channel_type' => 'android_sim',
                         'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
@@ -4359,7 +4359,7 @@ final class Examples
             'status' => 200,
             'body' => [
                 'id' => '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10',
-                'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
+                'user_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                 'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                 'channel_type' => 'android_sim',
                 'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
@@ -4432,7 +4432,7 @@ final class Examples
             'status' => 202,
             'body' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'channel_type' => 'Example channel type',
                 'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -4529,7 +4529,7 @@ final class Examples
                         'status' => 'accepted',
                         'message' => [
                             'id' => '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10',
-                            'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
+                            'user_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                             'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                             'channel_type' => 'android_sim',
                             'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
@@ -4617,7 +4617,7 @@ final class Examples
             'status' => 200,
             'body' => [
                 'id' => '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10',
-                'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
+                'user_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                 'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                 'channel_type' => 'android_sim',
                 'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
@@ -4732,7 +4732,7 @@ final class Examples
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'external_ref' => 'Example external ref',
                 'name' => 'Example name',
-                'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'allowed_channel_types' => ['Example allowed channel type'],
                 'state' => 'connected',
                 'created_at' => '2026-10-01T09:15:02Z',
@@ -4749,7 +4749,7 @@ final class Examples
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'external_ref' => 'Example external ref',
                 'name' => 'Example name',
-                'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'allowed_channel_types' => ['Example allowed channel type'],
                 'state' => 'connected',
                 'created_at' => '2026-10-01T09:15:02Z',
@@ -4784,7 +4784,7 @@ final class Examples
                         'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'external_ref' => 'Example external ref',
                         'name' => 'Example name',
-                        'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'allowed_channel_types' => ['Example allowed channel type'],
                         'state' => 'connected',
                         'created_at' => '2026-10-01T09:15:02Z',
@@ -4828,7 +4828,7 @@ final class Examples
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'external_ref' => 'Example external ref',
                 'name' => 'Example name',
-                'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'allowed_channel_types' => ['Example allowed channel type'],
                 'state' => 'connected',
                 'created_at' => '2026-10-01T09:15:02Z',
@@ -4935,7 +4935,7 @@ final class Examples
                         'opt_outs' => 1,
                         'opt_ins' => 1,
                         'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                        'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'external_ref' => 'Example external ref',
                         'name' => 'Example name',
                         'by_channel_type' => [
@@ -5594,7 +5594,7 @@ final class Examples
             'type' => 'campaign.scheduled',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -5674,7 +5674,7 @@ final class Examples
             'type' => 'campaign.unscheduled',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -5754,7 +5754,7 @@ final class Examples
             'type' => 'campaign.started',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -5830,7 +5830,7 @@ final class Examples
             'type' => 'campaign.paused',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -5910,7 +5910,7 @@ final class Examples
             'type' => 'campaign.resumed',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -5990,7 +5990,7 @@ final class Examples
             'type' => 'campaign.completed',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6066,7 +6066,7 @@ final class Examples
             'type' => 'campaign.cancelled',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6146,7 +6146,7 @@ final class Examples
             'type' => 'contact.created',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6194,7 +6194,7 @@ final class Examples
             'type' => 'contact.updated',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6243,7 +6243,7 @@ final class Examples
             'type' => 'contact.deleted',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6260,7 +6260,7 @@ final class Examples
             'type' => 'import.completed',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6295,7 +6295,7 @@ final class Examples
             'type' => 'import.failed',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6330,7 +6330,7 @@ final class Examples
             'type' => 'export.completed',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6355,7 +6355,7 @@ final class Examples
             'type' => 'line.sender_changed',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6379,7 +6379,7 @@ final class Examples
             'type' => 'line.failover',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6399,7 +6399,7 @@ final class Examples
             'type' => 'line.no_sender',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6415,7 +6415,7 @@ final class Examples
             'type' => 'line.connected',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6434,7 +6434,7 @@ final class Examples
             'type' => 'line.needs_attention',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6453,7 +6453,7 @@ final class Examples
             'type' => 'line.recovered',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6472,7 +6472,7 @@ final class Examples
             'type' => 'line.detached',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6489,7 +6489,7 @@ final class Examples
             'type' => 'line.quota_low',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6509,7 +6509,7 @@ final class Examples
             'type' => 'line.quota_exhausted',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6529,7 +6529,7 @@ final class Examples
             'type' => 'line.alarm',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6550,7 +6550,7 @@ final class Examples
             'type' => 'line.recovery_requested',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6570,7 +6570,7 @@ final class Examples
             'type' => 'conversation.handed_over',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6587,7 +6587,7 @@ final class Examples
             'type' => 'link.clicked',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6610,7 +6610,7 @@ final class Examples
             'type' => 'channel.connected',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6771,7 +6771,7 @@ final class Examples
             'type' => 'channel.verification_failed',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -6933,7 +6933,7 @@ final class Examples
             'type' => 'channel.disconnected',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7095,7 +7095,7 @@ final class Examples
             'type' => 'channel.paused',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7259,7 +7259,7 @@ final class Examples
             'type' => 'channel.resumed',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7420,7 +7420,7 @@ final class Examples
             'type' => 'channel.health_changed',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7443,7 +7443,7 @@ final class Examples
             'type' => 'channel.volume_warning',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7462,7 +7462,7 @@ final class Examples
             'type' => 'channel.qr_updated',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7479,7 +7479,7 @@ final class Examples
             'type' => 'device.paired',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7557,7 +7557,7 @@ final class Examples
             'type' => 'device.online',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7635,7 +7635,7 @@ final class Examples
             'type' => 'device.degraded',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7713,7 +7713,7 @@ final class Examples
             'type' => 'device.offline',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7791,7 +7791,7 @@ final class Examples
             'type' => 'device.revoked',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -7864,19 +7864,19 @@ final class Examples
                 'reason' => 'owner',
             ],
         ],
-        'account.suspended' => [
+        'user.suspended' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'type' => 'account.suspended',
+            'type' => 'user.suspended',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
             ],
             'data' => [
-                'account' => [
+                'user' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'name' => 'Example name',
                     'status' => 'active',
@@ -7921,19 +7921,19 @@ final class Examples
                 'reason' => 'Example reason',
             ],
         ],
-        'account.reactivated' => [
+        'user.reactivated' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'type' => 'account.reactivated',
+            'type' => 'user.reactivated',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
             ],
             'data' => [
-                'account' => [
+                'user' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'name' => 'Example name',
                     'status' => 'active',
@@ -7978,19 +7978,19 @@ final class Examples
                 'reason' => 'Example reason',
             ],
         ],
-        'account.deletion_scheduled' => [
+        'user.deletion_scheduled' => [
             'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-            'type' => 'account.deletion_scheduled',
+            'type' => 'user.deletion_scheduled',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'type' => 'Example type',
             ],
             'data' => [
-                'account' => [
+                'user' => [
                     'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'name' => 'Example name',
                     'status' => 'active',
@@ -8040,7 +8040,7 @@ final class Examples
             'type' => 'message.queued',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8049,7 +8049,7 @@ final class Examples
             'data' => [
                 'message' => [
                     'id' => '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10',
-                    'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
+                    'user_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
                     'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
@@ -8129,7 +8129,7 @@ final class Examples
             'type' => 'message.sent',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8138,7 +8138,7 @@ final class Examples
             'data' => [
                 'message' => [
                     'id' => '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10',
-                    'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
+                    'user_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
                     'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
@@ -8218,7 +8218,7 @@ final class Examples
             'type' => 'message.delivered',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8227,7 +8227,7 @@ final class Examples
             'data' => [
                 'message' => [
                     'id' => '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10',
-                    'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
+                    'user_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
                     'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
@@ -8307,7 +8307,7 @@ final class Examples
             'type' => 'message.read',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8316,7 +8316,7 @@ final class Examples
             'data' => [
                 'message' => [
                     'id' => '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10',
-                    'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
+                    'user_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
                     'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
@@ -8396,7 +8396,7 @@ final class Examples
             'type' => 'message.failed',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8405,7 +8405,7 @@ final class Examples
             'data' => [
                 'message' => [
                     'id' => '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10',
-                    'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
+                    'user_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
                     'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
@@ -8485,7 +8485,7 @@ final class Examples
             'type' => 'message.expired',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8494,7 +8494,7 @@ final class Examples
             'data' => [
                 'message' => [
                     'id' => '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10',
-                    'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
+                    'user_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
                     'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
@@ -8574,7 +8574,7 @@ final class Examples
             'type' => 'message.cancelled',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8583,7 +8583,7 @@ final class Examples
             'data' => [
                 'message' => [
                     'id' => '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10',
-                    'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
+                    'user_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
                     'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
@@ -8664,7 +8664,7 @@ final class Examples
             'type' => 'message.received',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8673,7 +8673,7 @@ final class Examples
             'data' => [
                 'message' => [
                     'id' => '0198f3a2-7c41-7e0b-9d52-6a1f3b8c4e10',
-                    'account_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
+                    'user_id' => '0198e0aa-3b10-7c52-8a41-5d2f9e7b1c01',
                     'channel_id' => '0198e0b4-92d3-7a18-b3c6-0e4a7d5f2c02',
                     'channel_type' => 'android_sim',
                     'line_id' => '0198e0b4-9411-7f60-a2d9-1c8b6e3a4d03',
@@ -8755,7 +8755,7 @@ final class Examples
             'type' => 'conversation.read',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8795,7 +8795,7 @@ final class Examples
             'type' => 'conversation.unread',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8835,7 +8835,7 @@ final class Examples
             'type' => 'conversation.archived',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8875,7 +8875,7 @@ final class Examples
             'type' => 'conversation.unarchived',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8915,7 +8915,7 @@ final class Examples
             'type' => 'conversation.deleted',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8936,7 +8936,7 @@ final class Examples
             'type' => 'contact.opted_out',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8962,7 +8962,7 @@ final class Examples
             'type' => 'contact.opted_in',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
@@ -8988,7 +8988,7 @@ final class Examples
             'type' => 'ping',
             'api_version' => '1.0.0',
             'created_at' => '2026-10-01T09:15:02Z',
-            'account_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'user_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
             'channel' => [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',

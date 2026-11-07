@@ -5,12 +5,12 @@ declare(strict_types=1);
 /*
  * Runs the SDK against a real MyComm API: every resource, uploads, paging, idempotent replays, error
  * mapping and the partner flow. Not part of the test suite: run it before a release, against a test
- * account (it creates contacts, groups, messages and a partner line, and tidies up most of them).
+ * user (it creates contacts, groups, messages and a partner line, and tidies up most of them).
  *
  *   MYCOMM_API_KEY=mc_live_... MYCOMM_PARTNER_KEY=mc_partner_... MYCOMM_BASE_URL=https://staging.mycomm.cogneer.tech \
  *       php tests/live/smoke.php
  *
- * The account needs one connected channel; nothing reaches a handset unless its phone is online, and the
+ * The user needs one connected channel; nothing reaches a handset unless its phone is online, and the
  * one real message is cancelled right away. MYCOMM_PARTNER_KEY is optional: without it the partner steps
  * are skipped. Exits non-zero when a step fails.
  */
@@ -93,17 +93,17 @@ function expectThrows(string $class, Closure $fn, ?string $code = null): ApiExce
     throw new RuntimeException("expected {$class}, nothing was thrown");
 }
 
-echo "account, channels, devices\n";
-$account = step('account.get', function () use ($mycomm) {
-    $account = $mycomm->account->get();
-    check($account->meta()?->requestId !== null && $account->meta()->rateLimitLimit !== null, 'meta headers');
+echo "me, channels, devices\n";
+$user = step('me.get', function () use ($mycomm) {
+    $user = $mycomm->me->get();
+    check($user->meta()?->requestId !== null && $user->meta()->rateLimitLimit !== null, 'meta headers');
 
-    return $account;
+    return $user;
 });
-step('account.update', fn () => check($mycomm->account->update(name: (string) $account?->name)->id === $account?->id, 'same account'));
+step('me.update', fn () => check($mycomm->me->update(name: (string) $user?->name)->id === $user?->id, 'same user'));
 $keys = [
-    'channel_id' => step('find a channel', fn () => $mycomm->channels->list(limit: 1)->data[0]->id ?? throw new RuntimeException('the account has no channel')),
-    'device_id' => step('find a device', fn () => $mycomm->devices->list(limit: 1)->data[0]->id ?? throw new RuntimeException('the account has no device')),
+    'channel_id' => step('find a channel', fn () => $mycomm->channels->list(limit: 1)->data[0]->id ?? throw new RuntimeException('the user has no channel')),
+    'device_id' => step('find a device', fn () => $mycomm->devices->list(limit: 1)->data[0]->id ?? throw new RuntimeException('the user has no device')),
 ];
 $channel = step('channels.get', fn () => $mycomm->channels->get($keys['channel_id']));
 step('channels.list', fn () => check(count($mycomm->channels->list()) >= 1, 'has a channel'));
@@ -324,7 +324,7 @@ step('apiKeys create/list/revoke', function () use ($mycomm, $base) {
     $mycomm->apiKeys->revoke($created->id);
     expectThrows(AuthenticationException::class, fn () => (new Client($created->token, $base, maxRetries: 0))->messages->list(), 'UNAUTHENTICATED');
 });
-step('unknown key is rejected', fn () => expectThrows(AuthenticationException::class, fn () => (new Client('mc_live_'.str_repeat('0', 40), $base, maxRetries: 0))->account->get(), 'UNAUTHENTICATED'));
+step('unknown key is rejected', fn () => expectThrows(AuthenticationException::class, fn () => (new Client('mc_live_'.str_repeat('0', 40), $base, maxRetries: 0))->me->get(), 'UNAUTHENTICATED'));
 step('suppressions create/check/list/remove', function () use ($mycomm) {
     $suppression = $mycomm->suppressions->create(address: num('99'), reason: 'api', note: 'Asked by phone');
     check($mycomm->suppressions->check(address: num('99'))->suppressed === true, 'suppressed');

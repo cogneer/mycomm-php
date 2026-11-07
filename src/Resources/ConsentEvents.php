@@ -24,10 +24,10 @@ final class ConsentEvents
     /**
      * List consent events.
      *
-     * Requires `suppressions:read`. The account's consent audit trail, newest first, with cursor pagination:
+     * Requires `suppressions:read`. The user's consent audit trail, newest first, with cursor pagination:
      * every `opt_out` and `opt_in` with its method, keyword, message, actor and note. The trail is
      * append-only; it outlives the suppression it records and the contact's erasure. Comma lists match any of
-     * the values. A phone number in `address` written without country code is read in the account country.
+     * the values. A phone number in `address` written without country code is read in the user's country.
      *
      * @param  list<string>|string|null  $address  E.164 for phone numbers (comma list).
      * @param  list<string>|string|null  $event  Comma list of `opt_out`, `opt_in`.

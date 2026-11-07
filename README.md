@@ -241,7 +241,7 @@ try {
 | `InvalidHeaderException` | 400 `INVALID_HEADER` (extends `BadRequestException`): `details['header']` says which |
 | `UnsupportedMediaTypeException` | 415 (extends `BadRequestException`): the body is not in the format the endpoint takes |
 | `AuthenticationException` | 401: key missing, unknown, revoked or expired |
-| `PermissionDeniedException` | 403: ability, scope, IP allow-list, suspended account |
+| `PermissionDeniedException` | 403: ability, scope, IP allow-list, suspended user |
 | `NotFoundException` | 404 |
 | `ConflictException` | 409, for example `REFERENCE_ID_EXISTS` |
 | `PayloadTooLargeException` | 413 |
@@ -390,7 +390,7 @@ and dry-runs the send through the line (`$partner->forLine($lineId)->verify(to: 
 | `partner->sponsorshipDefaults->get()`, `put(...)` | The sponsorship terms new lines get |
 | `partner->usage->get(from: ..., to: ...)` | Usage per line |
 
-An account key mints the same links for its own lines with `$mycomm->lines->links->create($lineId, purpose: ...)` and
+A user key mints the same links for its own lines with `$mycomm->lines->links->create($lineId, purpose: ...)` and
 follows them with `$mycomm->links->get($id)` and `revoke($id)`.
 
 ## Uploading files

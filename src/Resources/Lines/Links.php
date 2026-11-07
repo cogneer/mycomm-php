@@ -26,10 +26,10 @@ final class Links
      *
      * Requires `links:write`. A short-lived link to MyComm's hosted page for one of your lines: send your
      * user's browser to `url`. `purpose` is what the page does: `connect` (the first phone; it also asks for
-     * the user's number and joins an account that already has it, after a code sent to that number),
-     * `add_channel` (one more SIM, added to the line as its last backup), `replace_device` (a new phone for
-     * `replaces_device_id`, a phone of the line's account), `manage` and `claim`. `url` is returned only here
-     * and is a bearer credential: treat it like a password. At most 20 links of a line are open at once (`422
+     * the user's number and joins a user that already has it, after a code sent to that number), `add_channel`
+     * (one more SIM, added to the line as its last backup), `replace_device` (a new phone for
+     * `replaces_device_id`, a phone of the line's user), `manage` and `claim`. `url` is returned only here and
+     * is a bearer credential: treat it like a password. At most 20 links of a line are open at once (`422
      * CONNECT_SESSION_LIMIT_REACHED` with `details.max`) and 60 are created per line per hour (`429
      * RATE_LIMITED`). A detached line takes no new link (`422`), and detaching a line ends its open links. A
      * line this key does not see is `404 NOT_FOUND`. Partner keys use `POST /partner/v1/lines/{id}/links`.
@@ -37,8 +37,8 @@ final class Links
      * @param  string|Omit|null  $return_url  `https` URL the page returns to when done; no credentials.
      * @param  list<string>|Omit|null  $allowed_origins  Origins that may frame the page and receive its outcome. `null` = no framing and no messages.
      * @param  int|Omit|null  $ttl  Seconds until the link stops working.
-     * @param  string|Omit|null  $locale  BCP 47 tag of the page's language; defaults to the account's default locale.
-     * @param  string|Omit|null  $replaces_device_id  Required for `replace_device`, refused for any other purpose. An active phone of the line's account.
+     * @param  string|Omit|null  $locale  BCP 47 tag of the page's language; defaults to the user's default locale.
+     * @param  string|Omit|null  $replaces_device_id  Required for `replace_device`, refused for any other purpose. An active phone of the line's user.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error

@@ -50,7 +50,7 @@ final class Channels
      * are stored upper case. Adding another country is an explicit opt-in on the number and is audited as
      * `channel.destinations.updated`. `skip_business_senders: true` makes the phone stop uploading inbound
      * from short codes and alphanumeric senders (operator-notice senders are always uploaded). `404` when the
-     * channel is not found in the account.
+     * channel is not found in the user.
      *
      * @param  list<string>|Omit|null  $allowed_destination_countries  `null` is the channel's own country only; a list must contain the channel's own country.
      *
@@ -124,8 +124,8 @@ final class Channels
      * `auto:quota` (after the SIM was recharged); `auto:health_critical` also once the SIM safety band is back
      * to `fair` or better. `auto:sim_missing` and `device_revoked` resume through the SIM returning or
      * re-verification, `auto:quarantine` through a successful test message or MyComm support, `admin` and
-     * `account_suspended` only through MyComm: these answer `409 INVALID_STATE` with the channel's `status`,
-     * as does a channel that is not paused. Emits `channel.resumed`.
+     * `user_suspended` only through MyComm: these answer `409 INVALID_STATE` with the channel's `status`, as
+     * does a channel that is not paused. Emits `channel.resumed`.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -148,7 +148,7 @@ final class Channels
      * whose line has no such sender left, fail with `CHANNEL_DISCONNECTED`. Lines and history stay readable
      * and sends naming it get `CHANNEL_INACTIVE`. Emits `channel.disconnected`. A `pending_verification`
      * channel that never connected is deleted instead (`204`). An already disconnected channel is `409
-     * INVALID_STATE`. The last active or paused channel of a number the account verified as its own is `403
+     * INVALID_STATE`. The last active or paused channel of a number the user verified as its own is `403
      * SECOND_FACTOR_REQUIRED` (`reason: not_a_user`): only the owner can let that number go, in the portal,
      * with a second factor.
      *
@@ -177,8 +177,8 @@ final class Channels
      * texts a 6-digit code to the number and catches it. The outcome arrives as `channel.connected` or
      * `channel.verification_failed` and on `GET /v1/channels/{id}`. `address` is optional when the SIM reports
      * its number or the platform's inbound probe is configured; otherwise `422 ADDRESS_REQUIRED`. A number
-     * already active on a channel of the same account is moved to this SIM when verification succeeds. `404`
-     * when the phone or SIM is not found in the account or outside the key's scope.
+     * already active on a channel of the same user is moved to this SIM when verification succeeds. `404` when
+     * the phone or SIM is not found in the user or outside the key's scope.
      *
      * @param  string|Omit|null  $address  The SIM's number, national or international form.
      * @param  string|Omit|null  $name  Channel label; default the formatted number.
@@ -275,8 +275,8 @@ final class Channels
     /**
      * List channels.
      *
-     * Requires `channels:read`. Every channel of the account whatever its status, oldest first, unless a
-     * filter narrows the list. `health_band` filters on the stored SIM safety band, so a number that was never
+     * Requires `channels:read`. Every channel of the user whatever its status, oldest first, unless a filter
+     * narrows the list. `health_band` filters on the stored SIM safety band, so a number that was never
      * evaluated matches no band. A key restricted to lines sees only the channels of those lines.
      *
      * @param  ?string  $status  One of: `pending_verification`, `active`, `paused`, `disconnected`.
@@ -426,11 +426,11 @@ final class Channels
      * per_hour <= per_day`, `interval_ms.min >= 60000 / ceiling.per_min`, `interval_ms.max` between `min` and
      * 600000, `bulk_hours` within 07:00 to 22:00 sender-local. 2. Every cap at or below the channel's
      * `rate_policy_ceiling`, else `422 ABOVE_PLATFORM_CEILING` with `{field, value, ceiling, reason}`
-     * (`platform`, `country`, `override_limit`, `new_account` or `restricted_country`). During the first 14
-     * days of the account the suggestion is also the shortest wait allowed: `interval_ms.min` below the
-     * suggested shortest wait, or `interval_ms.max` below the suggested longest wait, answers `422
-     * ABOVE_PLATFORM_CEILING` with `reason: new_account`; for these two fields `value` and `ceiling` are waits
-     * in milliseconds and `ceiling` is the shortest wait allowed. A cap above its ceiling is answered first.
+     * (`platform`, `country`, `override_limit`, `new_user` or `restricted_country`). During the first 14 days
+     * of the user the suggestion is also the shortest wait allowed: `interval_ms.min` below the suggested
+     * shortest wait, or `interval_ms.max` below the suggested longest wait, answers `422
+     * ABOVE_PLATFORM_CEILING` with `reason: new_user`; for these two fields `value` and `ceiling` are waits in
+     * milliseconds and `ceiling` is the shortest wait allowed. A cap above its ceiling is answered first.
      * Acknowledging the risk never lifts a ceiling. After day 14 only step 1 limits a wait.
      * `rate_policy_ceiling` itself holds caps only. 3. The risk of the result: saving `amber` or `red` needs
      * `acknowledge_risk: true`, again whenever the risk rises above the acknowledged level, else `422
@@ -439,12 +439,12 @@ final class Channels
      * Saving sets `acknowledged_risk_at` and is audited as `channel.rate_policy.updated`. While the SIM safety
      * band is `poor` or `critical` a custom policy is also capped at the suggestion times the band factor; the
      * stored policy is unchanged and applies again when the band recovers. `404` when the channel is not found
-     * in the account.
+     * in the user.
      *
      * @param  array{per_min?: int, per_15m?: int, per_hour?: int, per_day?: int, new_recipients_per_day?: int|null}|null  $caps
      * @param  array{min?: int, max?: int}|null  $interval_ms
      * @param  array{enabled?: bool}|null  $warmup
-     * @param  array{start: string, end: string, timezone?: string|null}|Omit|null  $active_hours  The owner's sending window; `null` means any time. `timezone` `null` is the account time zone.
+     * @param  array{start: string, end: string, timezone?: string|null}|Omit|null  $active_hours  The owner's sending window; `null` means any time. `timezone` `null` is the user's time zone.
      * @param  array{start: string, end: string, tz?: string|null}|Omit|null  $bulk_hours  The window of the `bulk` lane within 07:00 to 22:00 sender-local. `tz` `null` is the channel country's time zone.
      * @param  ?bool  $acknowledge_risk  Required to save an `amber` or `red` policy, again whenever the risk rises above the acknowledged level.
      * @param  ?bool  $reset_to_suggested  `true` restores the suggestion and clears the acknowledgement; not allowed together with policy fields.
@@ -485,11 +485,11 @@ final class Channels
     /**
      * List channel types.
      *
-     * Requires `channels:read`. Every channel type with what this account can connect and what each type can
-     * do, so a partner UI adapts without hard-coding SMS. `available` is `true` when the type is enabled on
-     * the platform and allowed by the account's `settings.channels.allowed_types`; a type that has not shipped
-     * yet carries `available_from`. In v1 only `android_sim` is available. The list is about the account, not
-     * a line, so a key restricted to lines gets the full answer. Not paginated.
+     * Requires `channels:read`. Every channel type with what this user can connect and what each type can do,
+     * so a partner UI adapts without hard-coding SMS. `available` is `true` when the type is enabled on the
+     * platform and allowed by the user's `settings.channels.allowed_types`; a type that has not shipped yet
+     * carries `available_from`. In v1 only `android_sim` is available. The list is about the user, not a line,
+     * so a key restricted to lines gets the full answer. Not paginated.
      *
      * @return Page<Models\ChannelTypeInfo>
      *

@@ -11,8 +11,8 @@ use MyComm\Enums;
 use MyComm\Model;
 
 /**
- * A suppressed identity. It keeps the plain E.164 address, also after the contact is erased. `dnc` is an
- * account-uploaded do-not-contact list; `invalid` is two recipient-class failures in 30 days.
+ * A suppressed identity. It keeps the plain E.164 address, also after the contact is erased. `dnc` is a
+ * user-uploaded do-not-contact list; `invalid` is two recipient-class failures in 30 days.
  */
 final class Suppression extends Model
 {

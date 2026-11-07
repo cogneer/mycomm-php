@@ -15,7 +15,7 @@ enum DeviceRevokedReason: string
     case Partner = 'partner';
     case Admin = 'admin';
     case AppUnpaired = 'app_unpaired';
-    case AccountDeleted = 'account_deleted';
+    case UserDeleted = 'user_deleted';
     case Replaced = 'replaced';
     case Stolen = 'stolen';
 }

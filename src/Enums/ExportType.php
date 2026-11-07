@@ -15,5 +15,5 @@ enum ExportType: string
     case ContactsCsv = 'contacts_csv';
     case CampaignReport = 'campaign_report';
     case ContactJson = 'contact_json';
-    case AccountZip = 'account_zip';
+    case UserZip = 'user_zip';
 }

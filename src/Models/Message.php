@@ -17,7 +17,7 @@ final class Message extends Model
 {
     public readonly string $id;
 
-    public readonly string $account_id;
+    public readonly string $user_id;
 
     public readonly string $channel_id;
 
@@ -149,7 +149,7 @@ final class Message extends Model
     protected function hydrate(array $data): void
     {
         $this->id = $data['id'];
-        $this->account_id = $data['account_id'];
+        $this->user_id = $data['user_id'];
         $this->channel_id = $data['channel_id'];
         $this->channel_type = $data['channel_type'] ?? null;
         $this->line_id = $data['line_id'];

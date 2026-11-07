@@ -121,9 +121,9 @@ final class Lines
      * Requires `channels:write`, which a key restricted to lines never holds. Adds an `app` line that sends
      * through `senders` in order: the first entry is the primary unless one is marked `primary`, which is then
      * placed first (the others keep their order), so the primary always sends first; the others are backups.
-     * Every channel must be one of the account's, connected and verified, and appear once (`422
+     * Every channel must be one of the user's, connected and verified, and appear once (`422
      * VALIDATION_FAILED` on `senders`; a channel still pending verification or disconnected answers `422
-     * CHANNEL_INACTIVE`). `409 NAME_TAKEN` `{field: "name"}` when another line of the account has the name
+     * CHANNEL_INACTIVE`). `409 NAME_TAKEN` `{field: "name"}` when another line of the user has the name
      * (case-insensitive, the Direct line's included). A line without senders is allowed; it can send once it
      * has one.
      *
@@ -193,7 +193,7 @@ final class Lines
      * Requires `channels:write`. Every field is optional. `reply_window_days` (1 to 365) is how long a reply
      * on a channel this line wrote from comes back to this line. `settings` keys are merged into the stored
      * settings (a key set to `null` is removed). `409 NAME_TAKEN` `{field: "name"}` when another line of the
-     * account has the name (case-insensitive). The Direct line keeps its name: a different `name` answers `422
+     * user has the name (case-insensitive). The Direct line keeps its name: a different `name` answers `422
      * LINE_IS_DIRECT` `{line_id}`, while its other fields change as usual. `send_mode`, `sticky_sender` and
      * `failover_seconds` set how the line picks its sender; `failover_seconds` is merged lane by lane into the
      * stored hold times (`null` restores the defaults). `prefer` sets the channel type the line sends with
@@ -342,7 +342,7 @@ final class Lines
      * Requires `channels:write`. Replaces the whole list; the order is the position (0 first). At most one
      * entry is `primary`; with none marked the first entry is. A marked primary is placed first and the others
      * keep their order, so role and position always agree. An entry without a role is a `backup`. Every
-     * channel must be one of the account's, not disconnected, and appear once (`422 VALIDATION_FAILED` on
+     * channel must be one of the user's, not disconnected, and appear once (`422 VALIDATION_FAILED` on
      * `senders`). An empty list leaves the line without senders: sends from it are held
      * (`no_sender_available`). Fires `line.sender_changed`. Queued messages on a sender that left the list
      * move to the next healthy sender.

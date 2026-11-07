@@ -23,7 +23,7 @@ final class Identities
      * Add an identity to a contact.
      *
      * Requires `contacts:write`. `type` is `phone` in v1 and the address is normalised to E.164 with the
-     * account country (`422 INVALID_NUMBER`); `whatsapp` and `telegram` identities are added with their
+     * user's country (`422 INVALID_NUMBER`); `whatsapp` and `telegram` identities are added with their
      * channels (`422 IDENTITY_TYPE_UNAVAILABLE` before). `sender_id` identities are created by MyComm from
      * inbound only (`422 INVALID_NUMBER`). A number another contact holds answers `409 IDENTITY_TAKEN` with
      * `details.contact_id`; one this contact already holds answers `200` and creates nothing. A contact has at
@@ -123,10 +123,10 @@ final class Identities
     }
 
     /**
-     * Block an identity account-wide.
+     * Block an identity user-wide.
      *
-     * Requires `contacts:write`. Sets `blocked_at` for every line and channel of the account. New outbound to
-     * the identity is refused (`CONTACT_BLOCKED`) and its `queued` outbound is cancelled (`message.cancelled`,
+     * Requires `contacts:write`. Sets `blocked_at` for every line and channel of the user. New outbound to the
+     * identity is refused (`CONTACT_BLOCKED`) and its `queued` outbound is cancelled (`message.cancelled`,
      * reason `contact_blocked`). Inbound is still stored but is not counted as unread, runs no automation,
      * sends no notification and emits no `message.received` webhook; opt-out and opt-in keywords still apply.
      * Campaign recipients are skipped (`blocked`). Any identity can be blocked, a `sender_id` one included.
@@ -149,7 +149,7 @@ final class Identities
     /**
      * Unblock an identity.
      *
-     * Requires `contacts:write`. Clears `blocked_at`, account-wide. Nothing is replayed: messages received or
+     * Requires `contacts:write`. Clears `blocked_at`, user-wide. Nothing is replayed: messages received or
      * cancelled while blocked stay as they are. Idempotent. Emits `contact.updated`. Send an empty JSON object
      * `{}` as the body.
      *

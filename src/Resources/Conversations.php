@@ -98,7 +98,7 @@ final class Conversations
     /**
      * Block the conversation's contact identity.
      *
-     * Convenience route: blocks the conversation's contact identity account-wide (every line and channel),
+     * Convenience route: blocks the conversation's contact identity user-wide (every line and channel),
      * exactly like `POST /v1/contacts/{id}/identities/{identity_id}/block`. Idempotent. Every conversation of
      * that identity shows the same `blocked_at`. Requires `conversations:write`. A conversation outside the
      * key's line scope answers 404.
@@ -118,7 +118,7 @@ final class Conversations
     /**
      * Unblock the conversation's contact identity.
      *
-     * Clears `blocked_at` of the conversation's contact identity, account-wide. Nothing is replayed. Requires
+     * Clears `blocked_at` of the conversation's contact identity, user-wide. Nothing is replayed. Requires
      * `conversations:write`. A conversation outside the key's line scope answers 404.
      *
      * @throws ApiException when the API answers with an error
@@ -136,15 +136,15 @@ final class Conversations
     /**
      * Hand a conversation over to another line.
      *
-     * Moves the conversation and its messages to another line of the account; the contact's next replies land
-     * on that line, also when it does not send through the conversation's channel. When the target line
-     * already has a conversation with the same contact, the two merge into it and the answer is that
-     * conversation. Emits `conversation.handed_over`. Requires `conversations:write`. The conversation and the
-     * target line must both be in the key's line scope (else 404). An archived target answers 422
-     * `LINE_ARCHIVED`; the conversation's own line answers 422 `VALIDATION_FAILED`. Queued outbound messages
-     * move with the conversation: an unpinned one then sends from the target line's senders (when its channel
-     * is not one of them, the next failover run hands it to the target line's first healthy sender,
-     * `line.failover` with reason `sender_removed`); a `sender_pinned` one keeps its channel.
+     * Moves the conversation and its messages to another line of the user; the contact's next replies land on
+     * that line, also when it does not send through the conversation's channel. When the target line already
+     * has a conversation with the same contact, the two merge into it and the answer is that conversation.
+     * Emits `conversation.handed_over`. Requires `conversations:write`. The conversation and the target line
+     * must both be in the key's line scope (else 404). An archived target answers 422 `LINE_ARCHIVED`; the
+     * conversation's own line answers 422 `VALIDATION_FAILED`. Queued outbound messages move with the
+     * conversation: an unpinned one then sends from the target line's senders (when its channel is not one of
+     * them, the next failover run hands it to the target line's first healthy sender, `line.failover` with
+     * reason `sender_removed`); a `sender_pinned` one keeps its channel.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
@@ -222,7 +222,7 @@ final class Conversations
     /**
      * List conversations.
      *
-     * Conversations of the account, newest `last_message_at` first, with cursor pagination. Requires
+     * Conversations of the user, newest `last_message_at` first, with cursor pagination. Requires
      * `conversations:read`. A restricted key lists only the conversations of its lines. A conversation without
      * messages is not listed. Comma lists match any of the values. `q` matches the contact name, address and
      * last message preview (case-insensitive, at least 2 characters).
@@ -445,7 +445,7 @@ final class Conversations
      * @param  Enums\MessageLane|string|null  $lane  How urgently the message is sent. `bulk` is paced behind other traffic and needs `category`.
      * @param  DateTimeInterface|string|null  $send_after  At most 30 days ahead (`SEND_AFTER_TOO_FAR`). A time in the past means now.
      * @param  ?int  $expires_in  Seconds after which an unsent message is dropped, 60 to 604800 (7 days).
-     * @param  ?string  $reference_id  Your own id for this message, 1 to 100 characters without spaces. Unique per account forever (`REFERENCE_ID_EXISTS`).
+     * @param  ?string  $reference_id  Your own id for this message, 1 to 100 characters without spaces. Unique per user forever (`REFERENCE_ID_EXISTS`).
      * @param  array<string, mixed>|null  $metadata  Up to 50 keys, 2 KB as JSON, scalar values only. Returned on the message and in webhooks.
      * @param  ?bool  $shorten_links  Replace each URL with a short link so clicks are counted.
      * @param  ?bool  $dry_run  Validate, render and compute segments and holds without creating anything (answers `200`).

@@ -25,7 +25,7 @@ final class Templates
     /**
      * List templates.
      *
-     * Requires `templates:read`. Templates of the account sorted by `name` (default) with cursor pagination.
+     * Requires `templates:read`. Templates of the user sorted by `name` (default) with cursor pagination.
      * Archived templates are hidden unless `archived=true`, which lists only them.
      *
      * @param  ?string  $q  Name contains, case-insensitively; at least 2 characters.
@@ -117,7 +117,7 @@ final class Templates
      * templates, ignoring case (`409 NAME_TAKEN`). A body linking through a public URL shortener answers `422
      * LINK_PUBLIC_SHORTENER`, one estimated over 10 SMS parts `422 BODY_TOO_LONG`. Variables that are neither
      * contact nor custom fields are allowed (they must be supplied at send) and listed in `warnings`.
-     * `media_id` must be a media item of the account.
+     * `media_id` must be a media item of the user.
      *
      * @param  ?string  $body  Required unless `media_id` is given.
      *
@@ -181,7 +181,7 @@ final class Templates
      * `body` that is not saved. Nothing is written.
      *
      * @param  array<string, mixed>|Omit|null  $variables  Variable values by name, at most 100; names up to 64 characters, values strings (up to 1000 characters) or numbers.
-     * @param  string|Omit|null  $contact_id  A contact of the account whose fields fill the variables; the key must also hold `contacts:read`.
+     * @param  string|Omit|null  $contact_id  A contact of the user whose fields fill the variables; the key must also hold `contacts:read`.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
@@ -352,17 +352,17 @@ final class Templates
      *
      * Requires `templates:read`, and `contacts:read` when `contact_id` is given (`403 ABILITY_MISSING`
      * otherwise). Renders the saved body exactly as a send renders it for one recipient: `variables` first,
-     * then the fields of `contact_id` (a contact of the account), then account fields, then each variable's
+     * then the fields of `contact_id` (a contact of the user), then user fields, then each variable's
      * fallback. A variable without value or fallback renders empty and is listed in `missing_variables`, as a
      * send does. Values are plain text and are never evaluated as template syntax; values over 500 characters
      * are cut to 500. With `shorten_links`, each URL a send would shorten shows as a placeholder link on the
      * active short domain (`https://{domain}/l/xxxxxxx`, the length of a real short link) and counts at that
      * length; with no active short domain links stay as written, as in a send. Smart character replacement
-     * follows the account setting `sms.smart_replace`. `non_gsm_characters` lists the characters that force
+     * follows the user's setting `sms.smart_replace`. `non_gsm_characters` lists the characters that force
      * UCS-2. Nothing is written.
      *
      * @param  array<string, mixed>|Omit|null  $variables  Variable values by name, at most 100; names up to 64 characters, values strings (up to 1000 characters) or numbers.
-     * @param  string|Omit|null  $contact_id  A contact of the account whose fields fill the variables; the key must also hold `contacts:read`.
+     * @param  string|Omit|null  $contact_id  A contact of the user whose fields fill the variables; the key must also hold `contacts:read`.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error

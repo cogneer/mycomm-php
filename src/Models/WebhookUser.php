@@ -11,15 +11,15 @@ use MyComm\Enums;
 use MyComm\Model;
 
 /**
- * The account resource, with its `counts`.
+ * The user resource, with its `counts`.
  */
-final class WebhookAccount extends Model
+final class WebhookUser extends Model
 {
     public readonly string $id;
 
     public readonly string $name;
 
-    public readonly Enums\AccountStatus|string $status;
+    public readonly Enums\UserStatus|string $status;
 
     public readonly ?string $suspended_reason;
 
@@ -29,9 +29,9 @@ final class WebhookAccount extends Model
 
     public readonly string $default_locale;
 
-    public readonly AccountSettings $settings;
+    public readonly UserSettings $settings;
 
-    public readonly WebhookAccountCounts $counts;
+    public readonly WebhookUserCounts $counts;
 
     public readonly ?DateTimeImmutable $deletion_requested_at;
 
@@ -45,13 +45,13 @@ final class WebhookAccount extends Model
     {
         $this->id = $data['id'];
         $this->name = $data['name'];
-        $this->status = self::enum(Enums\AccountStatus::class, $data['status']);
+        $this->status = self::enum(Enums\UserStatus::class, $data['status']);
         $this->suspended_reason = $data['suspended_reason'] ?? null;
         $this->country_iso = $data['country_iso'];
         $this->timezone = $data['timezone'];
         $this->default_locale = $data['default_locale'];
-        $this->settings = AccountSettings::fromArray($data['settings']);
-        $this->counts = WebhookAccountCounts::fromArray($data['counts']);
+        $this->settings = UserSettings::fromArray($data['settings']);
+        $this->counts = WebhookUserCounts::fromArray($data['counts']);
         $this->deletion_requested_at = isset($data['deletion_requested_at']) ? self::dateTime($data['deletion_requested_at']) : null;
         $this->purge_at = isset($data['purge_at']) ? self::dateTime($data['purge_at']) : null;
         $this->created_at = self::dateTime($data['created_at']);

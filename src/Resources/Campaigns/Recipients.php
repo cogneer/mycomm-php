@@ -25,7 +25,7 @@ final class Recipients
      * List the recipients of a campaign.
      *
      * Requires `campaigns:read`. The per-recipient results of a campaign, oldest first (`sort=created_at`),
-     * with cursor pagination. Each filter takes one value. A campaign of another account answers `404`. A key
+     * with cursor pagination. Each filter takes one value. A campaign of another user answers `404`. A key
      * limited to some lines never holds `campaigns:read` and answers `403 ABILITY_MISSING`.
      *
      * @param  Enums\CampaignRecipientStatus|string|null  $status  Recipient status.

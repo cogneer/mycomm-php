@@ -11,7 +11,7 @@ use MyComm\Webhooks\Event;
 
 /**
  * `channel.disconnected`: The number was disconnected (owner disconnect, SIM retirement, ops
- * force-release, account deletion or a stale release). `data.reason` is the `disconnect_reason`.
+ * force-release, user deletion or a stale release). `data.reason` is the `disconnect_reason`.
  */
 final class ChannelDisconnected extends Event
 {

@@ -15,7 +15,7 @@ enum ChannelDisconnectReason: string
 {
     case Owner = 'owner';
     case AdminForceRelease = 'admin_force_release';
-    case AccountDeleted = 'account_deleted';
+    case UserDeleted = 'user_deleted';
     case DeclinedOnDevice = 'declined_on_device';
     case SimRetired = 'sim_retired';
     case DeviceRevoked = 'device_revoked';

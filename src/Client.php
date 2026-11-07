@@ -31,7 +31,7 @@ final class Client
     private readonly string $baseUrl;
 
     /**
-     * @param  string  $apiKey  An account key (`mc_live_...`) or a partner key (`mc_partner_...`).
+     * @param  string  $apiKey  A user key (`mc_live_...`) or a partner key (`mc_partner_...`).
      * @param  string  $baseUrl  Origin of the API, without `/v1`.
      * @param  ClientInterface|Transport|null  $httpClient  Your own PSR-18 client. By default Guzzle is used when installed, else the client discovery finds.
      * @param  int  $maxRetries  Retries after a network error, a 429 or a 5xx. POSTs carry an `Idempotency-Key`, so a retry never repeats their effect.
@@ -67,7 +67,7 @@ final class Client
      * Never throws for a problem with the key or the request: each problem is a failed check in the result, with the API's
      * own message. It does not retry, so a failure is reported at once.
      *
-     * A partner key is checked on the partner API (it reaches no account of its own on `/v1`, so `account` stays null)
+     * A partner key is checked on the partner API (it reaches no user of its own on `/v1`, so `user` stays null)
      * and its send is dry-run through a line: the one of `forLine()`, else `$lineId`.
      *
      * @param  string|null  $to  A number you control, to dry-run a send to.
@@ -77,7 +77,7 @@ final class Client
     {
         $once = new RequestOptions(maxRetries: 0);
         $checks = [];
-        $account = null;
+        $user = null;
         $partner = $this->isPartnerKey();
 
         try {
@@ -85,8 +85,8 @@ final class Client
                 $this->partner->lines->list(limit: 1, requestOptions: $once);
                 $checks[] = ['name' => 'key', 'ok' => true, 'message' => 'The partner key works.'];
             } else {
-                $account = $this->account->get(requestOptions: $once);
-                $checks[] = ['name' => 'key', 'ok' => true, 'message' => 'The key works for account '.$account->id.'.'];
+                $user = $this->me->get(requestOptions: $once);
+                $checks[] = ['name' => 'key', 'ok' => true, 'message' => 'The key works for user '.$user->id.'.'];
             }
         } catch (Exceptions\MyCommException $e) {
             $checks[] = ['name' => 'key', 'ok' => false, 'message' => $e->getMessage()];
@@ -124,7 +124,7 @@ final class Client
             }
         }
 
-        return new VerifyResult($checks, $account, $holdReason);
+        return new VerifyResult($checks, $user, $holdReason);
     }
 
     /**

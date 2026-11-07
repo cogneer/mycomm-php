@@ -13,5 +13,5 @@ enum DevicePauseReason: string
 {
     case Owner = 'owner';
     case Admin = 'admin';
-    case AccountSuspended = 'account_suspended';
+    case UserSuspended = 'user_suspended';
 }

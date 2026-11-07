@@ -99,8 +99,8 @@ final class Exports
      * Request an export.
      *
      * The required ability depends on `type`: `messages_csv` needs `reports:read`, `contacts_csv` and
-     * `contact_json` need `contacts:read`, `campaign_report` needs `campaigns:read`, `account_zip` needs
-     * `account:write`. `messages_csv` takes the `GET /v1/messages` filters as `params`; `created_after` and
+     * `contact_json` need `contacts:read`, `campaign_report` needs `campaigns:read`, `user_zip` needs
+     * `me:write`. `messages_csv` takes the `GET /v1/messages` filters as `params`; `created_after` and
      * `created_before` are required and at most 366 days apart. A key restricted to lines exports only its
      * lines. The export is built asynchronously: poll `GET /v1/exports/{id}` or wait for the
      * `export.completed` webhook.
@@ -126,7 +126,7 @@ final class Exports
             ],
             [
                 'type' => [
-                    'enum' => ['messages_csv', 'contacts_csv', 'campaign_report', 'contact_json', 'account_zip'],
+                    'enum' => ['messages_csv', 'contacts_csv', 'campaign_report', 'contact_json', 'user_zip'],
                 ],
             ],
             [
@@ -154,7 +154,7 @@ final class Exports
      * Get an export with a fresh signed URL.
      *
      * Requires the ability of the export's type. A `completed` export carries a `url` signed for 15 minutes,
-     * refreshed on every call; the URL is a secret. An export of another account answers `404 NOT_FOUND`.
+     * refreshed on every call; the URL is a secret. An export of another user answers `404 NOT_FOUND`.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached

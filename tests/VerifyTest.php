@@ -18,13 +18,13 @@ it('passes when the key works and a dry run is accepted, and sends nothing', fun
 
 it('reports a refused key as a failed check instead of throwing', function () {
     $fake = new MyCommFake;
-    $fake->respond('account.get', FakeResponse::error(401, 'UNAUTHENTICATED', 'The API key is not valid.'));
+    $fake->respond('me.get', FakeResponse::error(401, 'UNAUTHENTICATED', 'The API key is not valid.'));
 
     $result = $fake->client()->verify(to: '+923001234567');
 
     expect($result->ok())->toBeFalse()
         ->and($result->problems())->toBe(['The API key is not valid.'])
-        ->and($result->account)->toBeNull();
+        ->and($result->user)->toBeNull();
     $fake->assertNotCalled('messages.send');
 });
 
@@ -56,16 +56,16 @@ it('dry-runs the send from the line it is given', function () {
 test('verifies_a_partner_key_on_a_partner_route_and_dry_runs_through_its_line', function () {
     $fake = new MyCommFake('mc_partner_fake');
     $fake->respond('messages.send', FakeResponse::example(['dry_run' => true, 'id' => null, 'status' => null], 200));
-    $fake->respond('account.get', FakeResponse::error(403, 'PARTNER_ROUTE_NOT_ALLOWED', 'A partner key cannot use this route.'));
+    $fake->respond('me.get', FakeResponse::error(403, 'PARTNER_ROUTE_NOT_ALLOWED', 'A partner key cannot use this route.'));
 
     $viaArgument = $fake->client()->verify(to: '+923001234567', lineId: 'line-1');
     $viaForLine = $fake->client()->forLine('line-2')->verify(to: '+923001234567');
 
     expect($viaArgument->ok())->toBeTrue()
         ->and(array_column($viaArgument->checks, 'name'))->toBe(['key', 'send'])
-        ->and($viaArgument->account)->toBeNull()
+        ->and($viaArgument->user)->toBeNull()
         ->and($viaForLine->ok())->toBeTrue();
-    $fake->assertNotCalled('account.get')
+    $fake->assertNotCalled('me.get')
         ->assertCalledTimes('partner.lines.list', 2);
     $sends = $fake->calls('messages.send');
     expect($sends[0]->header('MyComm-Line'))->toBe('line-1')

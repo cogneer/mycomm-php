@@ -50,7 +50,7 @@ final class Messages
      *
      * Re-queues the same message (same id, `reference_id` and conversation position) from `failed` or
      * `expired`. Requires `messages:send`. `attempts` is reset, the failure fields are cleared and
-     * `expires_at` is set to now plus the lane default. Compliance and channel and account state are checked
+     * `expires_at` is set to now plus the lane default. Compliance and channel and user state are checked
      * again. `acknowledge_possible_duplicate` must be `true` to retry a message whose `failure.code` is
      * `UNCONFIRMED`; it is ignored otherwise. Errors: `409 NOT_RETRYABLE` (`details.status`,
      * `details.failure_code`; not `failed` or `expired`, inbound, or `UNCONFIRMED` without acknowledgement),
@@ -91,7 +91,7 @@ final class Messages
      * Items are accepted or rejected independently, in order: the answer is always `200` with a `summary` and
      * one `results[]` entry per item, also when every item was rejected. An item error carries the code of the
      * matching single send (`INVALID_NUMBER`, `CATEGORY_REQUIRED`, `RECIPIENT_OPTED_OUT`, ...). A
-     * `reference_id` already used by the account, or earlier in the same batch, rejects that item with
+     * `reference_id` already used by the user, or earlier in the same batch, rejects that item with
      * `REFERENCE_ID_EXISTS`.
      *
      * `Idempotency-Key` covers the whole batch: a repeat replays the stored `200`. `dry_run: true` runs every
@@ -147,9 +147,9 @@ final class Messages
     /**
      * List and search messages.
      *
-     * Messages of the account, newest first, with cursor pagination. Requires `messages:read`. A restricted
-     * key lists only the messages of its lines. Comma lists match any of the values. `q` is a full-text search
-     * on `body` (at least 2 characters, Postgres `simple` configuration, so Urdu and Roman Urdu match word by
+     * Messages of the user, newest first, with cursor pagination. Requires `messages:read`. A restricted key
+     * lists only the messages of its lines. Comma lists match any of the values. `q` is a full-text search on
+     * `body` (at least 2 characters, Postgres `simple` configuration, so Urdu and Roman Urdu match word by
      * word) and always sorts newest first.
      *
      * @param  ?string  $reference_id  Exact match; returns 0 or 1 item.
@@ -345,9 +345,9 @@ final class Messages
      * paused; it waits with `hold_reason` `device_offline`, `device_paused` or `channel_paused`.
      *
      * `Idempotency-Key` replays the stored `202` for the same request. A `reference_id` already used by the
-     * account without a matching key answers `409 REFERENCE_ID_EXISTS` with `details.message_id` and the
-     * existing message in `details.message`; nothing is created. Every acceptance rejection answers `422` with
-     * its own code (`CATEGORY_REQUIRED`, `SEND_AFTER_TOO_FAR`, `INVALID_NUMBER`, `RECIPIENT_OPTED_OUT`,
+     * user without a matching key answers `409 REFERENCE_ID_EXISTS` with `details.message_id` and the existing
+     * message in `details.message`; nothing is created. Every acceptance rejection answers `422` with its own
+     * code (`CATEGORY_REQUIRED`, `SEND_AFTER_TOO_FAR`, `INVALID_NUMBER`, `RECIPIENT_OPTED_OUT`,
      * `CHANNEL_INACTIVE`, ...) and the `details` listed per code in the error reference. Shape errors
      * (including `metadata` over 2 KB or 50 keys, or non-scalar values) answer `422 VALIDATION_FAILED` with
      * `details.fields`. A line, channel or contact outside the key's scope answers 404.
@@ -376,7 +376,7 @@ final class Messages
      * @param  Enums\MessageLane|string|null  $lane  How urgently the message is sent. `bulk` is paced behind other traffic and needs `category`.
      * @param  DateTimeInterface|string|null  $send_after  At most 30 days ahead (`SEND_AFTER_TOO_FAR`). A time in the past means now.
      * @param  ?int  $expires_in  Seconds after which an unsent message is dropped, 60 to 604800 (7 days).
-     * @param  ?string  $reference_id  Your own id for this message, 1 to 100 characters without spaces. Unique per account forever (`REFERENCE_ID_EXISTS`).
+     * @param  ?string  $reference_id  Your own id for this message, 1 to 100 characters without spaces. Unique per user forever (`REFERENCE_ID_EXISTS`).
      * @param  array<string, mixed>|null  $metadata  Up to 50 keys, 2 KB as JSON, scalar values only. Returned on the message and in webhooks.
      * @param  ?bool  $shorten_links  Replace each URL with a short link so clicks are counted.
      * @param  ?bool  $dry_run  Validate, render and compute segments and holds without creating anything (answers `200`).

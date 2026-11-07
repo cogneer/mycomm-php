@@ -28,7 +28,7 @@ final class AutomationRules
      * Requires `automation:read`. All rules of the line ordered by `position`, not paginated: the away message
      * first (position 0), then the keyword rules from 1; rules are evaluated by ascending position and the
      * first matching keyword rule wins. A key restricted to lines reads only its own lines; another line, or
-     * one of another account, is `404`.
+     * one of another user, is `404`.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -51,7 +51,7 @@ final class AutomationRules
      * line's business hours. A line holds at most 200 keyword rules and one away rule: a second one is `409
      * INVALID_STATE`. `422 TEMPLATE_ARCHIVED` and `LINK_PUBLIC_SHORTENER` (`details.url`) come from the
      * `reply` actions; `422 VALIDATION_FAILED` covers every field, an unknown group or template (also one of
-     * another account), a reserved opt-out or opt-in keyword, and any field that is not listed here. Strings,
+     * another user), a reserved opt-out or opt-in keyword, and any field that is not listed here. Strings,
      * lists and objects have their size limits checked first, so oversized values are `422`, never an error.
      * The body is JSON, at most 128 KB (`413 PAYLOAD_TOO_LARGE`, `details.max_bytes`); anything else is `400
      * MALFORMED_REQUEST`.
@@ -178,7 +178,7 @@ final class AutomationRules
     /**
      * Get an automation rule.
      *
-     * Requires `automation:read`. `404` for a rule of another line or account and for a line outside the key's
+     * Requires `automation:read`. `404` for a rule of another line or user and for a line outside the key's
      * scope.
      *
      * @throws ApiException when the API answers with an error
@@ -293,14 +293,14 @@ final class AutomationRules
      * outcome (`skipped:*`) still names the rule and lists its actions and reply preview, and `outcome` says
      * why nothing would be sent. `no_match` means no rule fits or the message runs no automation at all (an
      * opt-out keyword, for example): no rule, no actions and no preview. A key restricted to lines tests only
-     * its own lines; another line, or one of another account, is `404`. The reply preview renders the
-     * contact's fields, so a `contact_id` also needs `contacts:read` (`403 ABILITY_MISSING`, checked before
-     * the contact is looked up). A `contact_id` that is not a contact of the account is `422
-     * VALIDATION_FAILED`, as is any field not listed here. The body is JSON, at most 128 KB (`413
-     * PAYLOAD_TOO_LARGE`); anything else is `400 MALFORMED_REQUEST`.
+     * its own lines; another line, or one of another user, is `404`. The reply preview renders the contact's
+     * fields, so a `contact_id` also needs `contacts:read` (`403 ABILITY_MISSING`, checked before the contact
+     * is looked up). A `contact_id` that is not a contact of the user is `422 VALIDATION_FAILED`, as is any
+     * field not listed here. The body is JSON, at most 128 KB (`413 PAYLOAD_TOO_LARGE`); anything else is `400
+     * MALFORMED_REQUEST`.
      *
      * @param  string  $body  The text of the inbound message to test.
-     * @param  string|Omit|null  $contact_id  The sender, a contact of the account; needs `contacts:read`. Omitted or `null` tests an unknown sender.
+     * @param  string|Omit|null  $contact_id  The sender, a contact of the user; needs `contacts:read`. Omitted or `null` tests an unknown sender.
      * @param  DateTimeInterface|string|Omit|null  $at  The instant the message would arrive, RFC 3339 with `Z` or an offset. Omitted or `null` is now.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)

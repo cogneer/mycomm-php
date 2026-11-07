@@ -29,7 +29,7 @@ final class Groups
     /**
      * List groups.
      *
-     * Requires `contacts:read`. Groups of the account sorted by `name` (default) with cursor pagination. `q`
+     * Requires `contacts:read`. Groups of the user sorted by `name` (default) with cursor pagination. `q`
      * matches the name, case-insensitively.
      *
      * @param  ?string  $q  Name contains, at least 2 characters.
@@ -108,7 +108,7 @@ final class Groups
     /**
      * Create a group.
      *
-     * Requires `groups:write`. The name is unique per account, ignoring case (`409 NAME_TAKEN`).
+     * Requires `groups:write`. The name is unique per user, ignoring case (`409 NAME_TAKEN`).
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error

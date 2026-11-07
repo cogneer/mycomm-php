@@ -11,8 +11,8 @@ use MyComm\Webhooks\Event;
 
 /**
  * `line.detached`: A partner line was detached and archived, by the partner (`DELETE
- * /partner/v1/lines/{id}`), by the account's owner, or by MyComm. The account keeps its numbers and
- * history; the line sends no more. Sent once.
+ * /partner/v1/lines/{id}`), by the user's owner, or by MyComm. The user keeps its numbers and history; the
+ * line sends no more. Sent once.
  */
 final class LineDetached extends Event
 {

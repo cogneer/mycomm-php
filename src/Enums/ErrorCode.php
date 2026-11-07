@@ -25,8 +25,8 @@ enum ErrorCode: string
     case IpNotAllowed = 'IP_NOT_ALLOWED';
     case LineContextInvalid = 'LINE_CONTEXT_INVALID';
     case PartnerRouteNotAllowed = 'PARTNER_ROUTE_NOT_ALLOWED';
-    case AccountSuspended = 'ACCOUNT_SUSPENDED';
-    case AccountPendingDeletion = 'ACCOUNT_PENDING_DELETION';
+    case UserSuspended = 'USER_SUSPENDED';
+    case UserPendingDeletion = 'USER_PENDING_DELETION';
     case PartnerAccessRevoked = 'PARTNER_ACCESS_REVOKED';
     case NotFound = 'NOT_FOUND';
     case MethodNotAllowed = 'METHOD_NOT_ALLOWED';
@@ -89,8 +89,8 @@ enum ErrorCode: string
     case ConsentAssertionRequired = 'CONSENT_ASSERTION_REQUIRED';
     case RiskAcknowledgementRequired = 'RISK_ACKNOWLEDGEMENT_REQUIRED';
     case AbovePlatformCeiling = 'ABOVE_PLATFORM_CEILING';
-    case NewAccountLimit = 'NEW_ACCOUNT_LIMIT';
-    case AccountThrottled = 'ACCOUNT_THROTTLED';
+    case NewUserLimit = 'NEW_USER_LIMIT';
+    case UserThrottled = 'USER_THROTTLED';
     case AddressRequired = 'ADDRESS_REQUIRED';
     case CountryNotEnabled = 'COUNTRY_NOT_ENABLED';
     case DeviceSimLimit = 'DEVICE_SIM_LIMIT';

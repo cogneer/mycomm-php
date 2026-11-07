@@ -9,11 +9,11 @@ namespace MyComm\Models;
 use MyComm\Model;
 
 /**
- * The API-visible subset of the account settings: `opt_out`, `compliance`, `quiet_hours`, `frequency_cap`,
+ * The API-visible subset of the user's settings: `opt_out`, `compliance`, `quiet_hours`, `frequency_cap`,
  * `links`, `default_expiry_minutes`, `sms`, `channels`, `whatsapp`, `retention`, `automation`, `alerts`,
  * `limits` and `support`. Unknown keys must be ignored.
  */
-final class AccountSettings extends Model
+final class UserSettings extends Model
 {
     /**
      * @var array<string, mixed>|null
@@ -76,7 +76,7 @@ final class AccountSettings extends Model
     public readonly ?array $alerts;
 
     /**
-     * Read-only for account keys; only the partner may set it.
+     * Read-only for user keys; only the partner may set it.
      *
      * @var array<string, mixed>|null
      */

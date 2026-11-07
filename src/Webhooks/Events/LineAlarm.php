@@ -17,8 +17,8 @@ use MyComm\Webhooks\Event;
  * `pool_member_blocked` (a pool member was paused or disconnected; ends when it is resumed), `budget_80`
  * (a sender used `alarm_thresholds.budget_percent` of its hourly limit; ends below 60 % of that limit, or
  * 20 points under `alarm_thresholds.budget_percent` when that is lower), `self_loop` (a sender sent
- * `alarm_thresholds.self_loop_per_hour` messages to the account's own numbers within an hour; ends after
- * an hour without one), `sponsor_quota_low` (80 % of the sponsored allowance is used; ends with the next
+ * `alarm_thresholds.self_loop_per_hour` messages to the user's own numbers within an hour; ends after an
+ * hour without one), `sponsor_quota_low` (80 % of the sponsored allowance is used; ends with the next
  * cycle or when the line has no active sponsorship) or `unconfirmed` (messages an unpaired phone never
  * confirmed were failed or sent again, per `on_unconfirmed`; ends after 24 hours without one). Archiving
  * or detaching a line ends its open alarms. An alarm about a sender (`channel_id` set, as for

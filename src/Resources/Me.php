@@ -14,35 +14,35 @@ use MyComm\Models;
 use MyComm\Omit;
 use MyComm\RequestOptions;
 
-final class Account
+final class Me
 {
     public function __construct(private readonly Connection $connection) {}
 
     /**
-     * Get the account.
+     * Get the user.
      *
-     * The account the key belongs to. Needs no ability and also works for a suspended account. `settings` is
-     * `accounts.settings` without `notifications` and `onboarding`, which concern portal users only.
+     * The user the key belongs to. Needs no ability and also works for a suspended user. `settings` is the
+     * user's settings without `notifications` and `onboarding`, which concern the portal only.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
     public function get(
         ?RequestOptions $requestOptions = null,
-    ): Models\Account {
-        $response = $this->connection->request('account.get', 'GET', '/v1/account', options: $requestOptions);
+    ): Models\User {
+        $response = $this->connection->request('me.get', 'GET', '/v1/me', options: $requestOptions);
 
-        return Models\Account::fromArray($response->json(), $response->meta());
+        return Models\User::fromArray($response->json(), $response->meta());
     }
 
     /**
-     * Update the account.
+     * Update the user.
      *
-     * Requires `account:write`. `settings` is deep-merged: arrays are replaced whole, language maps merge key
-     * by key and `null` removes a language. `settings.limits` is read-only for account keys (`422
+     * Requires `me:write`. `settings` is deep-merged: arrays are replaced whole, language maps merge key by
+     * key and `null` removes a language. `settings.limits` is read-only for user keys (`422
      * VALIDATION_FAILED`). Changes are audit-logged.
      *
-     * @param  array<string, mixed>|null  $settings  Deep-merged into the account settings; `limits` is refused.
+     * @param  array<string, mixed>|null  $settings  Deep-merged into the user's settings; `limits` is refused.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -54,11 +54,11 @@ final class Account
         ?string $default_locale = null,
         ?array $settings = null,
         ?RequestOptions $requestOptions = null,
-    ): Models\Account {
+    ): Models\User {
         $response = $this->connection->request(
-            'account.update',
+            'me.update',
             'PATCH',
-            '/v1/account',
+            '/v1/me',
             body: Params::body([
                 'name' => $name ?? Omit::Value,
                 'country_iso' => $country_iso ?? Omit::Value,
@@ -69,6 +69,6 @@ final class Account
             options: $requestOptions,
         );
 
-        return Models\Account::fromArray($response->json(), $response->meta());
+        return Models\User::fromArray($response->json(), $response->meta());
     }
 }

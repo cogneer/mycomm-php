@@ -23,9 +23,9 @@ final class Usage
      * Usage per line.
      *
      * One row per line of yours, detached lines included (their history stays), sorted by `sent_segments`
-     * descending. Counters come from the line's own traffic only, never from the rest of the user's account.
-     * Dates are interpreted in each line's account time zone. Counters match the usage reports in the portal;
-     * rows and totals add `by_channel_type`. `line_id` narrows the report to one of your lines (`404
+     * descending. Counters come from the line's own traffic only, never from the rest of the user's traffic.
+     * Dates are interpreted in the time zone of each line's user. Counters match the usage reports in the
+     * portal; rows and totals add `by_channel_type`. `line_id` narrows the report to one of your lines (`404
      * NOT_FOUND` for any other id).
      *
      * @param  ?int  $limit  Page size, 1 to 200.

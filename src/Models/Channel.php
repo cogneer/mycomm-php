@@ -53,7 +53,7 @@ final class Channel extends Model
     public readonly ?string $device_sim_id;
 
     /**
-     * The line unknown replies to this number land on (the account's Direct line unless the owner chose another); `null` until the number is connected.
+     * The line unknown replies to this number land on (the user's Direct line unless the owner chose another); `null` until the number is connected.
      */
     public readonly ?string $default_line_id;
 

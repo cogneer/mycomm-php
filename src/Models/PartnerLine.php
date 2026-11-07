@@ -11,7 +11,7 @@ use MyComm\Enums;
 use MyComm\Model;
 
 /**
- * A line you made, in your user's account.
+ * A line you made, owned by your user.
  */
 final class PartnerLine extends Model
 {
@@ -24,7 +24,7 @@ final class PartnerLine extends Model
 
     public readonly string $name;
 
-    public readonly string $account_id;
+    public readonly string $user_id;
 
     /**
      * The channel types the user may connect for this line; `null` for every available type.
@@ -50,7 +50,7 @@ final class PartnerLine extends Model
         $this->id = $data['id'];
         $this->external_ref = $data['external_ref'];
         $this->name = $data['name'];
-        $this->account_id = $data['account_id'];
+        $this->user_id = $data['user_id'];
         $this->allowed_channel_types = $data['allowed_channel_types'] ?? null;
         $this->state = self::enum(Enums\LineState::class, $data['state']);
         $this->created_at = self::dateTime($data['created_at']);

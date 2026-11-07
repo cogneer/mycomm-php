@@ -9,7 +9,7 @@ namespace MyComm\Enums;
 /**
  * The API may add values: one this SDK version does not know arrives as a plain string.
  */
-enum AccountStatus: string
+enum UserStatus: string
 {
     case Active = 'active';
     case Suspended = 'suspended';

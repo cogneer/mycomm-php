@@ -16,7 +16,7 @@ use MyComm\Input;
  * level of nesting). At most 20 conditions and 5 groups. Fields are `first_name`, `last_name`,
  * `display_name`, `email`, `custom.<key>`, `group`, `identity.country`, `identity.type`, `source`,
  * `created_at`, `last_inbound_at`, `last_outbound_at`, `opted_out` and `campaign`, with the operators and
- * values documented for each field. Group and campaign ids must belong to the account.
+ * values documented for each field. Group and campaign ids must belong to the user.
  */
 final class SmartListFilter extends Input
 {

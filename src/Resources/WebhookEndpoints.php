@@ -91,14 +91,14 @@ final class WebhookEndpoints
      *
      * Requires `webhooks:write`. The `url` must be `https`, carry no credentials and resolve only to public
      * addresses. `events` empty or omitted means every event except the opt-in ones. `line_ids` and
-     * `channel_types` `null` mean all. At most 20 endpoints per account. A restricted key's endpoint defaults
-     * to (and must stay inside) its lines, takes the key's channel types and cannot set `partner_lines`. The
+     * `channel_types` `null` mean all. At most 20 endpoints per user. A restricted key's endpoint defaults to
+     * (and must stay inside) its lines, takes the key's channel types and cannot set `partner_lines`. The
      * `secret` is shown once, in this response.
      *
      * @param  list<string>|Omit|null  $events
      * @param  list<string>|Omit|null  $line_ids
      * @param  list<string>|Omit|null  $channel_types
-     * @param  ?bool  $partner_lines  Also receive the events of the lines you made for your users with the partner API (events whose `line_id` is one of your partner lines), and nothing else of their accounts. `line_ids` may then name partner lines too, to…
+     * @param  ?bool  $partner_lines  Also receive the events of the lines you made for your users with the partner API (events whose `line_id` is one of your partner lines), and nothing else of those users. `line_ids` may then name partner lines too, to na…
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
@@ -185,7 +185,7 @@ final class WebhookEndpoints
      * @param  list<string>|Omit|null  $events
      * @param  list<string>|Omit|null  $line_ids
      * @param  list<string>|Omit|null  $channel_types
-     * @param  ?bool  $partner_lines  Only on an approved partner's own account, never with a restricted key. Turning it off while `line_ids` names partner lines is refused.
+     * @param  ?bool  $partner_lines  Only on an approved partner's own endpoints, never with a restricted key. Turning it off while `line_ids` names partner lines is refused.
      *
      * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error

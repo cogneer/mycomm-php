@@ -98,7 +98,7 @@ it('turns a transport failure into a connection exception after its retries', fu
     $refused = fn () => new ConnectException('Connection refused', new GuzzleRequest('GET', 'https://mycomm.test'));
     $client = new Client('mc_live_abc', httpClient: guzzle([$refused(), $refused()], $history), maxRetries: 1);
 
-    expect(fn () => $client->account->get())->toThrow(ConnectionException::class, 'Could not reach MyComm: Connection refused');
+    expect(fn () => $client->me->get())->toThrow(ConnectionException::class, 'Could not reach MyComm: Connection refused');
     expect($history)->toHaveCount(2);
 })->skip(fn () => getenv('MYCOMM_SKIP_SLOW') === '1', 'waits out one backoff');
 
@@ -170,11 +170,11 @@ test('creates_a_partner_line_and_a_connect_link', function () {
 
 it('accepts a base URL with or without the version path', function (string $baseUrl) {
     $history = [];
-    $client = new Client('mc_live_abc', $baseUrl, guzzle([new GuzzleResponse(200, [], (string) json_encode(Examples::RESPONSES['account.get']['body']))], $history));
+    $client = new Client('mc_live_abc', $baseUrl, guzzle([new GuzzleResponse(200, [], (string) json_encode(Examples::RESPONSES['me.get']['body']))], $history));
 
-    $client->account->get();
+    $client->me->get();
 
-    expect((string) $history[0]['request']->getUri())->toBe('https://mycomm.test/v1/account');
+    expect((string) $history[0]['request']->getUri())->toBe('https://mycomm.test/v1/me');
 })->with(['https://mycomm.test', 'https://mycomm.test/', 'https://mycomm.test/v1', 'https://mycomm.test/v1/', 'https://mycomm.test/partner/v1']);
 
 it('escapes path arguments', function () {

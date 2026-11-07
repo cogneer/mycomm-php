@@ -10,7 +10,7 @@ use MyComm\Models;
 use MyComm\Webhooks\Event;
 
 /**
- * `device.offline`: The device has been offline longer than the account's offline threshold;
+ * `device.offline`: The device has been offline longer than the user's offline threshold;
  * `data.previous_state` is the state it was in before it went offline.
  */
 final class DeviceOffline extends Event

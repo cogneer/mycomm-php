@@ -346,8 +346,8 @@ final class Lines
      * channel must be one of the user's, not disconnected, and appear once (`422 VALIDATION_FAILED` on
      * `senders`). An empty list leaves the line without senders: sends from it are held
      * (`no_sender_available`). Fires `line.sender_changed`. Queued messages on a sender that left the list
-     * move to the next healthy sender. A direct line sends only through its own number: any other list answers
-     * `409 INVALID_STATE` (its own number, switched on or off, is accepted).
+     * move to the next healthy sender. A direct line sends only through its own number: any other list, or its
+     * own number switched off or with `mirror_inbound` on, answers `409 INVALID_STATE`.
      *
      * @param  list<Inputs\LineSenderInput|array<string, mixed>>  $senders
      *

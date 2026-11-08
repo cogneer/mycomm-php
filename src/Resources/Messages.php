@@ -337,8 +337,10 @@ final class Messages
      * Send one message.
      *
      * Queues one message. Requires `messages:send`. The line decides the channel: give `line_id`, `channel_id`
-     * or `from` (the key's single line is used when it is restricted to exactly one). The recipient is `to` or
-     * `contact_id`. The content is the `content` union or one of the shorthand fields (`body`, `media_ids`).
+     * or `from` (the key's single line is used when it is restricted to exactly one). When the number in
+     * `from` also has a disconnected copy (it was on another phone or SIM before), the live one sends;
+     * `LINE_ARCHIVED` answers only when no live copy exists. The recipient is `to` or `contact_id`. The
+     * content is the `content` union or one of the shorthand fields (`body`, `media_ids`).
      *
      * Answers `202` with the message resource (`status: queued`) plus `warnings[]` (empty when none; for
      * example `CHANNEL_OPTIONS_IGNORED`). A message is accepted while the phone is offline or the channel is

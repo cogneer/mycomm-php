@@ -26,7 +26,7 @@ final class Usage
      * descending. Counters come from the line's own traffic only, never from the rest of the user's traffic.
      * Dates are interpreted in the time zone of each line's user. Counters match the usage reports in the
      * portal; rows and totals add `by_channel_type`. `line_id` narrows the report to one of your lines (`404
-     * NOT_FOUND` for any other id).
+     * NOT_FOUND` for any other id). There is no user filter: `user_id` answers `422 VALIDATION_FAILED`.
      *
      * @param  ?int  $limit  Page size, 1 to 200.
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.

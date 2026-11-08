@@ -7,8 +7,9 @@ declare(strict_types=1);
 namespace MyComm\Enums;
 
 /**
- * `direct`: the user's own line, where unclaimed replies land (one per user). `app`: a line an app or
- * integration sends through. `partner`: a line a partner created for a client.
+ * `direct`: a number's own line (one per number, made when it verifies), where replies no other line
+ * claims land; it sends only through that number. `app`: an integration line an app or the portal sends
+ * through, over one or more numbers. `partner`: an integration line a partner created for a client.
  *
  * The API may add values: one this SDK version does not know arrives as a plain string.
  */

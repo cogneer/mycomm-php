@@ -20,9 +20,15 @@ final class User extends Model
      */
     public readonly string $status;
 
-    public readonly string $country_iso;
+    /**
+     * ISO 3166-1 alpha-2, or `null` while the user has not set a country.
+     */
+    public readonly ?string $country_iso;
 
-    public readonly string $timezone;
+    /**
+     * IANA time zone, or `null` while the user has not set one (MyComm then uses UTC).
+     */
+    public readonly ?string $timezone;
 
     /**
      * BCP 47, default `en-GB`.
@@ -38,8 +44,8 @@ final class User extends Model
         $this->id = $data['id'];
         $this->name = $data['name'];
         $this->status = $data['status'];
-        $this->country_iso = $data['country_iso'];
-        $this->timezone = $data['timezone'];
+        $this->country_iso = $data['country_iso'] ?? null;
+        $this->timezone = $data['timezone'] ?? null;
         $this->default_locale = $data['default_locale'];
         $this->settings = UserSettings::fromArray($data['settings']);
         $this->created_at = self::dateTime($data['created_at']);

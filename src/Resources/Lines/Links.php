@@ -32,7 +32,9 @@ final class Links
      * is a bearer credential: treat it like a password. At most 20 links of a line are open at once (`422
      * CONNECT_SESSION_LIMIT_REACHED` with `details.max`) and 60 are created per line per hour (`429
      * RATE_LIMITED`). A detached line takes no new link (`422`), and detaching a line ends its open links. A
-     * line this key does not see is `404 NOT_FOUND`. Partner keys use `POST /partner/v1/lines/{id}/links`.
+     * direct line sends only through its own number, so it takes only `replace_device`, `manage` and `claim`
+     * links: `connect` and `add_channel` are `422` (a new number gets its own direct line). A line this key
+     * does not see is `404 NOT_FOUND`. Partner keys use `POST /partner/v1/lines/{id}/links`.
      *
      * @param  string|Omit|null  $return_url  `https` URL the page returns to when done; no credentials.
      * @param  list<string>|Omit|null  $allowed_origins  Origins that may frame the page and receive its outcome. `null` = no framing and no messages.

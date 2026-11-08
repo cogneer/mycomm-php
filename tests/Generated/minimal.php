@@ -612,7 +612,7 @@ return [
                 'disconnect_reason' => null,
                 'device_id' => null,
                 'device_sim_id' => null,
-                'default_line_id' => null,
+                'direct_line_id' => null,
                 'line_ids' => [],
                 'capabilities' => [
                     'text_max_chars' => null,
@@ -726,7 +726,7 @@ return [
                 'disconnect_reason' => null,
                 'device_id' => null,
                 'device_sim_id' => null,
-                'default_line_id' => null,
+                'direct_line_id' => null,
                 'line_ids' => [],
                 'capabilities' => [
                     'text_max_chars' => null,
@@ -840,7 +840,7 @@ return [
                 'disconnect_reason' => null,
                 'device_id' => null,
                 'device_sim_id' => null,
-                'default_line_id' => null,
+                'direct_line_id' => null,
                 'line_ids' => [],
                 'capabilities' => [
                     'text_max_chars' => null,
@@ -954,7 +954,7 @@ return [
                 'disconnect_reason' => null,
                 'device_id' => null,
                 'device_sim_id' => null,
-                'default_line_id' => null,
+                'direct_line_id' => null,
                 'line_ids' => [],
                 'capabilities' => [
                     'text_max_chars' => null,
@@ -1068,7 +1068,7 @@ return [
                 'disconnect_reason' => null,
                 'device_id' => null,
                 'device_sim_id' => null,
-                'default_line_id' => null,
+                'direct_line_id' => null,
                 'line_ids' => [],
                 'capabilities' => [
                     'text_max_chars' => null,
@@ -1182,7 +1182,7 @@ return [
                 'disconnect_reason' => null,
                 'device_id' => null,
                 'device_sim_id' => null,
-                'default_line_id' => null,
+                'direct_line_id' => null,
                 'line_ids' => [],
                 'capabilities' => [
                     'text_max_chars' => null,
@@ -1296,7 +1296,7 @@ return [
                 'disconnect_reason' => null,
                 'device_id' => null,
                 'device_sim_id' => null,
-                'default_line_id' => null,
+                'direct_line_id' => null,
                 'line_ids' => [],
                 'capabilities' => [
                     'text_max_chars' => null,
@@ -1418,7 +1418,7 @@ return [
                 'disconnect_reason' => null,
                 'device_id' => null,
                 'device_sim_id' => null,
-                'default_line_id' => null,
+                'direct_line_id' => null,
                 'line_ids' => [],
                 'capabilities' => [
                     'text_max_chars' => null,
@@ -2848,8 +2848,8 @@ return [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'name' => 'Example name',
                 'status' => 'Example status',
-                'country_iso' => 'PK',
-                'timezone' => 'Asia/Karachi',
+                'country_iso' => null,
+                'timezone' => null,
                 'default_locale' => 'en',
                 'settings' => [],
                 'created_at' => '2026-10-01T09:15:02Z',
@@ -2862,8 +2862,8 @@ return [
                 'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'name' => 'Example name',
                 'status' => 'Example status',
-                'country_iso' => 'PK',
-                'timezone' => 'Asia/Karachi',
+                'country_iso' => null,
+                'timezone' => null,
                 'default_locale' => 'en',
                 'settings' => [],
                 'created_at' => '2026-10-01T09:15:02Z',
@@ -4785,7 +4785,7 @@ return [
                     'disconnect_reason' => null,
                     'device_id' => null,
                     'device_sim_id' => null,
-                    'default_line_id' => null,
+                    'direct_line_id' => null,
                     'line_ids' => [],
                     'capabilities' => [
                         'text_max_chars' => null,
@@ -4906,7 +4906,7 @@ return [
                     'disconnect_reason' => null,
                     'device_id' => null,
                     'device_sim_id' => null,
-                    'default_line_id' => null,
+                    'direct_line_id' => null,
                     'line_ids' => [],
                     'capabilities' => [
                         'text_max_chars' => null,
@@ -5028,7 +5028,7 @@ return [
                     'disconnect_reason' => null,
                     'device_id' => null,
                     'device_sim_id' => null,
-                    'default_line_id' => null,
+                    'direct_line_id' => null,
                     'line_ids' => [],
                     'capabilities' => [
                         'text_max_chars' => null,
@@ -5150,7 +5150,7 @@ return [
                     'disconnect_reason' => null,
                     'device_id' => null,
                     'device_sim_id' => null,
-                    'default_line_id' => null,
+                    'direct_line_id' => null,
                     'line_ids' => [],
                     'capabilities' => [
                         'text_max_chars' => null,
@@ -5274,7 +5274,7 @@ return [
                     'disconnect_reason' => null,
                     'device_id' => null,
                     'device_sim_id' => null,
-                    'default_line_id' => null,
+                    'direct_line_id' => null,
                     'line_ids' => [],
                     'capabilities' => [
                         'text_max_chars' => null,

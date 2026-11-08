@@ -124,8 +124,8 @@ final class Lines
      * Every channel must be one of the user's, connected and verified, and appear once (`422
      * VALIDATION_FAILED` on `senders`; a channel still pending verification or disconnected answers `422
      * CHANNEL_INACTIVE`). `409 NAME_TAKEN` `{field: "name"}` when another line of the user has the name
-     * (case-insensitive, the Direct line's included). A line without senders is allowed; it can send once it
-     * has one.
+     * (case-insensitive, direct lines included). A line without senders is allowed; it can send once it has
+     * one.
      *
      * @param  list<Inputs\LineSenderInput|array<string, mixed>>|null  $senders
      *
@@ -193,8 +193,7 @@ final class Lines
      * Requires `channels:write`. Every field is optional. `reply_window_days` (1 to 365) is how long a reply
      * on a channel this line wrote from comes back to this line. `settings` keys are merged into the stored
      * settings (a key set to `null` is removed). `409 NAME_TAKEN` `{field: "name"}` when another line of the
-     * user has the name (case-insensitive). The Direct line keeps its name: a different `name` answers `422
-     * LINE_IS_DIRECT` `{line_id}`, while its other fields change as usual. `send_mode`, `sticky_sender` and
+     * user has the name (case-insensitive). A direct line may be renamed too. `send_mode`, `sticky_sender` and
      * `failover_seconds` set how the line picks its sender; `failover_seconds` is merged lane by lane into the
      * stored hold times (`null` restores the defaults). `prefer` sets the channel type the line sends with
      * first and `cross_type_fallback` (merged into the stored value) resends an undelivered message through
@@ -284,10 +283,11 @@ final class Lines
     /**
      * Archive a line.
      *
-     * Requires `channels:write`. Archives the line; nothing is deleted. The Direct line cannot be archived
-     * (`422 LINE_IS_DIRECT`). Sends from an archived line are refused (`LINE_ARCHIVED`), reply routing skips
-     * it and its open conversations move to the Direct line. Keys restricted to it keep read access. Archiving
-     * an archived line changes nothing. `POST /lines/{id}/unarchive` brings it back.
+     * Requires `channels:write`. Archives the line; nothing is deleted. A direct line cannot be archived (`422
+     * LINE_IS_DIRECT`): it is archived when its number disconnects. Sends from an archived line are refused
+     * (`LINE_ARCHIVED`), reply routing skips it and each open conversation moves to the direct line of its
+     * number. Keys restricted to it keep read access. Archiving an archived line changes nothing. `POST
+     * /lines/{id}/unarchive` brings it back.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -305,7 +305,8 @@ final class Lines
      * Unarchive a line.
      *
      * Requires `channels:write`. Does nothing when the line is not archived. Takes no body. A partner line
-     * that was detached stays archived: `409 INVALID_STATE` `{line_id}`.
+     * that was detached stays archived: `409 INVALID_STATE` `{line_id}`. So does the direct line of a
+     * disconnected number (`409 INVALID_STATE`): it comes back by itself when the number is connected again.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -345,7 +346,8 @@ final class Lines
      * channel must be one of the user's, not disconnected, and appear once (`422 VALIDATION_FAILED` on
      * `senders`). An empty list leaves the line without senders: sends from it are held
      * (`no_sender_available`). Fires `line.sender_changed`. Queued messages on a sender that left the list
-     * move to the next healthy sender.
+     * move to the next healthy sender. A direct line sends only through its own number: any other list answers
+     * `409 INVALID_STATE` (its own number, switched on or off, is accepted).
      *
      * @param  list<Inputs\LineSenderInput|array<string, mixed>>  $senders
      *

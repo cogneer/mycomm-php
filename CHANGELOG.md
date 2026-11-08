@@ -31,6 +31,8 @@ line. Nothing from 1.x is kept as an alias.
   are `USER_SUSPENDED`, `USER_PENDING_DELETION`, `USER_THROTTLED` and `NEW_USER_LIMIT`; pause reasons
   `account_suspended` and `account_deleted` are `user_suspended` and `user_deleted`; `number_has_account` is
   `number_has_user`, the hold reason `account_limit` is `user_limit` and the export type `account_zip` is `user_zip`.
+- Every number has its own direct line: `Channel::$default_line_id` is `$direct_line_id`. `User::$country_iso` and
+  `$timezone` may be `null` until the user sets them.
 
 ### Removed (breaking)
 

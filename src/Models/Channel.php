@@ -53,9 +53,9 @@ final class Channel extends Model
     public readonly ?string $device_sim_id;
 
     /**
-     * The line unknown replies to this number land on (the user's Direct line unless the owner chose another); `null` until the number is connected.
+     * This number's direct line, where replies no other line claims land; `null` until the number is verified. A disconnected number keeps it, archived.
      */
-    public readonly ?string $default_line_id;
+    public readonly ?string $direct_line_id;
 
     /**
      * The lines that have this channel in their sender list (any role, archived lines left out), oldest first. A key restricted to lines sees only its own.
@@ -127,7 +127,7 @@ final class Channel extends Model
         $this->disconnect_reason = isset($data['disconnect_reason']) ? self::enum(Enums\ChannelDisconnectReason::class, $data['disconnect_reason']) : null;
         $this->device_id = $data['device_id'] ?? null;
         $this->device_sim_id = $data['device_sim_id'] ?? null;
-        $this->default_line_id = $data['default_line_id'] ?? null;
+        $this->direct_line_id = $data['direct_line_id'] ?? null;
         $this->line_ids = $data['line_ids'];
         $this->capabilities = ChannelCapabilities::fromArray($data['capabilities']);
         $this->allowed_destination_countries = $data['allowed_destination_countries'] ?? null;

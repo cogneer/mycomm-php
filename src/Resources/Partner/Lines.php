@@ -133,7 +133,7 @@ final class Lines
      * joins the line to a user that already has the number (that needs a code sent to the number), and the
      * answer is the same whether or not the number has a user. `external_ref` is unique among your live lines:
      * a taken one answers `409 EXTERNAL_REF_TAKEN` with the line in `details.line_id`. Detaching a line frees
-     * its `external_ref`. A `name` the user's Direct line has ("Direct") answers `409 NAME_TAKEN`.
+     * its `external_ref`.
      *
      * @param  string|Omit|null  $user_number  The user's number in E.164, if you know it; only a hint for the connect page.
      * @param  list<string>|Omit|null  $allowed_channel_types
@@ -269,9 +269,10 @@ final class Lines
     /**
      * Detach a line.
      *
-     * Requires `lines:write`. Archives the line: its open conversations move to the user's Direct line, and
-     * the user keeps the user, its channels, phones and history. `line.detached` is emitted once; detaching an
-     * archived line again changes nothing. The line header stops working for it (`403 LINE_CONTEXT_INVALID`).
+     * Requires `lines:write`. Archives the line: each open conversation moves to the direct line of its
+     * number, and the user keeps the user, its channels, phones and history. `line.detached` is emitted once;
+     * detaching an archived line again changes nothing. The line header stops working for it (`403
+     * LINE_CONTEXT_INVALID`).
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached

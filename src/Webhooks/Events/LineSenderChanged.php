@@ -11,7 +11,7 @@ use MyComm\Webhooks\Event;
 
 /**
  * `line.sender_changed`: The sender list of a line changed: senders were set or reordered, a newly
- * verified number joined the Direct line, or a disconnected number left every line. `data.senders` is the
+ * verified number joined its direct line, or a disconnected number left every line. `data.senders` is the
  * whole list after the change, in position order (0 first).
  */
 final class LineSenderChanged extends Event

@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace MyComm\Enums;
 
 /**
- * `partner` with the partner key, `owner` by a person of the user, `system` by MyComm.
+ * `partner` with the partner key, `owner` by the user, `system` by MyComm.
  *
  * The API may add values: one this SDK version does not know arrives as a plain string.
  */

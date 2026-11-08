@@ -22,7 +22,7 @@ final class WebhookLineDetachedData extends Model
     public readonly ?string $external_ref;
 
     /**
-     * `partner` with the partner key, `owner` by a person of the user, `system` by MyComm.
+     * `partner` with the partner key, `owner` by the user, `system` by MyComm.
      */
     public readonly Enums\LineDetachedBy|string $by;
 

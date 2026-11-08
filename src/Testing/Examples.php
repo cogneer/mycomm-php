@@ -1026,7 +1026,7 @@ final class Examples
                 'disconnect_reason' => 'owner',
                 'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'direct_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'capabilities' => [
                     'text_max_chars' => 1,
@@ -1180,7 +1180,7 @@ final class Examples
                 'disconnect_reason' => 'owner',
                 'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'direct_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'capabilities' => [
                     'text_max_chars' => 1,
@@ -1332,7 +1332,7 @@ final class Examples
                         'disconnect_reason' => 'owner',
                         'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                        'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                        'direct_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                         'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                         'capabilities' => [
                             'text_max_chars' => 1,
@@ -1485,7 +1485,7 @@ final class Examples
                 'disconnect_reason' => 'owner',
                 'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'direct_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'capabilities' => [
                     'text_max_chars' => 1,
@@ -1635,7 +1635,7 @@ final class Examples
                 'disconnect_reason' => 'owner',
                 'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'direct_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'capabilities' => [
                     'text_max_chars' => 1,
@@ -1826,7 +1826,7 @@ final class Examples
                 'disconnect_reason' => 'owner',
                 'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'direct_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'capabilities' => [
                     'text_max_chars' => 1,
@@ -1976,7 +1976,7 @@ final class Examples
                 'disconnect_reason' => 'owner',
                 'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'direct_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'capabilities' => [
                     'text_max_chars' => 1,
@@ -2126,7 +2126,7 @@ final class Examples
                 'disconnect_reason' => 'owner',
                 'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                'direct_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                 'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                 'capabilities' => [
                     'text_max_chars' => 1,
@@ -6629,7 +6629,7 @@ final class Examples
                     'disconnect_reason' => 'owner',
                     'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'direct_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'capabilities' => [
                         'text_max_chars' => 1,
@@ -6790,7 +6790,7 @@ final class Examples
                     'disconnect_reason' => 'owner',
                     'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'direct_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'capabilities' => [
                         'text_max_chars' => 1,
@@ -6952,7 +6952,7 @@ final class Examples
                     'disconnect_reason' => 'owner',
                     'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'direct_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'capabilities' => [
                         'text_max_chars' => 1,
@@ -7114,7 +7114,7 @@ final class Examples
                     'disconnect_reason' => 'owner',
                     'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'direct_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'capabilities' => [
                         'text_max_chars' => 1,
@@ -7278,7 +7278,7 @@ final class Examples
                     'disconnect_reason' => 'owner',
                     'device_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'device_sim_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
-                    'default_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                    'direct_line_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'line_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'capabilities' => [
                         'text_max_chars' => 1,

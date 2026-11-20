@@ -6,5 +6,5 @@ namespace MyComm;
 
 final class Version
 {
-    public const SDK = '2.1.0';
+    public const SDK = '2.2.0';
 }

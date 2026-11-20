@@ -490,9 +490,9 @@ so `$channel->status === ChannelStatus::Active` keeps working and nothing throws
 The SDK follows [semantic versioning](https://semver.org). It is generated from the same OpenAPI documents
 that the API is tested against; [CHANGELOG.md](CHANGELOG.md) lists what each release added.
 
-Release status: `2.0.0` (lines replace inboxes) is published on Packagist. `2.1.0` (`account_id` is `user_id` and
-`default_line_id` is `direct_line_id`) is not published yet; until it is, `composer require mycomm/mycomm-php` installs
-`2.0.0`.
+Release status: `2.1.0` (`account_id` is `user_id` and `default_line_id` is `direct_line_id`) is published on
+Packagist. `2.2.0` (WhatsApp numbers, matching API `2.1.0`) is not published yet; until it is,
+`composer require mycomm/mycomm-php` installs `2.1.0`.
 
 ## Contributing
 

@@ -7,7 +7,8 @@ namespace MyComm\Exceptions;
 use MyComm\Http\RetryAfter;
 
 /**
- * 429: too many requests. The SDK has already waited and retried before throwing this.
+ * 429: too many requests. The SDK has already waited and retried before throwing this, except for
+ * `CHANNEL_LINK_BLOCKED`, which it throws at once: linking a number stays blocked for `retryAfter()` seconds.
  */
 final class RateLimitException extends ApiException
 {

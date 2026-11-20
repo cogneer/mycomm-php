@@ -2,11 +2,17 @@
 
 declare(strict_types=1);
 
+use MyComm\Enums\ChannelConnectAction;
+use MyComm\Enums\ChannelLinkMethod;
+use MyComm\Enums\ChannelLinkState;
+use MyComm\Enums\ChannelType;
 use MyComm\Enums\MessageStatus;
 use MyComm\Exceptions\ConnectionException;
 use MyComm\Exceptions\UnprocessableException;
 use MyComm\Exceptions\ValidationException;
 use MyComm\Http\Request;
+use MyComm\Inputs\ChannelConnectInput;
+use MyComm\Models\ChannelConnectState;
 use MyComm\Models\SendMessageResponse;
 use MyComm\Testing\FakeResponse;
 use MyComm\Testing\FakeWebhook;
@@ -122,4 +128,25 @@ it('builds a signed webhook delivery for a receiver test', function () {
 
     expect($event->type)->toBe('message.received')
         ->and($event->data->message->body)->toBe('STOP');
+});
+
+it('links a WhatsApp number, polls it and links it again', function () {
+    $fake = new MyCommFake;
+    $fake->respond('channels.create', ['id' => 'ch-1', 'type' => 'whatsapp_web', 'status' => 'pending_verification'])
+        ->respondOnce('channels.connectState', ['state' => 'awaiting_link', 'method' => 'pairing_code', 'pairing_code' => 'ABCD-EFGH'])
+        ->respond('channels.connectState', ['state' => 'needs_relink', 'method' => null, 'pairing_code' => null]);
+    $mycomm = $fake->client();
+
+    $channel = $mycomm->channels->create(type: ChannelType::WhatsappWeb->value, connect: new ChannelConnectInput(ChannelLinkMethod::PairingCode, phone: '+923001234567'));
+    $first = $mycomm->channels->connectState($channel->id);
+    $later = $mycomm->channels->connectState($channel->id);
+    $again = $mycomm->channels->continueConnect($channel->id, ChannelConnectAction::Relink, method: ChannelLinkMethod::QrScan);
+
+    expect($channel->type)->toBe(ChannelType::WhatsappWeb)
+        ->and($first->state)->toBe(ChannelLinkState::AwaitingLink)
+        ->and($first->pairing_code)->toBe('ABCD-EFGH')
+        ->and($later->state)->toBe(ChannelLinkState::NeedsRelink)
+        ->and($again)->toBeInstanceOf(ChannelConnectState::class);
+    $fake->assertCalled('channels.create', fn (Request $request) => $request->json === ['type' => 'whatsapp_web', 'connect' => ['method' => 'pairing_code', 'phone' => '+923001234567']])
+        ->assertCalled('channels.continueConnect', fn (Request $request) => $request->path === '/v1/channels/ch-1/connect' && $request->json === ['action' => 'relink', 'method' => 'qr_scan']);
 });

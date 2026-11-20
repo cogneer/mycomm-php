@@ -25,4 +25,5 @@ enum ChannelPauseReason: string
     case AutoSessionLost = 'auto:session_lost';
     case AutoProviderBanned = 'auto:provider_banned';
     case AutoCredentialsInvalid = 'auto:credentials_invalid';
+    case AutoProviderUnconfirmed = 'auto:provider_unconfirmed';
 }

@@ -29,7 +29,7 @@ final class Stats
      * paginated with `cursor`. A key restricted to lines sees its lines only and may group by `none` or
      * `line`; other values give `VALIDATION_FAILED`.
      *
-     * @param  ?string  $channel_type  One of: `android_sim`, `whatsapp_evolution`, `telegram_bot`.
+     * @param  ?string  $channel_type  One of: `android_sim`, `whatsapp_web`, `telegram_bot`.
      * @param  ?string  $group_by  Default `none`. One of: `none`, `channel`, `line`, `channel_type`.
      * @param  ?int  $limit  Grouped results only. 1 to 1,000 rows, default 200.
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.

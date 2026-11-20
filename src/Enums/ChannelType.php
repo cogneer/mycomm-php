@@ -12,6 +12,6 @@ namespace MyComm\Enums;
 enum ChannelType: string
 {
     case AndroidSim = 'android_sim';
-    case WhatsappEvolution = 'whatsapp_evolution';
+    case WhatsappWeb = 'whatsapp_web';
     case TelegramBot = 'telegram_bot';
 }

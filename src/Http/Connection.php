@@ -25,6 +25,9 @@ final class Connection
     /** A repeat while the first request with the same key is still running: the API asks to wait a second. */
     private const IN_PROGRESS = 'IDEMPOTENCY_IN_PROGRESS';
 
+    /** Linking a number is blocked for minutes or hours, and a repeat with the same key replays the refusal. */
+    private const LINK_BLOCKED = 'CHANNEL_LINK_BLOCKED';
+
     private const MAX_DELAY = 60.0;
 
     /** @var Closure(float): void */
@@ -163,6 +166,7 @@ final class Connection
         $wait = $retryAfter !== null ? min((float) $retryAfter, self::MAX_DELAY) : null;
 
         return match (true) {
+            $error->errorCode === self::LINK_BLOCKED => null,
             // Rejected before any work started, so safe for every method.
             $response->status === 429, $response->status === 503 => $wait ?? self::backoff($attempt),
             $response->status === 409 && $error->errorCode === self::IN_PROGRESS => $wait ?? 1.0,

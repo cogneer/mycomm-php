@@ -36,7 +36,7 @@ final class Lines
      *
      * @param  ?bool  $archived  Default `false`.
      * @param  ?string  $channel_id  Only lines that have this channel in their sender list.
-     * @param  ?string  $channel_type  Only lines with a sender of this type. One of: `android_sim`, `whatsapp_evolution`, `telegram_bot`.
+     * @param  ?string  $channel_type  Only lines with a sender of this type. One of: `android_sim`, `whatsapp_web`, `telegram_bot`.
      * @param  ?int  $limit  Page size, 1 to 200.
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
      * @return Page<Models\Line>
@@ -97,7 +97,7 @@ final class Lines
      *
      * @param  ?bool  $archived  Default `false`.
      * @param  ?string  $channel_id  Only lines that have this channel in their sender list.
-     * @param  ?string  $channel_type  Only lines with a sender of this type. One of: `android_sim`, `whatsapp_evolution`, `telegram_bot`.
+     * @param  ?string  $channel_type  Only lines with a sender of this type. One of: `android_sim`, `whatsapp_web`, `telegram_bot`.
      * @param  ?int  $limit  Page size, 1 to 200.
      * @return Generator<int, Models\Line>
      *

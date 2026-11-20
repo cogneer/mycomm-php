@@ -451,11 +451,17 @@ return [
         'operation' => 'channels.create',
         'resource' => ['channels'],
         'method' => 'create',
-        'arguments' => [],
+        'arguments' => [
+            'type' => 'whatsapp_web',
+            'connect' => [
+                'method' => 'pairing_code',
+                'phone' => '+923001234567',
+            ],
+        ],
         'http' => 'POST',
         'path' => '/v1/channels',
         'format' => 'json',
-        'returns' => 'json',
+        'returns' => 'MyComm\\Models\\Channel',
         'item' => null,
     ],
     [
@@ -468,7 +474,21 @@ return [
         'http' => 'GET',
         'path' => '/v1/channels/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/connect',
         'format' => 'none',
-        'returns' => 'json',
+        'returns' => 'MyComm\\Models\\ChannelConnectState',
+        'item' => null,
+    ],
+    [
+        'operation' => 'channels.continueConnect',
+        'resource' => ['channels'],
+        'method' => 'continueConnect',
+        'arguments' => [
+            'id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+            'action' => 'retry',
+        ],
+        'http' => 'POST',
+        'path' => '/v1/channels/01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c/connect',
+        'format' => 'json',
+        'returns' => 'MyComm\\Models\\ChannelConnectState',
         'item' => null,
     ],
     [
@@ -1455,7 +1475,17 @@ return [
                     'media_ids' => ['01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c'],
                     'template_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
                     'variables' => [],
-                    'channel_options' => [],
+                    'channel_options' => [
+                        'android_sim' => [
+                            'smart_replace' => true,
+                        ],
+                        'whatsapp_web' => [
+                            'link_preview' => true,
+                            'quoted_message_id' => '01923f80-5c6a-7b10-9c21-0d3e4f5a6b7c',
+                            'mentions' => ['Example mention'],
+                        ],
+                        'telegram_bot' => [],
+                    ],
                     'smart_replace' => true,
                     'category' => 'transactional',
                     'lane' => 'high',

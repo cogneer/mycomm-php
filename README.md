@@ -257,6 +257,8 @@ All of them extend `ApiException`, which extends `MyCommException`, the base of 
 
 The SDK retries a call twice (configurable) when the network fails, when MyComm answers `429` or `503`
 (waiting as long as `Retry-After` asks) and on other `5xx` answers, with exponential backoff.
+`429 CHANNEL_LINK_BLOCKED` is thrown at once: linking a number stays blocked for minutes or hours, and
+`$e->retryAfter()` says how long. `ServerException::retryAfter()` reads `Retry-After` of a `503` the same way.
 
 That is safe for sends because every POST carries an `Idempotency-Key`, and a retry repeats the same key:
 MyComm then replays the first answer instead of sending a second message. Pass your own key to make a
@@ -392,6 +394,32 @@ and dry-runs the send through the line (`$partner->forLine($lineId)->verify(to: 
 
 A user key mints the same links for its own lines with `$mycomm->lines->links->create($lineId, purpose: ...)` and
 follows them with `$mycomm->links->get($id)` and `revoke($id)`.
+
+## Connecting a WhatsApp number
+
+A WhatsApp number is linked as a device of the phone that holds it. Create the channel, then poll its connect
+state until the phone has linked it:
+
+```php
+use MyComm\Enums\ChannelConnectAction;
+use MyComm\Enums\ChannelLinkMethod;
+use MyComm\Enums\ChannelLinkState;
+use MyComm\Inputs\ChannelConnectInput;
+
+$channel = $mycomm->channels->create(
+    type: 'whatsapp_web',
+    connect: new ChannelConnectInput(ChannelLinkMethod::PairingCode, phone: '+923001234567'),
+);
+
+$state = $mycomm->channels->connectState($channel->id);
+$state->pairing_code;     // type it on the phone (WhatsApp, Linked devices); or $state->qr_png_base64 for qr_scan
+$state->state;            // ChannelLinkState::AwaitingLink, then ChannelLinkState::Connected, or failed / expired
+
+// After a failed or expired attempt, or for a number whose session was logged out (needs_relink):
+$mycomm->channels->continueConnect($channel->id, ChannelConnectAction::Retry);
+$mycomm->channels->continueConnect($channel->id, ChannelConnectAction::SwitchMethod, method: ChannelLinkMethod::QrScan);
+$mycomm->channels->continueConnect($channel->id, ChannelConnectAction::Relink);
+```
 
 ## Uploading files
 

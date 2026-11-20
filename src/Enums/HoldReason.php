@@ -11,7 +11,8 @@ namespace MyComm\Enums;
  * (`frequency_cap`, `content_cap`, `recipient_cap`, `new_recipient_cap`, `user_limit`,
  * `carrier_cooldown`), the phone (`device_offline`, `device_paused`, `device_hot`), the channel or
  * campaign being paused (`channel_paused`, `campaign_paused`), a file still being processed
- * (`media_processing`), a link needing approval (`link_restricted`), the line's sender list
+ * (`media_processing`), a link needing approval (`link_restricted`), a WhatsApp number linked less than 24
+ * hours ago (`link_day`) or limited by WhatsApp (`channel_restricted`), the line's sender list
  * (`no_sender_available`), a partner's sponsored allowance used up for the cycle
  * (`sponsor_quota_exhausted`), the number being unpaid (`unpaid`) or a platform hold (`platform_hold`). A
  * new value may appear.
@@ -40,4 +41,6 @@ enum HoldReason: string
     case NoSenderAvailable = 'no_sender_available';
     case SponsorQuotaExhausted = 'sponsor_quota_exhausted';
     case Unpaid = 'unpaid';
+    case LinkDay = 'link_day';
+    case ChannelRestricted = 'channel_restricted';
 }

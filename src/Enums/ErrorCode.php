@@ -78,6 +78,12 @@ enum ErrorCode: string
     case IdentityTypeUnavailable = 'IDENTITY_TYPE_UNAVAILABLE';
     case ChannelTypeNotAllowed = 'CHANNEL_TYPE_NOT_ALLOWED';
     case ChannelTokenInvalid = 'CHANNEL_TOKEN_INVALID';
+    case ChannelLimitReached = 'CHANNEL_LIMIT_REACHED';
+    case ChannelNumberInUse = 'CHANNEL_NUMBER_IN_USE';
+    case ChannelLinkBusy = 'CHANNEL_LINK_BUSY';
+    case ChannelLinkBlocked = 'CHANNEL_LINK_BLOCKED';
+    case ChannelNoCapacity = 'CHANNEL_NO_CAPACITY';
+    case ChannelServerUnavailable = 'CHANNEL_SERVER_UNAVAILABLE';
     case MediaTypeUnsupported = 'MEDIA_TYPE_UNSUPPORTED';
     case MediaTooLarge = 'MEDIA_TOO_LARGE';
     case MediaCountExceeded = 'MEDIA_COUNT_EXCEEDED';

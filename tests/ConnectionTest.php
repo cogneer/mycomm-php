@@ -111,6 +111,41 @@ it('waits as long as Retry-After says on a 429', function () {
         ->and($transport->slept)->toBe([7.0]);
 });
 
+it('throws a blocked link at once instead of waiting', function () {
+    [$connection, $transport] = scripted([errorResponse(429, 'CHANNEL_LINK_BLOCKED', ['kind' => 'attempts', 'retry_after_seconds' => 3600], ['Retry-After' => '3600'])]);
+
+    try {
+        $connection->request('channels.create', 'POST', '/v1/channels');
+        $this->fail('No exception was thrown.');
+    } catch (RateLimitException $e) {
+        expect($e->retryAfter())->toBe(3600)
+            ->and($e->details['kind'])->toBe('attempts')
+            ->and($transport->requests)->toHaveCount(1)
+            ->and($transport->slept)->toBe([]);
+    }
+});
+
+it('waits as long as Retry-After says on a 503 of the WhatsApp server', function () {
+    [$connection, $transport] = scripted([errorResponse(503, 'CHANNEL_SERVER_UNAVAILABLE', headers: ['Retry-After' => '30']), new Response(202, [], '{"state":"connecting"}')]);
+
+    $connection->request('channels.continueConnect', 'POST', '/v1/channels/ch-1/connect', body: ['action' => 'retry']);
+
+    expect($transport->requests)->toHaveCount(2)
+        ->and($transport->requests[1]->header('Idempotency-Key'))->toBe($transport->requests[0]->header('Idempotency-Key'))
+        ->and($transport->slept)->toBe([30.0]);
+});
+
+it('tells how long a failing server asks to wait', function () {
+    [$connection] = scripted([errorResponse(503, 'CHANNEL_SERVER_UNAVAILABLE', headers: ['Retry-After' => '30'])], maxRetries: 0);
+
+    try {
+        $connection->request('x', 'POST', '/v1/channels');
+        $this->fail('No exception was thrown.');
+    } catch (ServerException $e) {
+        expect($e->retryAfter())->toBe(30);
+    }
+});
+
 it('backs off exponentially without Retry-After', function () {
     [$connection, $transport] = scripted([new Response(503), new Response(502), new Response(200, [], '{}')]);
 

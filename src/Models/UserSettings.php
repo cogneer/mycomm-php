@@ -51,6 +51,8 @@ final class UserSettings extends Model
     public readonly ?array $sms;
 
     /**
+     * `auto_connect_sims` (boolean) and `allowed_types` (`null` or a list of channel types). Keys MyComm staff set for the user (channel access granted on request, number limits) are not shown. Sending one of them back unchan…
+     *
      * @var array<string, mixed>|null
      */
     public readonly ?array $channels;

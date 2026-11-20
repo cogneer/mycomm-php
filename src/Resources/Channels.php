@@ -7,12 +7,13 @@ declare(strict_types=1);
 namespace MyComm\Resources;
 
 use Generator;
+use MyComm\Enums;
 use MyComm\Exceptions\ApiException;
 use MyComm\Exceptions\ConnectionException;
 use MyComm\Exceptions\InvalidArgumentException;
 use MyComm\Http\Connection;
 use MyComm\Http\Params;
-use MyComm\Input;
+use MyComm\Inputs;
 use MyComm\Models;
 use MyComm\Omit;
 use MyComm\Page;
@@ -280,7 +281,7 @@ final class Channels
      * evaluated matches no band. A key restricted to lines sees only the channels of those lines.
      *
      * @param  ?string  $status  One of: `pending_verification`, `active`, `paused`, `disconnected`.
-     * @param  ?string  $type  One of: `android_sim`, `whatsapp_evolution`, `telegram_bot`.
+     * @param  ?string  $type  One of: `android_sim`, `whatsapp_web`, `telegram_bot`.
      * @param  ?string  $health_band  One of: `good`, `fair`, `poor`, `critical`.
      * @param  ?int  $limit  Page size, 1 to 200.
      * @param  ?string  $cursor  Opaque cursor from a previous page's `next_cursor`; valid for 24 hours.
@@ -341,7 +342,7 @@ final class Channels
      * `limit` is the page size, not a cap on the items.
      *
      * @param  ?string  $status  One of: `pending_verification`, `active`, `paused`, `disconnected`.
-     * @param  ?string  $type  One of: `android_sim`, `whatsapp_evolution`, `telegram_bot`.
+     * @param  ?string  $type  One of: `android_sim`, `whatsapp_web`, `telegram_bot`.
      * @param  ?string  $health_band  One of: `good`, `fair`, `poor`, `critical`.
      * @param  ?int  $limit  Page size, 1 to 200.
      * @return Generator<int, Models\Channel>
@@ -361,45 +362,84 @@ final class Channels
     }
 
     /**
-     * Connect a push channel.
+     * Connect a WhatsApp number.
      *
-     * Requires `channels:write`. Connecting a push channel (WhatsApp, Telegram) is part of v2; v1 answers `422
-     * CHANNEL_TYPE_NOT_ALLOWED` to every request, whatever its body. A SIM is connected with `POST
-     * /v1/devices/{id}/sims/{sim_id}/connect`.
+     * Requires `channels:write`. Creates a number of a type that is linked to the phone that holds it (today
+     * `whatsapp_web`, a WhatsApp linked device; a preview type that support turns on per user) and starts
+     * linking it. The answer is the channel in `pending_verification` with an empty `address`; poll `GET
+     * /v1/channels/{id}/connect` for the pairing code or QR and for the outcome. Once the phone links, the
+     * channel becomes `active` with the linked number as its `address`, and `channel.connected` is sent.
      *
-     * @param  ?string  $type  The channel type asked for; echoed in `details.type` of the error.
-     * @param  array<string, mixed>|null  $connect  The type's connect input (v2).
-     * @return array<string, mixed>
+     * `connect.method` `pairing_code` (offered first: it works with one phone) needs `connect.phone`, the
+     * WhatsApp number in E.164 (`+923001234567`); WhatsApp shows a code to type on that phone. `qr_scan` shows
+     * a QR to scan with it. A pending connect of the user for the same phone (for a QR, one with no phone) is
+     * returned instead of a second channel. A SIM is connected with `POST
+     * /v1/devices/{id}/sims/{sim_id}/connect`; any other type, or a type not turned on for the user, is `422
+     * CHANNEL_TYPE_NOT_ALLOWED` `{type}`. A missing `type` (or one that is not a string) is `422
+     * CHANNEL_TYPE_NOT_ALLOWED` too, with no `details.type`, never `VALIDATION_FAILED`.
      *
+     * Refusals: `422 CHANNEL_LIMIT_REACHED` `{limit}` at the user's number limit; `409 CHANNEL_NUMBER_IN_USE`
+     * when the number is live on another of the user's channels (`details.channel_id` when that channel was
+     * logged out: link it again there with `POST /v1/channels/{id}/connect`); `429 CHANNEL_LINK_BLOCKED`
+     * `{kind, retry_after_seconds}` after three failed links in 24 hours (`attempts`) or five link starts in
+     * 15 minutes (`rate`), with `Retry-After`; `409 CHANNEL_LINK_BUSY` while another connect step of the user
+     * is running (retry in a few seconds); `503 CHANNEL_NO_CAPACITY` when no server has room and `503
+     * CHANNEL_SERVER_UNAVAILABLE` (with `Retry-After`) when the server cannot be reached. A refused or failed
+     * create leaves no channel behind. A number another user holds is only refused once the phone has linked
+     * it: the poll then answers `failed` with `refusal.code` `number_in_use`.
+     *
+     * @param  string  $type  The channel type; `whatsapp_web`. Echoed in `details.type` of `CHANNEL_TYPE_NOT_ALLOWED`. Missing, it answers `CHANNEL_TYPE_NOT_ALLOWED` without `details.type`.
+     * @param  Inputs\ChannelConnectInput|array<string, mixed>  $connect
+     * @param  string|Omit|null  $name  Channel label; default empty (the portal shows the number).
+     *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
      */
     public function create(
-        ?string $type = null,
-        ?string $name = null,
-        ?array $connect = null,
+        string $type,
+        Inputs\ChannelConnectInput|array $connect,
+        string|Omit|null $name = Omit::Value,
         ?RequestOptions $requestOptions = null,
-    ): array {
-        return $this->connection->request(
+    ): Models\Channel {
+        $this->connection->guard(
+            'channels.create',
+            [
+                'name' => $name,
+            ],
+            [
+                'name' => [
+                    'maxLength' => 100,
+                ],
+            ],
+            [],
+        );
+
+        $response = $this->connection->request(
             'channels.create',
             'POST',
             '/v1/channels',
             body: Params::body([
-                'type' => $type ?? Omit::Value,
-                'name' => $name ?? Omit::Value,
-                'connect' => Params::object($connect ?? Omit::Value),
+                'type' => $type,
+                'name' => $name,
+                'connect' => Params::object($connect),
             ]),
             options: $requestOptions,
-        )->json();
+        );
+
+        return Models\Channel::fromArray($response->json(), $response->meta());
     }
 
     /**
-     * Get the connect state of a push channel.
+     * Get the connect state of a channel.
      *
-     * Requires `channels:read`. In v2 this returns the current QR code or pairing code of a connecting
-     * WhatsApp channel. A SIM channel has none, so v1 answers `404 NOT_FOUND` for every channel.
-     *
-     * @return array<string, mixed>
+     * Requires `channels:read`. The poll of a number being linked: the pairing code or the QR while the phone
+     * must act, why linking stopped (`refusal`), or, once linked, the number's own state. Poll every few
+     * seconds until `state` is no longer `connecting` or `awaiting_link`; the server is asked at most once
+     * every 3 seconds per channel and polls in between get the last answer. It reads no query parameters and
+     * never starts or changes a link. The answer is sent with `Cache-Control: no-store`: the code and QR are
+     * for the person linking only. A SIM channel has no connect state (`404 NOT_FOUND`), nor has a channel
+     * outside the key's scope.
      *
      * @throws ApiException when the API answers with an error
      * @throws ConnectionException when the API cannot be reached
@@ -407,8 +447,82 @@ final class Channels
     public function connectState(
         string $id,
         ?RequestOptions $requestOptions = null,
-    ): array {
-        return $this->connection->request('channels.connectState', 'GET', '/v1/channels/'.rawurlencode($id).'/connect', options: $requestOptions)->json();
+    ): Models\ChannelConnectState {
+        $response = $this->connection->request('channels.connectState', 'GET', '/v1/channels/'.rawurlencode($id).'/connect', options: $requestOptions);
+
+        return Models\ChannelConnectState::fromArray($response->json(), $response->meta());
+    }
+
+    /**
+     * Try linking a number again.
+     *
+     * Requires `channels:write`. Starts linking again, on the same channel: - `retry`: a
+     * `pending_verification` channel, after a failed or expired attempt or when the code or QR ran out; with
+     * `method` (default: the one it had) and optionally a corrected `phone` for a pairing code (default: the
+     * one entered before). - `switch_method`: the same with the other `method` (`method` is required, and the
+     * one the connect already uses is `422 VALIDATION_FAILED` on `method`: send `retry` for that), so a QR
+     * replaces a code or the other way round without entering the phone again. - `relink`: a number whose
+     * session was logged out (its connect state is `needs_relink`, the channel paused `auto:session_lost`), on
+     * the number it had (`phone` is refused); by `pairing_code` unless `method` says `qr_scan`. History, lines
+     * and conversations stay; once the phone links the same number the channel resumes.
+     *
+     * The answer is the new attempt's connect state; keep polling `GET /v1/channels/{id}/connect`. The pairing
+     * code and QR are never kept for an `Idempotency-Key` replay: a replay answers the same state with
+     * `pairing_code` and `qr_png_base64` `null` (and starts nothing); poll for them. Any other state is `409
+     * INVALID_STATE` `{status, allowed_from}`. A pairing code with no phone ever entered is `422
+     * ADDRESS_REQUIRED`. A type switched off, or no longer granted to the user, is `422
+     * CHANNEL_TYPE_NOT_ALLOWED` `{type}`. A key restricted to lines cannot call it (`403 ABILITY_MISSING`).
+     * The refusals of `POST /v1/channels` apply (`CHANNEL_LINK_BLOCKED`, `CHANNEL_LINK_BUSY`,
+     * `CHANNEL_NUMBER_IN_USE`, `CHANNEL_NO_CAPACITY`, `CHANNEL_SERVER_UNAVAILABLE`); a refused step changes
+     * nothing. A SIM channel is `404 NOT_FOUND`; retry its verification with `POST /v1/channels/{id}/verify`.
+     *
+     * @param  string|Omit|null  $phone  The WhatsApp number in E.164 for a pairing code; replaces the one entered before.
+     *
+     * @throws InvalidArgumentException when an argument breaks a rule the API documents; nothing is sent (client option `validate`)
+     * @throws ApiException when the API answers with an error
+     * @throws ConnectionException when the API cannot be reached
+     */
+    public function continueConnect(
+        string $id,
+        Enums\ChannelConnectAction|string $action,
+        Enums\ChannelLinkMethod|string|Omit|null $method = Omit::Value,
+        string|Omit|null $phone = Omit::Value,
+        ?RequestOptions $requestOptions = null,
+    ): Models\ChannelConnectState {
+        $this->connection->guard(
+            'channels.continueConnect',
+            [
+                'action' => $action,
+                'method' => $method,
+                'phone' => $phone,
+            ],
+            [
+                'action' => [
+                    'enum' => ['retry', 'switch_method', 'relink'],
+                ],
+                'method' => [
+                    'enum' => ['pairing_code', 'qr_scan'],
+                ],
+                'phone' => [
+                    'maxLength' => 20,
+                ],
+            ],
+            [],
+        );
+
+        $response = $this->connection->request(
+            'channels.continueConnect',
+            'POST',
+            '/v1/channels/'.rawurlencode($id).'/connect',
+            body: Params::body([
+                'action' => $action,
+                'method' => $method,
+                'phone' => $phone,
+            ]),
+            options: $requestOptions,
+        );
+
+        return Models\ChannelConnectState::fromArray($response->json(), $response->meta());
     }
 
     /**

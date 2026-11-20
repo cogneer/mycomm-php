@@ -439,8 +439,8 @@ final class Conversations
      * @param  list<string>|null  $media_ids  Shorthand for media content: ids from `POST /v1/media`. One item today.
      * @param  ?string  $template_id  Shorthand for template content.
      * @param  array<string, mixed>|null  $variables  Values for the template's variables. Needs `template_id`.
-     * @param  array<string, mixed>|null  $channel_options  Options only some channels understand; ignored with a warning elsewhere.
-     * @param  ?bool  $smart_replace  Replace characters that force UCS-2 encoding with plain look-alikes where it saves segments.
+     * @param  array{android_sim?: array<string, mixed>, whatsapp_web?: array<string, mixed>, telegram_bot?: array<string, mixed>}|null  $channel_options  Options per channel type, keyed by the type. The options of the type of the channel that sends apply; another type's are checked and ignored with a `CHANNEL_OPTIONS_IGNORED` warning (path `channel_options.{type}`). An u…
+     * @param  ?bool  $smart_replace  Replace characters that force UCS-2 encoding with plain look-alikes where it saves segments. SMS only; on another channel it is ignored with a `CHANNEL_OPTIONS_IGNORED` warning.
      * @param  Enums\MessageCategory|string|null  $category  Required when `lane` is `bulk` (`CATEGORY_REQUIRED`).
      * @param  Enums\MessageLane|string|null  $lane  How urgently the message is sent. `bulk` is paced behind other traffic and needs `category`.
      * @param  DateTimeInterface|string|null  $send_after  At most 30 days ahead (`SEND_AFTER_TOO_FAR`). A time in the past means now.

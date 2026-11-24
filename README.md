@@ -388,12 +388,17 @@ and dry-runs the send through the line (`$partner->forLine($lineId)->verify(to: 
 | `partner->lines->status($id)` | Whether the line can send, and why not |
 | `partner->lines->vouch($id, recovery_request_id: ...)` | Answer a `line.recovery_requested` webhook when you know the person |
 | `partner->lines->links->create($id, purpose: ...)` | A hosted link: `connect`, `add_channel`, `replace_device`, `manage` or `claim` |
-| `partner->links->get($id)`, `revoke($id)` | Follow or end a link |
+| `partner->links->get($id)`, `revoke($id)` | Follow or end a link; `$link->step` says which step the card is on |
 | `partner->sponsorshipDefaults->get()`, `put(...)` | The sponsorship terms new lines get |
 | `partner->usage->get(from: ..., to: ...)` | Usage per line |
 
 A user key mints the same links for its own lines with `$mycomm->lines->links->create($lineId, purpose: ...)` and
 follows them with `$mycomm->links->get($id)` and `revoke($id)`.
+
+A link's `status` is `open`, `completed`, `revoked` or `expired`; `step` (API `2.2.0`) is `completed`, `revoked` or
+`expired` once it has that status, `open:<step>` while the person is on a step of the card (for example `open:pair`), and
+`null` while nobody has opened it. It is a plain string because more step ids may be added: treat one you do not know as
+"in progress".
 
 ## Connecting a WhatsApp number
 
@@ -491,8 +496,8 @@ The SDK follows [semantic versioning](https://semver.org). It is generated from 
 that the API is tested against; [CHANGELOG.md](CHANGELOG.md) lists what each release added.
 
 Release status: `2.1.0` (`account_id` is `user_id` and `default_line_id` is `direct_line_id`) is published on
-Packagist. `2.2.0` (WhatsApp numbers, matching API `2.1.0`) is not published yet; until it is,
-`composer require mycomm/mycomm-php` installs `2.1.0`.
+Packagist. `2.2.0` (WhatsApp numbers, matching API `2.1.0`) and `2.3.0` (the link's `step`, matching API `2.2.0`) are
+not published yet; until they are, `composer require mycomm/mycomm-php` installs `2.1.0`.
 
 ## Contributing
 

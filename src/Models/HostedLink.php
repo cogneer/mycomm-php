@@ -9,6 +9,7 @@ namespace MyComm\Models;
 use DateTimeImmutable;
 use MyComm\Enums;
 use MyComm\Model;
+use MyComm\Page;
 
 final class HostedLink extends Model
 {
@@ -19,6 +20,11 @@ final class HostedLink extends Model
     public readonly string $line_id;
 
     public readonly Enums\HostedLinkStatus|string $status;
+
+    /**
+     * Which step the hosted connect card is on, from the link alone. `completed`, `revoked` or `expired` once the link has that status. While it is open, `open:<step>` with the step the card last drew (the same id the page po…
+     */
+    public readonly ?string $step;
 
     public readonly DateTimeImmutable $expires_at;
 
@@ -55,6 +61,7 @@ final class HostedLink extends Model
         $this->purpose = self::enum(Enums\HostedLinkPurpose::class, $data['purpose']);
         $this->line_id = $data['line_id'];
         $this->status = self::enum(Enums\HostedLinkStatus::class, $data['status']);
+        $this->step = $data['step'] ?? null;
         $this->expires_at = self::dateTime($data['expires_at']);
         $this->return_url = $data['return_url'] ?? null;
         $this->allowed_origins = $data['allowed_origins'] ?? null;
